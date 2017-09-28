@@ -2,9 +2,9 @@
 ## 9/28/17
 ## Caitlyn Ralph
 
-#1. Branch the github repo Algorithms, which contains the folder Workshop5. - DONE
-#2. Implement the KnuthShuffle algorithm shown in this demo (Links to an external site.) Links to an external site. Start with Workshop5/KnuthShuffle.java. - SEE KnuthShuffle.java
-#3. Time your algorithm on input arrays of size 10,000, 20,000, 40,000, and 80,000 and show the results in a table.
+1. Branch the github repo Algorithms, which contains the folder Workshop5. - DONE
+2. Implement the KnuthShuffle algorithm shown in this demo (Links to an external site.) Links to an external site. Start with Workshop5/KnuthShuffle.java. - SEE KnuthShuffle.java
+3. Time your algorithm on input arrays of size 10,000, 20,000, 40,000, and 80,000 and show the results in a table.
 
 |   Input   | Runtime 1 | Runtime 2 | Runtime 3  |
 | --------- |:---------:|:---------:| ----------:|
@@ -13,12 +13,12 @@
 |   4000000 |   0.236   |  0.239    |  0.264     |
 |   8000000 |   0.543   |  0.569    |  0.575     |
 
-#4. Estimate the running time in the form aNb using the doubling method.
+4. Estimate the running time in the form aNb using the doubling method.
 
 The ratio of runtimes converges to 2. This would cause b in the aNb to be 1. The function would then be
 T(N) = aN^1. If we use the biggest output, which in this case is 8000000 with an average runtime of 0.562, then plug it into that form, we get 0.562 = a8000000. This would make the constant 7.02916667e-8.
 
-#5. Write a program to shuffle the array [1,2,3,4] 2,400 times, count how many times each shuffled version of the array comes up, and print the results. Show the results.
+5. Write a program to shuffle the array [1,2,3,4] 2,400 times, count how many times each shuffled version of the array comes up, and print the results. Show the results.
 
 1. Output = 4321, Count = 105
 2. Output = 4132, Count = 85
@@ -45,7 +45,7 @@ T(N) = aN^1. If we use the biggest output, which in this case is 8000000 with an
 23. Output = 2143, Count = 117
 24. Output = 2431, Count = 80
 
-#Explain why the invariant in the demo is true: after round i, the array is uniformly shuffled from index 0 to index i. (Hint: use induction on i. The largest element in a uniformly shuffled array is equally likely to be in any position.)
+6. Explain why the invariant in the demo is true: after round i, the array is uniformly shuffled from index 0 to index i. (Hint: use induction on i. The largest element in a uniformly shuffled array is equally likely to be in any position.)
 
 For the base case, n = 1, we know the array is shuffled because there is only one value. For example, if the array of length n = 1 contains 2, we know that the 2 is shuffled.
 
