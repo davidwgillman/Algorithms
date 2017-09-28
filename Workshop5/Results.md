@@ -1,4 +1,4 @@
-### Workshop 5
+# Workshop 5
 ## 9/28/17
 ## Caitlyn Ralph
 
@@ -20,30 +20,30 @@ T(N) = aN^1. If we use the biggest output, which in this case is 8000000 with an
 
 5. Write a program to shuffle the array [1,2,3,4] 2,400 times, count how many times each shuffled version of the array comes up, and print the results. Show the results.
 
-1. Output = 4321, Count = 105
-2. Output = 4132, Count = 85
-3. Output = 2341, Count = 105
-4. Output = 3142, Count = 114
-5. Output = 4231, Count = 115
-6. Output = 3241, Count = 80
-7. Output = 2314, Count = 111
-8. Output = 1324, Count = 102
-9. Output = 2413, Count = 96
-10. Output = 3214, Count = 83
-11. Output = 1423, Count = 101
-12. Output = 1234, Count = 102
-13. Output = 3412, Count = 95
-14. Output = 3124, Count = 122
-15. Output = 4213, Count = 91
-16. Output = 2134, Count = 83
-17. Output = 1432, Count = 87
-18. Output = 4312, Count = 102
-19. Output = 1243, Count = 109
-20. Output = 4123, Count = 109
-21. Output = 3421, Count = 107
-22. Output = 1342, Count = 99
-23. Output = 2143, Count = 117
-24. Output = 2431, Count = 80
+* Output = 4321, Count = 105
+* Output = 4132, Count = 85
+* Output = 2341, Count = 105
+* Output = 3142, Count = 114
+* Output = 4231, Count = 115
+* Output = 3241, Count = 80
+* Output = 2314, Count = 111
+* Output = 1324, Count = 102
+* Output = 2413, Count = 96
+* Output = 3214, Count = 83
+* Output = 1423, Count = 101
+* Output = 1234, Count = 102
+* Output = 3412, Count = 95
+* Output = 3124, Count = 122
+* Output = 4213, Count = 91
+* Output = 2134, Count = 83
+* Output = 1432, Count = 87
+* Output = 4312, Count = 102
+* Output = 1243, Count = 109
+* Output = 4123, Count = 109
+* Output = 3421, Count = 107
+* Output = 1342, Count = 99
+* Output = 2143, Count = 117
+* Output = 2431, Count = 80
 
 6. Explain why the invariant in the demo is true: after round i, the array is uniformly shuffled from index 0 to index i. (Hint: use induction on i. The largest element in a uniformly shuffled array is equally likely to be in any position.)
 
