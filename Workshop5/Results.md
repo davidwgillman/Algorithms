@@ -1,4 +1,4 @@
-<!-- Workshop 5
+Workshop 5
 9/28/17
 Caitlyn Ralph
 
@@ -51,4 +51,4 @@ For the base case, n = 1, we know the array is shuffled because there is only on
 
 For n = k + 1, we are adding another value to an array with length n. Because the definition of Knuth Shuffle is exchanging a value randomly for another value between the index 1 and N, then the probability of the new value getting switch with each place is 1/N. This would lead us to conclude that whenever you add a new value using the terms of Knuth Shuffle, it gets randomly placed, leading the array to still be shuffled.
 
-Write your answers and results to Workshop5/Results.md. -->
+Write your answers and results to Workshop5/Results.md.
