@@ -25,10 +25,16 @@ public final class KnuthShuffle {
 	}
 
 	public static void main(String[] args) {
-		// implement this
-		String[] s=new String[]{"a","b","c","d","e"};
-		System.out.println(Arrays.toString(s));
+		final int n=10000;
+		Integer[] s=new Integer[n];
+		for(int i=0;i<n;i++){
+			s[i]=i;
+		}
+		//System.out.println(Arrays.toString(s));
+		Stopwatch stopwatch=new Stopwatch();
 		shuffle(s);
-		System.out.println(Arrays.toString(s));
+		double time=stopwatch.elapsedTime();
+		System.out.println(time);
+		//System.out.println(Arrays.toString(s));
 	}
 }
