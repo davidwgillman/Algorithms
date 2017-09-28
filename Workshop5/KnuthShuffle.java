@@ -11,12 +11,28 @@ public final class KnuthShuffle {
      * @param  a the array to shuffle
      */
 	public static void shuffle(Object[] a) {
-		// as a demo, this generates a random number from 0 to 9
-		int i = StdRandom.uniform(0,10); 
-		// implement this
+
+        int N = a.length;
+        
+        for (int i = 0; i < N; i++) {
+            int r = StdRandom.uniform(0,10);
+            int temp = i;
+            i = r;
+            r = temp;
+        }
 	}
 
 	public static void main(String[] args) {
-		// implement this
+        
+        // Create new array of size N
+        int cards[] = new int[N];
+        
+        for (int i = 0; i < N; i++) {
+            a[i] = StdRandom.uniform();
+        }
+        
+        // Logs how long the process took
+        double time = stopwatch.elapsedTime();
+        System.out.println("Time passed: " + time);
 	}
 }
