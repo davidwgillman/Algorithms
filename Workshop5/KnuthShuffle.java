@@ -12,7 +12,7 @@ public final class KnuthShuffle {
 	public static void shuffle(Object[] a) {
 		// implement this
 		for(int i=1;i<a.length;i++){
-			int r = StdRandom.uniform(0,i);
+			int r = StdRandom.uniform(0,i+1);
 			//swap a[i] and a[r]
 			Object x=a[i];
 			a[i]=a[r];
@@ -21,7 +21,7 @@ public final class KnuthShuffle {
 	}
 
 	public static void main(String[] args) {
-		final int n=1000000;
+		final int n=8000000;
 		System.out.println("Running with array of "+n+" size!");
 		double sum=0;
 		for(int i=0;i<10;i++)
