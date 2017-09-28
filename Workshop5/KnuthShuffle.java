@@ -25,7 +25,7 @@ public final class KnuthShuffle {
 	public static void main(String[] args) {
         
         // Create new array of size N
-        Integer N = 10;
+        Integer N = 10000;
         Integer cards[] = new Integer[N];
         
         for (int i = 0; i < N; i++) {
@@ -39,17 +39,19 @@ public final class KnuthShuffle {
             System.out.print(cards[i] + " ");
         }
         
+        // Create stopwatch to log how long the process took
+        Stopwatch stopwatch = new Stopwatch();
+        
         System.out.println(" ");
         knuthShuffle.shuffle(cards);
+        
+        // Calculate and output elapsed time
+        double time = stopwatch.elapsedTime();
         
         System.out.print("Shuffled cards: ");
         for (int i = 0; i < cards.length; i++) {
             System.out.print(cards[i] + " ");
         }
-        
-        // Logs how long the process took
-        Stopwatch stopwatch = new Stopwatch();
-        double time = stopwatch.elapsedTime();
         
         System.out.println(" ");
         System.out.println("Time passed: " + time);
