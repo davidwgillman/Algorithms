@@ -1,13 +1,9 @@
 /* Shuffles an array of objects */
 
 import edu.princeton.cs.algs4.Stopwatch;
-
 import java.util.Arrays;
-
 import edu.princeton.cs.algs4.StdRandom;
-
 public final class KnuthShuffle {
-
     /**
      * Rearranges the elements of the specified array in uniformly random order.
      *
@@ -25,7 +21,15 @@ public final class KnuthShuffle {
 	}
 
 	public static void main(String[] args) {
-		final int n=10000;
+		final int n=1000000;
+		System.out.println("Running with array of "+n+" size!");
+		double sum=0;
+		for(int i=0;i<10;i++)
+			sum+=shuffler(n);
+		double avg=sum/10;
+		System.out.println("Avg time: "+avg);
+	}
+	public static double shuffler(int n){
 		Integer[] s=new Integer[n];
 		for(int i=0;i<n;i++){
 			s[i]=i;
@@ -34,7 +38,8 @@ public final class KnuthShuffle {
 		Stopwatch stopwatch=new Stopwatch();
 		shuffle(s);
 		double time=stopwatch.elapsedTime();
-		System.out.println(time);
+		//System.out.println(time);
 		//System.out.println(Arrays.toString(s));
+		return time;
 	}
 }
