@@ -24,9 +24,10 @@ public final class KnuthShuffle {
         }
 	}
 
-    */ Helper static array factory. Takes the size as parameter
+    /* Helper static array factory. Takes the size as parameter
 	returns an array inflated with random numbers.
-/*
+*/
+    
     public static Object[] generateArray(int size){
         Integer[] numbers = new Integer[size];
         for(int i=0; i<size; i++){
