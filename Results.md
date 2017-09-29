@@ -77,6 +77,8 @@ same task.
 
 Python Program For Counting: 
 
+```
+
 #random.shuffle() uses Fisher-Yates shuffling algorithm. 
 
 table = dict()
@@ -96,6 +98,7 @@ def test():
 
 test()
 
+```
 
 [1, 3, 2, 4] 98
 [3, 4, 2, 1] 135
