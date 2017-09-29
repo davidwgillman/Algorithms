@@ -1,40 +1,50 @@
 # Ozan Gokdemir
-# Workshop 5 
+## Workshop 5 
 
 
 
-3)Time your algorithm on input arrays of size 10,000, 20,000, 40,000, and 80,000 and show the results in a table.
+## 3)Time your algorithm on input arrays of size 10,000, 20,000, 40,000, and 80,000 and show the results in a table.
 
- Time Observations(in milliseconds)
+### Time Observations(in milliseconds)
 
-10,000 -->  1st test:299    Average = 249.3   
+ 
+10,000 -->  1st test:299      
 	    2nd test:226
 	    3rd test:223   
+	    **Average = 249.3** 
 
 
-20,000 -->  1st test: 492   Average = 488.3
+
+20,000 -->  1st test: 492   
 	    2nd test: 470		
-	    3rd test: 503  
+	    3rd test: 503
+	    **Average = 488.3**  
 
 
-40,000 -->  1st test:1036    Average = 1109.3   
+40,000 -->  1st test:1036     
 	    2nd test:1111
 	    3rd test:1181   
+	    **Average = 1109.3** 
 
-
-80,000 -->  1st test:2303    Average = 2213  
+80,000 -->  1st test:2303      
 	    2nd test:2180
-	    3rd test:2156   
+	    3rd test:2156
+	    **Average = 2213**
+   
 
 Time Observations With Empirical Growing Rate
 
    N 	   |  time | ratio 
  ----         ----   ---- 	
 
-10000000      249     -
-20000000      488     1.95
-40000000      1109    2.27
-80000000      2213    1.99
+10000000  |    249 |    -
+--------    ------    -----
+20000000  |    488 |   1.95
+--------    ------   -------
+40000000  |   1109 |   2.27
+--------    ------   -------
+80000000  |    2213|    1.99
+--------     ------  ------
 	
 
 
