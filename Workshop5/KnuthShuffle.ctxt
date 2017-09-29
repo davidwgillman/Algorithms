@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.params=a
+comment0.target=void\ shuffle(java.lang.Object[])
+comment0.text=\n\ Rearranges\ the\ elements\ of\ the\ specified\ array\ in\ uniformly\ random\ order.\n\n\ @param\ \ a\ the\ array\ to\ shuffle\n
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+numComments=2
