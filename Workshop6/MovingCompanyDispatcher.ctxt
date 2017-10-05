@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=MovingCompanyDispatcher
+comment0.text=\ Randomly\ generates\ a\ day's\ worth\ of\ jobs\ for\ H\ households\ using\ V\ van\ crews\n\ \ \ H\ and\ V\ may\ be\ passed\ through\ a\ constructor\ or\ a\ newDay()\ method.\n\ \ \ [Suggestion\:\ create\ an\ array\ of\ MovingCompanyCrew\ objects;\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a\ MovingCompanyCrew\ has\ a\ list\ of\ jobs\ and\ an\ hoursOfWork()\ method]\n\ \ \ Orders\ jobs\ from\ longest\ to\ shortest\ and\ assigns\ jobs\ in\ order\ to\ the\ first\ available\ crew.\n\ \ \ Prints\ the\ assignment\ and\ hours\ worked\ by\ the\ last\ crew\ to\ get\ off\ work.\n
+comment1.params=C\ H
+comment1.target=void\ newDay(int,\ int)
+comment2.params=
+comment2.target=double\ getLowerBound()
+comment3.params=
+comment3.target=void\ makeJobs()
+comment4.params=
+comment4.target=void\ assignJobs()
+comment5.params=
+comment5.target=MovingCompanyCrew[]\ getCrews()
+comment6.params=args
+comment6.target=void\ main(java.lang.String[])
+numComments=7
