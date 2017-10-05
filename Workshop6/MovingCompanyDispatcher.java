@@ -38,6 +38,9 @@
  		// assign each job in order to first available crew 
  	}
 
+ 	// this method lets the client figure out how good a job the Dispatcher did
+ 	// Alternatively, you can let the Dispatcher do its own self-evaluation 
+ 	// and expose the stats in different method
  	public MovingCompanyCrew[] getCrews() {
 
  	}
