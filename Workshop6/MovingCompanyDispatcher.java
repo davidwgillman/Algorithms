@@ -33,6 +33,9 @@ import edu.princeton.cs.algs4.Insertion;
         
         //assign length of jobs as number of households.
         jobs = new Double[H];
+        
+        //now assign c as number of crews
+        crews = new MovingCompanyCrew[C];
     }
 
     public double getLowerBound() {
@@ -45,7 +48,7 @@ import edu.princeton.cs.algs4.Insertion;
         
         for (int i = 0; i < jobs.length; i++) {
         
-              int hours = random.nextInt(9) + 4; //random number of jobs from 
+              int hours = random.nextInt(4) + 1; //random number of jobs from 
             
               jobs[i] = (double)hours;
         
@@ -55,16 +58,63 @@ import edu.princeton.cs.algs4.Insertion;
 
     public void assignJobs() {
         // order jobs longest to shortest 
-        
-        // assign each job in order to first available crew 
-        
         Insertion.sort(jobs);
+        
+        //assign each job in order to first available crew 
+        if (jobs.length >= crews.length) {
+            
+            int numberOfLoops = jobs.length/crews.length;
+            
+            int indexesInLastLoop = jobs.length % crews.length;
+            
+            int jobIndex = 0;
+            
+            
+            //loop through the crews array until all the jobs are filled.
+            for(int x = numberOfLoops; x > 0; x--) {
+                
+                //we loop through all the crew member
+                for (int a = 0; a < crews.length; a++) {
+                    //set jobs to each one
+                    crews[a].setHours(jobs[jobIndex]);
+                    
+                    //this job counter is used for the loop
+                    jobIndex++;
+                    
+                }
+                
+            }
+            
+            //we loop through the remaineder of indexes in last loop
+            for (int b = 0; b < indexesInLastLoop; b++) {
+                //set jobs to each one
+                crews[b].setHours(jobs[jobIndex]);
+                    
+                //this job counter is used for the loop
+                jobIndex++;
+                    
+            }
+            
+        }
+        
+        
+        
+        if (crews.length > jobs.length) {
+            for (int a = 0; a < jobs.length; a++) {
+                crews[a].setHours(jobs[a]);
+            }
+        }
+        
+        
+  
+      
     }
 
     // this method lets the client figure out how good a job the Dispatcher did
     // Alternatively, you can let the Dispatcher do its own self-evaluation 
     // and expose the stats in different method
     public MovingCompanyCrew[] getCrews() {
+        
         
         return crews;
 

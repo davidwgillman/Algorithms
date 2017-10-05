@@ -2,23 +2,32 @@
 */
 
 public class MovingCompanyCrew implements Comparable<MovingCompanyCrew> {
-	double[] jobs = null;
-	
-	
-	public MovingCompanyCrew() {
-	   
-	 }
+    
+    double[] jobs = null;
+    
+    double hours = 0;
+    
+    
+    
+    public MovingCompanyCrew() {
 
-	public double hoursOfWork() {
-		
-	    return 0.0;
-	}
-	
-
-	public int compareTo(MovingCompanyCrew a) {
-	   
-	    return 0;
-	 }
-	
-	
+    }
+    
+    
+    public void setHours(double x) {
+       hours += x;
+    }
+    
+    
+    public double hoursOfWork() {
+        return hours;
+    }
+    
+    
+    public int compareTo(MovingCompanyCrew a) {
+       
+        return 0;
+     }
+    
+    
 }
