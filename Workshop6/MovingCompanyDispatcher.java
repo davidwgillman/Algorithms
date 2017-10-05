@@ -10,6 +10,7 @@
    */
 
 // imports
+   import java.util.Random;
 
  public class MovingCompanyDispatcher {
  	private int nCrews = 0;
@@ -18,18 +19,24 @@
 
  	private MovingCompanyCrew[] crews = null;
 
- 	public MovingCompanyDispatcher()
+ 	//public MovingCompanyDispatcher();
 
- 	public newDay(int C, int H) {
+ 	public void newDay(int C, int H) {
  	}
 
  	public double getLowerBound() {
  		// lower bound on numnber of hours worked by last crew to get off work
- 		return ; 
+ 		return 0; 
  	}
 
  	public void makeJobs() {
  		// generate random jobs
+ 		Random r = new Random();
+ 		
+ 		int num_jobs = 10 * r.nextInt();
+ 		for (int i = 0; i < num_jobs; i++) {
+ 			double value = 1 + (5 * r.nextDouble());
+ 		}
  	}
 
  	public void assignJobs() {
@@ -42,7 +49,7 @@
  	// Alternatively, you can let the Dispatcher do its own self-evaluation 
  	// and expose the stats in different method
  	public MovingCompanyCrew[] getCrews() {
-
+ 		return null;
  	}
 
  	public static void main(String[] args) {
