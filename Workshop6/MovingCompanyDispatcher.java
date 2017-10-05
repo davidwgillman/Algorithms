@@ -10,43 +10,73 @@
    */
 
 // imports
+import java.util.stream.*;
+import java.util.*;
+import edu.princeton.cs.algs4.*;
 
  public class MovingCompanyDispatcher {
- 	private int nCrews = 0;
- 	private int nHouseholds = 0;
- 	private double[] jobs = null;
+    private Integer nCrews = 0;
+    private Integer nHouseholds = 0;
+    private Integer[] jobs = null;
+    
+    private MovingCompanyCrew[] crews = null;
 
- 	private MovingCompanyCrew[] crews = null;
+    public MovingCompanyDispatcher(){
+        
+      }
 
- 	public MovingCompanyDispatcher()
+    public void newDay(int C, int H) {
+        nCrews = C;
+        nHouseholds = H;
+        this.crews = new MovingCompanyCrew[C];
+        this.makeJobs();
+    }
 
- 	public newDay(int C, int H) {
- 	}
+    public double getLowerBound() {
+        // lower bound on numnber of hours worked by last crew to    get off work
+        int sum = 0;
+        for(int i : jobs){
+            sum += i;
+        }
+        return  sum / nCrews;
+    }
+    
+    
+    public void makeJobs() {
+        jobs = new Integer[nHouseholds];
+        Random r = new Random();
+        for(int i = 0; i < nHouseholds; i++){
+            jobs[i] = r.nextInt(8) + 1;
+        }
+    }
 
- 	public double getLowerBound() {
- 		// lower bound on numnber of hours worked by last crew to get off work
- 		return ; 
- 	}
+    public void assignJobs() {
+        Quick q = new Quick();
+        q.sort(jobs);
+        
+        int jobsPerCrew = (int)(jobs.length / nCrews);
+        for(int i : jobs){
+            MovingCompanyCrew minCrew = crews[0];
+            double workHours = 10000000;
+            for(int j = 0; j < crews.length; j++){
+                if(crews[j].hoursOfWork() < workHours){
+                    minCrew = crews[j];
+                }
+            }
+            minCrew.jobs.add(jobs[0]);
+            
+        }
+    }
 
- 	public void makeJobs() {
- 		// generate random jobs
- 	}
+    // this method lets the client figure out how good a job the Dispatcher did
+    // Alternatively, you can let the Dispatcher do its own self-evaluation 
+    // and expose the stats in different method
+    public MovingCompanyCrew[] getCrews() {
 
- 	public void assignJobs() {
- 		// order jobs longest to shortest 
+    }
 
- 		// assign each job in order to first available crew 
- 	}
+    public static void main(String[] args) {
 
- 	// this method lets the client figure out how good a job the Dispatcher did
- 	// Alternatively, you can let the Dispatcher do its own self-evaluation 
- 	// and expose the stats in different method
- 	public MovingCompanyCrew[] getCrews() {
-
- 	}
-
- 	public static void main(String[] args) {
-
- 	}
+    }
 
  }
