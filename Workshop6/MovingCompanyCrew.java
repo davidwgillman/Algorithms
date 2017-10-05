@@ -2,7 +2,7 @@
 */
 import java.util.*;
 public class MovingCompanyCrew{
-	public ArrayList<Integer jobs = null;
+	public ArrayList<Integer> jobs = new ArrayList<Integer>();
 
 	public double hoursOfWork() {
 	    double sum = 0;

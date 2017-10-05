@@ -17,18 +17,19 @@ import edu.princeton.cs.algs4.*;
  public class MovingCompanyDispatcher {
     private Integer nCrews = 0;
     private Integer nHouseholds = 0;
-    private Integer[] jobs = null;
+    public Integer[] jobs = null;
     
     private MovingCompanyCrew[] crews = null;
 
-    public MovingCompanyDispatcher(){
-        
-      }
+    public MovingCompanyDispatcher(){}
 
     public void newDay(int C, int H) {
         nCrews = C;
         nHouseholds = H;
         this.crews = new MovingCompanyCrew[C];
+        for(int i = 0; i < crews.length; i++){
+            crews[i] = new MovingCompanyCrew();
+        }
         this.makeJobs();
     }
 
@@ -38,6 +39,7 @@ import edu.princeton.cs.algs4.*;
         for(int i : jobs){
             sum += i;
         }
+        System.out.println(sum / nCrews);
         return  sum / nCrews;
     }
     
@@ -45,26 +47,68 @@ import edu.princeton.cs.algs4.*;
     public void makeJobs() {
         jobs = new Integer[nHouseholds];
         Random r = new Random();
+        //r.setSeed(1235665432);
         for(int i = 0; i < nHouseholds; i++){
             jobs[i] = r.nextInt(8) + 1;
         }
     }
-
+    
+    public static void quickSort(Integer[] arr, int low, int high) {
+		if (arr == null || arr.length == 0)
+			return;
+ 
+		if (low >= high)
+			return;
+ 
+		// pick the pivot
+		int middle = low + (high - low) / 2;
+		int pivot = arr[middle];
+ 
+		// make left < pivot and right > pivot
+		int i = low, j = high;
+		while (i <= j) {
+			while (arr[i] < pivot) {
+				i++;
+			}
+ 
+			while (arr[j] > pivot) {
+				j--;
+			}
+ 
+			if (i <= j) {
+				int temp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = temp;
+				i++;
+				j--;
+			}
+		}
+ 
+		// recursively sort two sub parts
+		if (low < j)
+			quickSort(arr, low, j);
+ 
+		if (high > i)
+			quickSort(arr, i, high);
+	}
+	
     public void assignJobs() {
-        Quick q = new Quick();
-        q.sort(jobs);
-        
-        int jobsPerCrew = (int)(jobs.length / nCrews);
-        for(int i : jobs){
+        quickSort(jobs, 0, jobs.length - 1);
+        int minpointer = 0;
+        while(minpointer < jobs.length){
             MovingCompanyCrew minCrew = crews[0];
+            //System.out.println(minCrew);
             double workHours = 10000000;
             for(int j = 0; j < crews.length; j++){
+                //find crew with least hours
                 if(crews[j].hoursOfWork() < workHours){
                     minCrew = crews[j];
+                    workHours = crews[j].hoursOfWork();
                 }
             }
-            minCrew.jobs.add(jobs[0]);
-            
+            minCrew.jobs.add(jobs[minpointer]);
+            //System.out.println(minCrew.hoursOfWork());
+            minpointer++;
         }
     }
 
@@ -72,11 +116,11 @@ import edu.princeton.cs.algs4.*;
     // Alternatively, you can let the Dispatcher do its own self-evaluation 
     // and expose the stats in different method
     public MovingCompanyCrew[] getCrews() {
-
+        for(int i = 0; i < crews.length; i++){
+            System.out.println(crews[i].jobs);
+            System.out.println(crews[i].hoursOfWork());
+        }
+        return crews;
     }
-
-    public static void main(String[] args) {
-
-    }
-
+    
  }
