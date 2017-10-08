@@ -16,6 +16,20 @@ public class MovingCompanyCrew implements Comparable<MovingCompanyCrew> {
 		for(;jobs[i]>0.0;i++);
 		jobs[i]=job;
 	}
+	public double getJob(int i){
+		if(i>=numJobs())
+			return -1.0;
+		return jobs[i];
+	}
+	public void setJob(int i,double j){
+		jobs[i]=j;
+	}
+	public int numJobs(){
+		int count=0;
+		for(int i=0;i<jobs.length && jobs[i]>0.0;i++)
+			count++;
+		return count;
+	}
 	public double hoursOfWork() {
 		double totalHours=0.0;
 		for(int i=0;i<jobs.length;i++)

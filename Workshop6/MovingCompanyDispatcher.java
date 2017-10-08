@@ -20,19 +20,19 @@ import java.util.Arrays;
  	private MovingCompanyCrew[] crews = null;
 
  	public MovingCompanyDispatcher(){}
- 	public MovingCompanyDispatcher(int nCrews,int nHouseholds){
- 		newDay(nCrews,nHouseholds);
- 	}
- 	public void newDay(int C, int H) {
+ 	public void newDay(int C, int H, boolean fairer) {
  		nCrews=C;
  		crews=new MovingCompanyCrew[nCrews];
  		nHouseholds=H;
  		jobs=new double[nHouseholds];
  		makeCrews();
  		makeJobs();
- 		assignJobs();
+ 		if(fairer)
+ 			assignJobsFairer();
+ 		else
+ 			assignJobs();
  	}
- 	public void newDay(int C, double[] J) {
+ 	public void newDay(int C, double[] J, boolean fairer) {
  		int H=J.length;
  		nCrews=C;
  		crews=new MovingCompanyCrew[nCrews];
@@ -40,7 +40,10 @@ import java.util.Arrays;
  		jobs=new double[nHouseholds];
  		makeCrews();
  		jobs=J;
- 		assignJobs();
+ 		if(fairer)
+ 			assignJobsFairer();
+ 		else
+ 			assignJobs();
  	}
  	public double getUpperBound() {
  		// upper bound on number of hours worked by last crew to get off work
@@ -88,10 +91,36 @@ import java.util.Arrays;
  		for(int i=jobs.length-1;i>=0;i--)
  			crews[findLazyestWorker()].addJob(jobs[i]);
  	}
-
+ 	public void assignJobsFairer() {
+ 		assignJobs();
+ 		for(int a=0;a<crews.length-1;a++) //For each crew
+ 			for(int i=0;i<crews[a].numJobs();i++) //For each job in that crew
+ 				for(int b=a+1;b<crews.length;b++) //Check each other crew after it
+ 					for(int j=0;j<crews[b].numJobs();j++) //For each job in that crew
+ 						trySwap(crews[a],i,crews[b],j);
+ 	}
+ 	//Checks and attempts a swap of jobs between crews
+ 	//a=which crew swapping from, i=index for that crew
+ 	//b=which crew swapping to, j=index for that crew
+ 	public void trySwap(MovingCompanyCrew a,int i,MovingCompanyCrew b,int j){
+ 		double hoursA=a.hoursOfWork();
+ 		double hoursB=b.hoursOfWork();
+ 		double crewDiff=hoursA-hoursB;
+ 		double jobA=a.getJob(i);
+ 		double jobB=b.getJob(j);
+ 		double jobDiff=jobA-jobB;
+ 		//If jobDiff is in between 0 and crewDiff:
+ 		if(((jobDiff>0)&&(jobDiff<crewDiff)) || ((jobDiff<0)&&(jobDiff>crewDiff)))
+ 			swap(a,i,b,j);
+ 	}
+ 	public void swap(MovingCompanyCrew a,int i,MovingCompanyCrew b,int j){
+ 		double jobA=a.getJob(i);
+ 		a.setJob(i,b.getJob(j));
+ 		b.setJob(j,jobA);
+ 	}
  	// this method lets the client figure out how good a job the Dispatcher did
  	// Alternatively, you can let the Dispatcher do its own self-evaluation 
- 	// and expose the stats in different method **********************************
+ 	// and expose the stats in different method
  	public void printStats() {
  		for(int i=0;i<nCrews;i++)
  			System.out.println(crews[i]);
@@ -107,8 +136,8 @@ import java.util.Arrays;
 
  	public static void main(String[] args) {
  		MovingCompanyDispatcher comp=new MovingCompanyDispatcher();
- 		double[] a=new double[]{100.0,7.0,6.0,5.0,3.0,4.0};
- 		comp.newDay(3,a);
+ 		double[] a=new double[]{9,8,7,6,5,4,3,2};
+ 		comp.newDay(3,a,false);
  		comp.printStats();
  	}
  }
