@@ -79,7 +79,7 @@ import java.util.Arrays;
  			jobs[i]=Math.random()*7+1; //random double [1,7)
  	}
  	public void makeCrews(){
- 		//Create crews with jobs[] room 
+ 		//Create crews with room for nJobs
  		for(int i=0;i<crews.length;i++)
  			crews[i]=new MovingCompanyCrew(nHouseholds);
  	}
