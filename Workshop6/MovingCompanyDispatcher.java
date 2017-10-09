@@ -1,6 +1,7 @@
 import java.util.Random;
 import edu.princeton.cs.algs4.Insertion;
 import java.util.*;
+import edu.princeton.cs.algs4.Stopwatch;
 
 /* Randomly generates a day's worth of jobs for H households using V van crews
    H and V may be passed through a constructor or a newDay() method.
@@ -56,7 +57,7 @@ import java.util.*;
             }
  
             //if theres a new low one, set its hours as the new low
-            if (crews[a].hoursOfWork() < higherBoundNumber) {
+            if (crews[a].hoursOfWork() < lowerBoundNumber) {
                 lowerBoundNumber = crews[a].hoursOfWork();
                 
             }
@@ -203,9 +204,13 @@ import java.util.*;
         mcd.newDay(200,100);
         mcd.makeJobs();
         mcd.makeCrews();
+        
+        Stopwatch stopwatch = new Stopwatch();
+        
         mcd.assignJobs();
         
-        
+        double time = stopwatch.elapsedTime();
+
         double low = mcd.getLowerBound();
         double high = mcd.getHigherBound();
         
@@ -214,6 +219,7 @@ import java.util.*;
         System.out.println("Low: " + low);
         System.out.println("High: " + high);
         System.out.println("%: " + percentage);
+        System.out.println("time: " + time);
         
         
     }
