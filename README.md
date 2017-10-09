@@ -1,10 +1,5 @@
 # Algorithms Workshops
 
-Each folder has starter code and problems.
+5. **Discuss your choice of method for ordering in the jobs. What is its rate of growth? (Use any argument.) Were there any other considerations for choosing it. 
 
-Create your own branch.
-
-Write the code and solve the problems.
-
-Write any requested results, answers, and explanations to Results.md.
-
+    My method for ordering the jobs was to look through the list of crews and see who had the least amount of work. This would start with all of them having 0 work since none of them had yet been assigned a job, in this case, the jobs would be assigned to Crew 1, Crew 2, ..., Crew n in order. Following this it would go on to assign new jobs to those crews who had the lowest sum of hours worked. I believe that the rate of growth of this function is n^2 because there is a for loop calling a for loop. The assignJobs function looks at all the crews and while doing this it calls the leastWork function which looks at the sum of what all the crews have done.
