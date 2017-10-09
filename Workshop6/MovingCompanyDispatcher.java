@@ -155,7 +155,10 @@ import edu.princeton.cs.algs4.Stopwatch;
                     //set jobs to each one
                     crews[y].setHours(jobs[jobIndex]);
                     
-
+                    //below we print to console the jobs
+                    double hoursWorked = crews[y].hoursOfWork();
+                    System.out.println("Job assignment: Job " + jobs[jobIndex] + " hours, Crew has worked " + hoursWorked + " hours");
+                    
                     //this job counter is used for the loop
                     jobIndex++;
                     
@@ -168,6 +171,9 @@ import edu.princeton.cs.algs4.Stopwatch;
                 //set jobs to each one
                 crews[b].setHours(jobs[jobIndex]);
                 
+                //below we print to console the jobs
+                double hoursWorked = crews[b].hoursOfWork();
+                System.out.println("Job assignment: Job " + jobs[jobIndex] + " hours, Crew has worked " + hoursWorked + " hours");
                     
                 //this job counter is used for the loop
                 jobIndex++;
@@ -180,6 +186,10 @@ import edu.princeton.cs.algs4.Stopwatch;
         if (crews.length > jobs.length) {
             for (int a = 0; a < jobs.length; a++) {
                 crews[a].setHours(jobs[a]);
+                
+                //below we print to console
+                double hoursWorked = crews[a].hoursOfWork();
+                System.out.println("Job assignment: Job " + jobs[a] + " hours, Crew has worked " + hoursWorked + " hours");
 
             }
         }
@@ -198,30 +208,51 @@ import edu.princeton.cs.algs4.Stopwatch;
     
     public static void main(String[] args) {
         
+        //small array of crew members
+        int[] crewsNumbers = new int[4];
+        crewsNumbers[0] = 500;
+        crewsNumbers[1] = 1000;
+        crewsNumbers[2] = 2000;
+        crewsNumbers[3] = 4000;
+        
+        //small array of jobs
+        int[] jobsNumbers = new int[4];
+        jobsNumbers[0] = 1000;
+        jobsNumbers[1] = 2000;
+        jobsNumbers[2] = 4000;
+        jobsNumbers[3] = 8000;
+        
+        //init class
         MovingCompanyDispatcher mcd = new MovingCompanyDispatcher();
         
         
-        mcd.newDay(200,100);
-        mcd.makeJobs();
-        mcd.makeCrews();
+        for(int i = 0; i < 4; i++) {
+            
+            int crewsNumber = crewsNumbers[i];
+            int jobsNumber = jobsNumbers[i];
+            
+            
+            mcd.newDay(crewsNumber, jobsNumber);
+            mcd.makeJobs();
+            mcd.makeCrews();
         
-        Stopwatch stopwatch = new Stopwatch();
+            Stopwatch stopwatch = new Stopwatch();
         
-        mcd.assignJobs();
+            mcd.assignJobs();
         
-        double time = stopwatch.elapsedTime();
+            double time = stopwatch.elapsedTime();
 
-        double low = mcd.getLowerBound();
-        double high = mcd.getHigherBound();
+            double low = mcd.getLowerBound();
+            double high = mcd.getHigherBound();
         
-        double percentage = mcd.getExcessHoursAsPercentageOfLowerBound();
+            double percentage = mcd.getExcessHoursAsPercentageOfLowerBound();
         
-        System.out.println("Low: " + low);
-        System.out.println("High: " + high);
-        System.out.println("%: " + percentage);
-        System.out.println("time: " + time);
+            System.out.println("Low: " + low);
+            System.out.println("High: " + high);
+            System.out.println("%: " + percentage);
+            System.out.println("time: " + time);
         
-        
+        }
     }
 
  }
