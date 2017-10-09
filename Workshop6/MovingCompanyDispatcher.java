@@ -1,6 +1,7 @@
 import java.util.Random;
 import edu.princeton.cs.algs4.Insertion;
 import java.util.*;
+
 /* Randomly generates a day's worth of jobs for H households using V van crews
    H and V may be passed through a constructor or a newDay() method.
    [Suggestion: create an array of MovingCompanyCrew objects;
@@ -9,7 +10,6 @@ import java.util.*;
    Prints the assignment and hours worked by the last crew to get off work.
  */
 
-// imports
 
  public class MovingCompanyDispatcher {
     
@@ -23,16 +23,10 @@ import java.util.*;
     
     MovingCompanyCrew[] crews= null;
     
-
     
     double lowerBoundNumber = 0;
     double higherBoundNumber = 0;
     
-    /*
-    public MovingCompanyDispatcher() {
-
-    }
-    */
 
     public void newDay(int C, int H) {
         nCrews = C;
@@ -48,25 +42,21 @@ import java.util.*;
     }
 
     public double getLowerBound() {
-        // lower bound on numnber of hours worked by last crew to get off work
         
         //hours worked for lowest crew
         lowerBoundNumber = 0.0;
-        
-        //lowest working crew member
-        MovingCompanyCrew lowestWorkingCrew = crews[0];
-        
-        
+
         //go through the list of crews...
         for(int a = 0; a < crews.length; a++) {
-        
-            //if theeres a new low one, set it as officla crew.
-            
-            if(crews[a].compareTo(lowestWorkingCrew) < 0) {
-                lowestWorkingCrew = crews[a];
+
+            //set a base case for comparisons
+            if (a == 0) {
+                lowerBoundNumber = crews[a].hoursOfWork();
+
             }
-            
-            if (crews[a].hoursOfWork() < lowerBoundNumber) {
+ 
+            //if theres a new low one, set its hours as the new low
+            if (crews[a].hoursOfWork() < higherBoundNumber) {
                 lowerBoundNumber = crews[a].hoursOfWork();
                 
             }
@@ -77,19 +67,23 @@ import java.util.*;
     }
     
     public double getHigherBound() {
-        // higher  bound on numnber of hours worked by last crew to get off work
         
+        // higher  bound on numnber of hours worked by last crew to get off work
         higherBoundNumber = 0.0;
         
-        for(int a = 0; a < crews.length; a++) {
         
-            if (a == 0) {
-                higherBoundNumber = crews[a].hoursOfWork();
+        //again, just loop through all the crews
+        for(int b = 0; b < crews.length; b++) {
+        
+            //start with a base case
+            if (b == 0) {
+                higherBoundNumber = crews[b].hoursOfWork();
                 
             }
             
-            if (crews[a].hoursOfWork() > higherBoundNumber) {
-                higherBoundNumber = crews[a].hoursOfWork();
+            //if there's a crew with a new high hours, set that as the new high
+            if (crews[b].hoursOfWork() >= higherBoundNumber) {
+                higherBoundNumber = crews[b].hoursOfWork();
                 
             }
             
@@ -99,6 +93,7 @@ import java.util.*;
     }
     
     
+    //this function finds the range (highest hours worked - lowest hours worked) out of the total lowest hours worked.
     public double getExcessHoursAsPercentageOfLowerBound() {
         
         double difference = higherBoundNumber - lowerBoundNumber;
@@ -109,6 +104,8 @@ import java.util.*;
     
     }
 
+    
+    
     public void makeJobs() {
         // generate random jobs
         
@@ -121,6 +118,7 @@ import java.util.*;
         }
 
     }
+   
     
     public void makeCrews() {
     
@@ -131,6 +129,8 @@ import java.util.*;
         }
     
     }
+    
+    
     
     public void assignJobs() {
         // order jobs longest to shortest 
@@ -175,6 +175,7 @@ import java.util.*;
         }
         
         
+        //below handels the case when there are more crews than jobs...
         if (crews.length > jobs.length) {
             for (int a = 0; a < jobs.length; a++) {
                 crews[a].setHours(jobs[a]);
