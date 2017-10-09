@@ -14,11 +14,11 @@ Input                       Runtime 1    Runtime 2    Runtime 3
 4000,   2000            0.038           0.030           0.018
 8000,   4000            0.072           0.072           0.074
 
-As we can see from the results above, doubling the input resultings in the runtime, on average, also doubling. Indeed, if we use the doubling hypothesis, we will find that the ratios for run times converge to 2. This means that, again by the doubling rule, b = 1.
+As we can see from the results above, doubling the input resulting in the runtime, on average, also doubling. Indeed, if we use the doubling hypothesis, we will find that the ratios for run times converge to 2. This means that, again by the doubling rule, b = 1.
 
-Thus, using the results from Runtime 1 show that:
+
+Using the results from Runtime 1, we can see that:
 
 0.072 = a * 8000, making a = 0.9 * 10 ^ -6
 
-Thus, the functions growth rate is f(x) = [0.9 * 10 ^ -6] * x
-
+Thus, the function’s growth rate is f(x) = [0.9 * 10 ^ -6] * x
