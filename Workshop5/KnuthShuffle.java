@@ -10,13 +10,13 @@ public final class KnuthShuffle {
      *
      * @param  a the array to shuffle
      */
-	public static void shuffle(Integer[] a) {
+	public static void shuffle(Object[] a) {
 
         int N = a.length;
         
-        for (int i = 0; i < N; i++) {
-            Integer r = StdRandom.uniform(0,N);
-            Integer temp = a[i];
+        for (int i = 1; i < N; i++) {
+            int r = StdRandom.uniform(0, i+1);
+            Object temp = a[i];
             a[i] = a[r];
             a[r] = temp;
         }
@@ -25,7 +25,7 @@ public final class KnuthShuffle {
 	public static void main(String[] args) {
         
         // Create new array of size N
-        Integer N = 10000;
+        int N = 80000; // Input size; subject to change
         Integer cards[] = new Integer[N];
         
         for (int i = 0; i < N; i++) {
@@ -39,10 +39,9 @@ public final class KnuthShuffle {
             System.out.print(cards[i] + " ");
         }
         
-        // Create stopwatch to log how long the process took
-        Stopwatch stopwatch = new Stopwatch();
-        
         System.out.println(" ");
+        
+        Stopwatch stopwatch = new Stopwatch();
         knuthShuffle.shuffle(cards);
         
         // Calculate and output elapsed time
