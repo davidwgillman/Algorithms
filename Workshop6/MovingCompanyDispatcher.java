@@ -10,6 +10,7 @@
    */
 
 // imports
+<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -17,10 +18,13 @@ import java.util.Random;
 import edu.princeton.cs.algs4.Quick;
 
 
+=======
+>>>>>>> origin/master
 
  public class MovingCompanyDispatcher {
  	private int nCrews = 0;
  	private int nHouseholds = 0;
+<<<<<<< HEAD
  	private Integer[] jobs = null;
  	int counter;
 
@@ -49,10 +53,25 @@ import edu.princeton.cs.algs4.Quick;
  		}
  		sum /= nCrews;
  		return sum; 
+=======
+ 	private double[] jobs = null;
+
+ 	private MovingCompanyCrew[] crews = null;
+
+ 	public MovingCompanyDispatcher()
+
+ 	public newDay(int C, int H) {
+ 	}
+
+ 	public double getLowerBound() {
+ 		// lower bound on numnber of hours worked by last crew to get off work
+ 		return ; 
+>>>>>>> origin/master
  	}
 
  	public void makeJobs() {
  		// generate random jobs
+<<<<<<< HEAD
  		Random rand = new Random();
  		
  		for(int i = 0; i < nHouseholds; i++) {
@@ -85,11 +104,20 @@ import edu.princeton.cs.algs4.Quick;
  		
  		
  		
+=======
+ 	}
+
+ 	public void assignJobs() {
+ 		// order jobs longest to shortest 
+
+ 		// assign each job in order to first available crew 
+>>>>>>> origin/master
  	}
 
  	// this method lets the client figure out how good a job the Dispatcher did
  	// Alternatively, you can let the Dispatcher do its own self-evaluation 
  	// and expose the stats in different method
+<<<<<<< HEAD
  	//number of hours and jobs
  	//excess hours worked compared to lower bound
  	public void getCrews() {
@@ -109,6 +137,13 @@ import edu.princeton.cs.algs4.Quick;
  		Movers.makeJobs();
  		Movers.assignJobs();
  		Movers.getCrews();
+=======
+ 	public MovingCompanyCrew[] getCrews() {
+
+ 	}
+
+ 	public static void main(String[] args) {
+>>>>>>> origin/master
 
  	}
 
