@@ -27,9 +27,11 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
 
 import java.util.NoSuchElementException;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 /**
  *  The {@code BST} class represents an ordered symbol table of generic

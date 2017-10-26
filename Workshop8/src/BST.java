@@ -23,9 +23,11 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
 
 import java.util.NoSuchElementException;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 /**
  *  The {@code BST} class represents an ordered symbol table of generic
@@ -65,15 +67,15 @@ import java.util.NoSuchElementException;
  */
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;             // root of BST
+    
+    private int lastPutCompareCount;
+    private boolean lastPutNew;
 
     private class Node {
         private Key key;           // sorted by key
         private Value val;         // associated data
         private Node left, right;  // left and right subtrees
         private int size;          // number of nodes in subtree
-        
-        private int lastPutCompareCount;
-        private int lastPutNew;
 
         public Node(Key key, Value val, int size) {
             this.key = key;

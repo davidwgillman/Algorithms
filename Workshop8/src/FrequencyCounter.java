@@ -24,7 +24,6 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
 
 /**
  *  The {@code FrequencyCounter} class provides a client for 
@@ -38,6 +37,10 @@ package edu.princeton.cs.algs4;
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
+import edu.princeton.cs.algs4.ST;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+
 public class FrequencyCounter {
 
     // Do not instantiate.
