@@ -72,8 +72,8 @@ public class BST<Key extends Comparable<Key>, Value> {
     private int putCount = 0;
     private boolean madeNewNode = false;
 
-    public int getPutCount() {return putCount};
-    public boolean getNodeBool() {return madeNewNode};
+    public int getPutCount() {return putCount;}
+    public boolean getNodeBool() {return madeNewNode;}
 
 
     private class Node {
