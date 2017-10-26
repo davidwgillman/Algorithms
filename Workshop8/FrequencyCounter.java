@@ -24,7 +24,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+// package edu.princeton.cs.algs4;
 
 /**
  *  The {@code FrequencyCounter} class provides a client for 
@@ -55,10 +55,10 @@ public class FrequencyCounter {
     public static void main(String[] args) {
         int distinct = 0, words = 0;
         int minlen = Integer.parseInt(args[0]);
-        ST<String, Integer> st = new ST<String, Integer>();
+        BST<String, Integer> st = new BST<String, Integer>();
 
         // compute frequency counts
-        while (!StdIn.isEmpty()) {
+        while (distinct < 10000) {
             String key = StdIn.readString();
             if (key.length() < minlen) continue;
             words++;
@@ -82,6 +82,7 @@ public class FrequencyCounter {
         StdOut.println(max + " " + st.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
+        StdOut.println("number of comparisons = " + st.lastPutCompareCount());
     }
 }
 

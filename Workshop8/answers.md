@@ -63,3 +63,11 @@
 * R 3
 * S 0
 * X 7
+
+### 2. done, see FrequencyCounter.java code
+
+### 3.
+* N = 100, lastPutCompareCount = 102
+* N = 1000, lastPutCompareCount = 1166
+* N = 10000, lastPutCompareCount = 20340
+![alt text](https://drive.google.com/file/d/0BwTbXmy-lp8udG5OZzdFdUV5Mkk/view?usp=sharing "Graph")
