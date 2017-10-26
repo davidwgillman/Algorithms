@@ -40,6 +40,8 @@ package edu.princeton.cs.algs4;
  */
 public class FrequencyCounter {
 
+
+
     // Do not instantiate.
     private FrequencyCounter() { }
 
@@ -55,18 +57,19 @@ public class FrequencyCounter {
     public static void main(String[] args) {
         int distinct = 0, words = 0;
         int minlen = Integer.parseInt(args[0]);
-        ST<String, Integer> st = new ST<String, Integer>();
+        //ST<String, Integer> st = new ST<String, Integer>();
+        BST<String, Integer> bst = new BST<String, Integer>();
 
         // compute frequency counts
         while (!StdIn.isEmpty()) {
             String key = StdIn.readString();
             if (key.length() < minlen) continue;
             words++;
-            if (st.contains(key)) {
-                st.put(key, st.get(key) + 1);
+            if (bst.contains(key)) {
+                bst.put(key, bst.get(key) + 1);
             }
             else {
-                st.put(key, 1);
+                bst.put(key, 1);
                 distinct++;
             }
         }
@@ -74,12 +77,12 @@ public class FrequencyCounter {
         // find a key with the highest frequency count
         String max = "";
         st.put(max, 0);
-        for (String word : st.keys()) {
-            if (st.get(word) > st.get(max))
+        for (String word : bst.keys()) {
+            if (bst.get(word) > bst.get(max))
                 max = word;
         }
 
-        StdOut.println(max + " " + st.get(max));
+        StdOut.println(max + " " + bst.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
     }
