@@ -27,7 +27,9 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.NoSuchElementException;
 
@@ -71,6 +73,8 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     private static final boolean RED   = true;
     private static final boolean BLACK = false;
+    private int lastPutCompareCount = 0;
+    private boolean lastPutNew = false;
 
     private Node root;     // root of the BST
 
@@ -187,7 +191,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
             delete(key);
             return;
         }
-
+        lastPutCompareCount = 0;
         root = put(root, key, val);
         root.color = BLACK;
         // assert check();
@@ -195,11 +199,20 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     // insert the key-value pair in the subtree rooted at h
     private Node put(Node h, Key key, Value val) { 
-        if (h == null) return new Node(key, val, RED, 1);
-
+        lastPutNew = false;
+        if (h == null) {
+            lastPutNew = true;
+            return new Node(key, val, RED, 1);
+        }
         int cmp = key.compareTo(h.key);
-        if      (cmp < 0) h.left  = put(h.left,  key, val); 
-        else if (cmp > 0) h.right = put(h.right, key, val); 
+        if      (cmp < 0) {
+            h.left  = put(h.left,  key, val); 
+            lastPutCompareCount++;
+        }
+        else if (cmp > 0) {
+            h.right = put(h.right, key, val);
+            lastPutCompareCount++;
+        } 
         else              h.val   = val;
 
         // fix-up any right-leaning links
@@ -209,6 +222,14 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         h.size = size(h.left) + size(h.right) + 1;
 
         return h;
+    }
+
+    public int getLastPutCompareCount(){
+        return lastPutCompareCount;
+    }
+
+    public boolean getLastPutNew(){
+        return lastPutNew;
     }
 
    /***************************************************************************

@@ -22,8 +22,10 @@
  *  X 7
  *
  ******************************************************************************/
-
-package edu.princeton.cs.algs4;
+//LKASJLKJAKJKSJA
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.NoSuchElementException;
 
@@ -65,6 +67,8 @@ import java.util.NoSuchElementException;
  */
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;             // root of BST
+    private int lastPutCompareCount = 0;
+    private boolean lastPutNew = false;
 
     private class Node {
         private Key key;           // sorted by key
@@ -157,19 +161,42 @@ public class BST<Key extends Comparable<Key>, Value> {
             delete(key);
             return;
         }
+        lastPutCompareCount = 0;
         root = put(root, key, val);
+        
         assert check();
     }
 
     private Node put(Node x, Key key, Value val) {
-        if (x == null) return new Node(key, val, 1);
+        lastPutNew = false;
+        if (x == null) {
+            lastPutNew = true;
+            return new Node(key, val, 1);  
+        }
         int cmp = key.compareTo(x.key);
-        if      (cmp < 0) x.left  = put(x.left,  key, val);
-        else if (cmp > 0) x.right = put(x.right, key, val);
+        
+        if      (cmp < 0) {
+            x.left  = put(x.left,  key, val);
+            lastPutCompareCount++;
+        }
+        else if (cmp > 0) {
+            x.right = put(x.right, key, val);
+            lastPutCompareCount++;
+        }
         else              x.val   = val;
         x.size = 1 + size(x.left) + size(x.right);
+        
         return x;
     }
+
+    public int getLastPutCompareCount(){
+        return lastPutCompareCount;
+    }
+
+    public boolean getLastPutNew(){
+        return lastPutNew;
+    }
+
 
 
     /**
@@ -530,6 +557,8 @@ public class BST<Key extends Comparable<Key>, Value> {
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
             st.put(key, i);
+            System.out.println("Compare count: " + st.getLastPutCompareCount());
+            System.out.println("Last key new?: " + st.getLastPutNew());
         }
 
         for (String s : st.levelOrder())
@@ -539,6 +568,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 
         for (String s : st.keys())
             StdOut.println(s + " " + st.get(s));
+        
     }
 }
 
