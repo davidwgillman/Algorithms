@@ -24,7 +24,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+ 
 
 /**
  *  The {@code FrequencyCounter} class provides a client for 
@@ -42,6 +42,7 @@ public class FrequencyCounter {
 
     // Do not instantiate.
     private FrequencyCounter() { }
+    static int comparisons;
 
     /**
      * Reads in a command-line integer and sequence of words from
@@ -55,7 +56,8 @@ public class FrequencyCounter {
     public static void main(String[] args) {
         int distinct = 0, words = 0;
         int minlen = Integer.parseInt(args[0]);
-        ST<String, Integer> st = new ST<String, Integer>();
+	// implementing BST class 
+        BST<String, Integer> st = new BST<String, Integer>();
 
         // compute frequency counts
         while (!StdIn.isEmpty()) {
@@ -68,6 +70,17 @@ public class FrequencyCounter {
             else {
                 st.put(key, 1);
                 distinct++;
+            	comparisons = st.getlastPutCompareCount();
+		// record comparisons for first N distinct words
+		if(distinct == 100){
+			System.out.println("total comparisons over 100 distinct words: "+comparisons);
+		}
+		if(distinct == 1000){
+			System.out.println("total comparisons over 1000 distinct words: "+comparisons);
+		}
+		if(distinct == 10000) {
+			System.out.println("total comparisons over 10000 distinct words: "+comparisons);
+		}
             }
         }
 
