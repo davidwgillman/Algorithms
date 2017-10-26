@@ -66,11 +66,21 @@ import java.util.NoSuchElementException;
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;             // root of BST
 
+
+
+    // for algs workshop
+    private int putCount = 0;
+    private boolean madeNewNode = false;
+
+    private getPutCount
+
+
     private class Node {
         private Key key;           // sorted by key
         private Value val;         // associated data
         private Node left, right;  // left and right subtrees
         private int size;          // number of nodes in subtree
+
 
         public Node(Key key, Value val, int size) {
             this.key = key;
@@ -152,6 +162,9 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
+    	putCount = 0;
+    	madeNewNode = false;
+
         if (key == null) throw new IllegalArgumentException("calls put() with a null key");
         if (val == null) {
             delete(key);
@@ -159,11 +172,18 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
         root = put(root, key, val);
         assert check();
+
+        System.out.printf("putCount == %d\n", putCount);
+        System.out.printf("madeNewNode? == %b\n", madeNewNode);
     }
 
     private Node put(Node x, Key key, Value val) {
-        if (x == null) return new Node(key, val, 1);
+        if (x == null) {
+        	return new Node(key, val, 1);
+        	madeNewNode = true;
+        }
         int cmp = key.compareTo(x.key);
+        putCount++;
         if      (cmp < 0) x.left  = put(x.left,  key, val);
         else if (cmp > 0) x.right = put(x.right, key, val);
         else              x.val   = val;
