@@ -27,7 +27,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+ 
 
 import java.util.NoSuchElementException;
 
@@ -72,7 +72,9 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     private static final boolean RED   = true;
     private static final boolean BLACK = false;
 
-    private Node root;     // root of the BST
+    private Node root;// root of the BST
+    public int lastPutCompareCount;
+    public int lastPutNew;
 
     // BST helper node data type
     private class Node {
@@ -110,7 +112,22 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         if (x == null) return 0;
         return x.size;
     } 
-
+    
+    public int getLastPutCompareCount(){
+        return lastPutCompareCount;
+    }
+    
+    public void setLastPutCompareCount(int inp){
+        lastPutCompareCount = inp;
+    }
+    
+    public int getLastPutNew(){
+        return lastPutNew;
+    }
+    
+    public void setLastPutNew(int inp){
+        lastPutNew = inp;
+    }
 
     /**
      * Returns the number of key-value pairs in this symbol table.
@@ -182,6 +199,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
+        setLastPutCompareCount(0); setLastPutNew(0);
         if (key == null) throw new IllegalArgumentException("first argument to put() is null");
         if (val == null) {
             delete(key);
@@ -195,12 +213,13 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     // insert the key-value pair in the subtree rooted at h
     private Node put(Node h, Key key, Value val) { 
+        setLastPutCompareCount(lastPutCompareCount += 1); 
         if (h == null) return new Node(key, val, RED, 1);
 
         int cmp = key.compareTo(h.key);
         if      (cmp < 0) h.left  = put(h.left,  key, val); 
         else if (cmp > 0) h.right = put(h.right, key, val); 
-        else              h.val   = val;
+        else             {h.val   = val; setLastPutNew(1);}
 
         // fix-up any right-leaning links
         if (isRed(h.right) && !isRed(h.left))      h = rotateLeft(h);

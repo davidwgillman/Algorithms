@@ -23,7 +23,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+ 
 
 import java.util.NoSuchElementException;
 
@@ -64,7 +64,9 @@ import java.util.NoSuchElementException;
  *  @author Kevin Wayne
  */
 public class BST<Key extends Comparable<Key>, Value> {
-    private Node root;             // root of BST
+    private Node root;// root of BST
+    public int lastPutCompareCount;
+    public int lastPutNew;
 
     private class Node {
         private Key key;           // sorted by key
@@ -84,7 +86,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      */
     public BST() {
     }
-
+    
     /**
      * Returns true if this symbol table is empty.
      * @return {@code true} if this symbol table is empty; {@code false} otherwise
@@ -92,7 +94,23 @@ public class BST<Key extends Comparable<Key>, Value> {
     public boolean isEmpty() {
         return size() == 0;
     }
-
+    
+    public int getLastPutCompareCount(){
+        return lastPutCompareCount;
+    }
+    
+    public void setLastPutCompareCount(int inp){
+        lastPutCompareCount = inp;
+    }
+    
+    public int getLastPutNew(){
+        return lastPutNew;
+    }
+    
+    public void setLastPutNew(int inp){
+        lastPutNew = inp;
+    }
+    
     /**
      * Returns the number of key-value pairs in this symbol table.
      * @return the number of key-value pairs in this symbol table
@@ -152,6 +170,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
+        setLastPutCompareCount(0); setLastPutNew(0);
         if (key == null) throw new IllegalArgumentException("calls put() with a null key");
         if (val == null) {
             delete(key);
@@ -162,11 +181,12 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     private Node put(Node x, Key key, Value val) {
+        setLastPutCompareCount(lastPutCompareCount += 1); 
         if (x == null) return new Node(key, val, 1);
         int cmp = key.compareTo(x.key);
         if      (cmp < 0) x.left  = put(x.left,  key, val);
         else if (cmp > 0) x.right = put(x.right, key, val);
-        else              x.val   = val;
+        else             {x.val   = val; setLastPutNew(1);}
         x.size = 1 + size(x.left) + size(x.right);
         return x;
     }
@@ -532,8 +552,12 @@ public class BST<Key extends Comparable<Key>, Value> {
             st.put(key, i);
         }
 
-        for (String s : st.levelOrder())
+        for (String s : st.levelOrder()){
             StdOut.println(s + " " + st.get(s));
+            StdOut.println("Put calls = " + st.lastPutCompareCount);
+            if(st.lastPutNew == 0) StdOut.println("you inserted a new key");
+            else StdOut.println("you added a new key");
+        }
 
         StdOut.println();
 

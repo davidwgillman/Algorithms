@@ -24,7 +24,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+ 
 
 /**
  *  The {@code FrequencyCounter} class provides a client for 
@@ -53,9 +53,9 @@ public class FrequencyCounter {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        int distinct = 0, words = 0;
+        int distinct = 0, words = 0, putCount = 0;
         int minlen = Integer.parseInt(args[0]);
-        ST<String, Integer> st = new ST<String, Integer>();
+        BST<String, Integer> st = new BST<String, Integer>();
 
         // compute frequency counts
         while (!StdIn.isEmpty()) {
@@ -68,6 +68,7 @@ public class FrequencyCounter {
             else {
                 st.put(key, 1);
                 distinct++;
+                putCount += st.getLastPutCompareCount();
             }
         }
 
