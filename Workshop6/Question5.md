@@ -1,0 +1,3 @@
+#Discuss your choice of method for ordering the jobs. What is its rate of growth? (Use any argument.) Were there any other considerations for choosing it?
+
+I used the Insertion sorthing algorithm provided by princeton as it was simple to implement (didn't have to write my own code). I chose Insertion sorting because it is straightforward and realatively lightweight. Plus, we've already done previous workshops which analyze Insertion sort. From previous assignments with Insertion sorting, I've found that the rate of growth is ~N^2
