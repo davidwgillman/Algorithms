@@ -71,4 +71,4 @@
 * N = 1000, lastPutCompareCount = 1166
 * N = 10000, lastPutCompareCount = 20340
 * Graph 
-* ![alt text](https://drive.google.com/drive/folders/0BwTbXmy-lp8uWVNWTkQwb3FVRjg "Graph")
+* ![alt text](workshop8_question3.jpg "Graph")
