@@ -2,11 +2,11 @@
  *  Compilation:  javac FrequencyCounter.java
  *  Execution:    java FrequencyCounter L < input.txt
  *  Dependencies: ST.java StdIn.java StdOut.java
- *  Data files:   https://algs4.cs.princeton.edu/31elementary/tnyTale.txt
- *                https://algs4.cs.princeton.edu/31elementary/tale.txt
- *                https://algs4.cs.princeton.edu/31elementary/leipzig100K.txt
- *                https://algs4.cs.princeton.edu/31elementary/leipzig300K.txt
- *                https://algs4.cs.princeton.edu/31elementary/leipzig1M.txt
+ *  Data files:   http://algs4.cs.princeton.edu/31elementary/tnyTale.txt
+ *                http://algs4.cs.princeton.edu/31elementary/tale.txt
+ *                http://algs4.cs.princeton.edu/31elementary/leipzig100K.txt
+ *                http://algs4.cs.princeton.edu/31elementary/leipzig300K.txt
+ *                http://algs4.cs.princeton.edu/31elementary/leipzig1M.txt
  *
  *  Read in a list of words from standard input and print out
  *  the most frequently occurring word that has length greater than
@@ -24,7 +24,10 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Queue;
 
 /**
  *  The {@code FrequencyCounter} class provides a client for 
@@ -32,7 +35,7 @@ package edu.princeton.cs.algs4;
  *  a given length) that occurs most frequently. It is useful as
  *  a test client for various symbol table implementations.
  *  <p>
- *  For additional documentation, see <a href="https://algs4.cs.princeton.edu/31elementary">Section 3.1</a> of
+ *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/31elementary">Section 3.1</a> of
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *
  *  @author Robert Sedgewick
@@ -55,15 +58,18 @@ public class FrequencyCounter {
     public static void main(String[] args) {
         int distinct = 0, words = 0;
         int minlen = Integer.parseInt(args[0]);
-        ST<String, Integer> st = new ST<String, Integer>();
+        int compNum = 0;
+        BST<String, Integer> st = new BST<String, Integer>();
 
         // compute frequency counts
         while (!StdIn.isEmpty()) {
             String key = StdIn.readString();
+            compNum = 0;
             if (key.length() < minlen) continue;
             words++;
             if (st.contains(key)) {
                 st.put(key, st.get(key) + 1);
+                compNum += st.getCompareCount();
             }
             else {
                 st.put(key, 1);
@@ -82,6 +88,7 @@ public class FrequencyCounter {
         StdOut.println(max + " " + st.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
+        StdOut.println("Average number of comparisons: " + compNum / words);
     }
 }
 

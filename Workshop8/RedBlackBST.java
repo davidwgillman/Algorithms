@@ -2,7 +2,7 @@
  *  Compilation:  javac RedBlackBST.java
  *  Execution:    java RedBlackBST < input.txt
  *  Dependencies: StdIn.java StdOut.java  
- *  Data files:   https://algs4.cs.princeton.edu/33balanced/tinyST.txt  
+ *  Data files:   http://algs4.cs.princeton.edu/33balanced/tinyST.txt  
  *    
  *  A symbol table implemented using a left-leaning red-black BST.
  *  This is the 2-3 version.
@@ -27,8 +27,11 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
 
+import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Queue;
 import java.util.NoSuchElementException;
 
 /**
@@ -57,7 +60,7 @@ import java.util.NoSuchElementException;
  *  The <em>size</em>, and <em>is-empty</em> operations take constant time.
  *  Construction takes constant time.
  *  <p>
- *  For additional documentation, see <a href="https://algs4.cs.princeton.edu/33balanced">Section 3.3</a> of
+ *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/33balanced">Section 3.3</a> of
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *  For other implementations of the same API, see {@link ST}, {@link BinarySearchST},
  *  {@link SequentialSearchST}, {@link BST},
@@ -433,7 +436,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      * @throws NoSuchElementException if the symbol table is empty
      */
     public Key min() {
-        if (isEmpty()) throw new NoSuchElementException("calls min() with empty symbol table");
+        if (isEmpty()) throw new NoSuchElementException("called min() with empty symbol table");
         return min(root).key;
     } 
 
@@ -450,7 +453,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      * @throws NoSuchElementException if the symbol table is empty
      */
     public Key max() {
-        if (isEmpty()) throw new NoSuchElementException("calls max() with empty symbol table");
+        if (isEmpty()) throw new NoSuchElementException("called max() with empty symbol table");
         return max(root).key;
     } 
 
@@ -471,7 +474,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      */
     public Key floor(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to floor() is null");
-        if (isEmpty()) throw new NoSuchElementException("calls floor() with empty symbol table");
+        if (isEmpty()) throw new NoSuchElementException("called floor() with empty symbol table");
         Node x = floor(root, key);
         if (x == null) return null;
         else           return x.key;
@@ -497,7 +500,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      */
     public Key ceiling(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to ceiling() is null");
-        if (isEmpty()) throw new NoSuchElementException("calls ceiling() with empty symbol table");
+        if (isEmpty()) throw new NoSuchElementException("called ceiling() with empty symbol table");
         Node x = ceiling(root, key);
         if (x == null) return null;
         else           return x.key;  
@@ -523,7 +526,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      */
     public Key select(int k) {
         if (k < 0 || k >= size()) {
-            throw new IllegalArgumentException("argument to select() is invalid: " + k);
+            throw new IllegalArgumentException("called select() with invalid argument: " + k);
         }
         Node x = select(root, k);
         return x.key;
