@@ -129,4 +129,8 @@
 * N = 10000, lastPutCompareCount = 20339
 * The graph is essentially the same.
 
-### 5. 
+### 5. I have a feeling something may be wrong, but it looks as if both the rate of growths are similar. The ratios between T(2N)/T(N) are not converging to a usable ratio, and it looks like it's growing exponentially, so I don't think alogN works either.
+
+### 6. 
+#### a) I think there would have been less compares for both the BST and the RedBlackBST because there is more of a chance that, with random output, N distinct words would come up in the first N words.
+#### b) From my results, it looks like the depths were similar—however, taking into account what I know about BST and RedBlackTrees, I think the RedBlackTrees would probably have a shorter depth since they extend horizontally.
