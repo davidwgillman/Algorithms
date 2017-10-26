@@ -77,3 +77,9 @@ compares: 1.6096
 government 17
 distinct = 1684
 words    = 2123
+
+5. The rate of growth appears to be about log n.
+
+6. 1. Completely random input would make duplicates much less common.
+
+   2. The RedBlackTree was less deep which is why it did not take as many comparisons on average.
