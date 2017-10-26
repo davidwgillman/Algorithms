@@ -23,7 +23,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+// package edu.princeton.cs.algs4;
 
 import java.util.NoSuchElementException;
 
@@ -71,11 +71,15 @@ public class BST<Key extends Comparable<Key>, Value> {
         private Value val;         // associated data
         private Node left, right;  // left and right subtrees
         private int size;          // number of nodes in subtree
+        private int lastPutCompareCount; 
+        private int lastPutNew;
 
-        public Node(Key key, Value val, int size) {
+        public Node(Key key, Value val, int size, int lastPutCompareCount, int lastPutNew) {
             this.key = key;
             this.val = val;
             this.size = size;
+            this.lastPutCompareCount = lastPutCompareCount;
+            this.lastPutNew = lastPutNew;
         }
     }
 
@@ -105,6 +109,34 @@ public class BST<Key extends Comparable<Key>, Value> {
     private int size(Node x) {
         if (x == null) return 0;
         else return x.size;
+    }
+
+    /**
+     * Returns the depth of this symbol table.
+     * @return the depth of this symbol table
+     */
+    public int lastPutCompareCount() {
+        return lastPutCompareCount(root);
+    }
+
+    // return number of key-value pairs in BST rooted at x
+    private int lastPutCompareCount(Node x) {
+        if (x == null) return 0;
+        else return x.lastPutCompareCount;
+    }
+
+    /**
+     * Returns the depth of this symbol table.
+     * @return the depth of this symbol table
+     */
+    public int lastPutNew() {
+        return lastPutNew(root);
+    }
+
+    // return number of key-value pairs in BST rooted at x
+    private int lastPutNew(Node x) {
+        if (x == null) return 0;
+        else return x.lastPutNew;
     }
 
     /**
@@ -162,11 +194,15 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     private Node put(Node x, Key key, Value val) {
-        if (x == null) return new Node(key, val, 1);
+        if (x == null) return new Node(key, val, 1, 0, 0);
         int cmp = key.compareTo(x.key);
+        x.lastPutCompareCount++;
         if      (cmp < 0) x.left  = put(x.left,  key, val);
         else if (cmp > 0) x.right = put(x.right, key, val);
         else              x.val   = val;
+        if (x.size < 1 + size(x.left) + size(x.right)) {
+            x.lastPutNew++;
+        }
         x.size = 1 + size(x.left) + size(x.right);
         return x;
     }
@@ -527,9 +563,11 @@ public class BST<Key extends Comparable<Key>, Value> {
      */
     public static void main(String[] args) { 
         BST<String, Integer> st = new BST<String, Integer>();
-        for (int i = 0; !StdIn.isEmpty(); i++) {
+        for (int i = 0; i<13; i++) {
             String key = StdIn.readString();
             st.put(key, i);
+            StdOut.println("Tree lastPutCompareCount: " + st.lastPutCompareCount());
+            StdOut.println("Tree lastPutNew: " + st.lastPutNew());
         }
 
         for (String s : st.levelOrder())
