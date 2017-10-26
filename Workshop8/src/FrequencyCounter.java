@@ -59,7 +59,7 @@ public class FrequencyCounter {
     	final int N=10000;
         int distinct = 0, words = 0;
         int minlen = Integer.parseInt(args[0]);
-        BST<String, Integer> st = new BST<String, Integer>();
+        RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
         
         long comparisons=0;
         // compute frequency counts

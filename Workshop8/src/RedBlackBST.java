@@ -73,6 +73,16 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     private static final boolean RED   = true;
     private static final boolean BLACK = false;
+    
+    private int lastPutCompareCount;
+    private boolean lastPutNew;
+    
+    public int getCompares(){
+    	return lastPutCompareCount;
+    }
+    public boolean wasNew(){
+    	return lastPutNew;
+    }
 
     private Node root;     // root of the BST
 
@@ -184,6 +194,8 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
+    	lastPutCompareCount=0;
+    	lastPutNew=false;
         if (key == null) throw new IllegalArgumentException("first argument to put() is null");
         if (val == null) {
             delete(key);
@@ -197,9 +209,13 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     // insert the key-value pair in the subtree rooted at h
     private Node put(Node h, Key key, Value val) { 
-        if (h == null) return new Node(key, val, RED, 1);
+        if (h == null){
+        	lastPutNew=true;
+        	return new Node(key, val, RED, 1);
+        }
 
         int cmp = key.compareTo(h.key);
+        lastPutCompareCount++;
         if      (cmp < 0) h.left  = put(h.left,  key, val); 
         else if (cmp > 0) h.right = put(h.right, key, val); 
         else              h.val   = val;

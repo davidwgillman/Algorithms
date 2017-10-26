@@ -52,3 +52,28 @@ compares: 2.1773
 government 17
 distinct = 1684
 words    = 2123
+
+4. Number of Comparisons Using RedBlackBST
+Input:
+8 N=100 leipzig100k.txt
+Output:
+compares: 0.81
+46-second 1
+distinct = 23
+words    = 23
+
+Input:
+8 N=1000 leipzig100K.txt
+Output:
+compares: 1.381
+executive 2
+distinct = 212
+words    = 216
+
+Input:
+8 N=10000 leipzig100K.txt
+Output:
+compares: 1.6096
+government 17
+distinct = 1684
+words    = 2123
