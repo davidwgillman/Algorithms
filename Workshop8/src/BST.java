@@ -88,8 +88,6 @@ public class BST<Key extends Comparable<Key>, Value> {
             this.key = key;
             this.val = val;
             this.size = size;
-            lastPutCompareCount=0;
-            lastPutNew=false;
         }
     }
 
@@ -551,18 +549,19 @@ public class BST<Key extends Comparable<Key>, Value> {
         for (int i = 0;i<tinyST.length; i++) {
             String key = tinyST[i];
             st.put(key, i);
+            System.out.println(key+": count="+st.getCompares()+" new="+st.wasNew());
         }
 
-        for (String s : st.levelOrder())
-            System.out.println(s + " " + st.get(s));
+        /*for (String s : st.levelOrder())
+            System.out.println(s + " " + st.get(s));*/
 
         System.out.println();
 
         for (String s : st.keys())
             System.out.println(s + " " + st.get(s));
-        System.out.println();
-        System.out.println("lastPutCompareCount = "+st.getCompares());
-        System.out.println("lastPutNew = "+st.wasNew());
+        //System.out.println();
+        //System.out.println("lastPutCompareCount = "+st.getCompares());
+        //System.out.println("lastPutNew = "+st.wasNew());
     }
 }
 
