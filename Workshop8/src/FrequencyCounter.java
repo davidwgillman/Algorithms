@@ -56,12 +56,14 @@ public class FrequencyCounter {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
+    	final int N=10000;
         int distinct = 0, words = 0;
         int minlen = Integer.parseInt(args[0]);
-        ST<String, Integer> st = new ST<String, Integer>();
-
+        BST<String, Integer> st = new BST<String, Integer>();
+        
+        long comparisons=0;
         // compute frequency counts
-        while (!StdIn.isEmpty()) {
+        for (int i=0;i<N;i++) {
             String key = StdIn.readString();
             if (key.length() < minlen) continue;
             words++;
@@ -72,6 +74,8 @@ public class FrequencyCounter {
                 st.put(key, 1);
                 distinct++;
             }
+            if(st.wasNew())
+            	comparisons+=st.getCompares();
         }
 
         // find a key with the highest frequency count
@@ -81,7 +85,8 @@ public class FrequencyCounter {
             if (st.get(word) > st.get(max))
                 max = word;
         }
-
+        double avgCompares=comparisons*1.0/N;
+        StdOut.println("compares: "+avgCompares);
         StdOut.println(max + " " + st.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
