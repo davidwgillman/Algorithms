@@ -9,9 +9,11 @@ From graph 1.2, it looks like both BST and the RedBlackBST both grow at a rate o
 Because the trend is linear for both BST and the RedBlackBST in log scale, it means that the rate of growth is alogN. However, the a constant for the RedBlackBST is less than that for the BST because the slope is less steep.
 
 
-#Reflection on the Results
+##Reflection on the Results
 
-_**The words in the file are not completely random. (They're random English sentences.)** _How would the results have been different on random input?_
+**The words in the file are not completely random. (They're random English sentences.)** _How would the results have been different on random input?_
+
+Answer to that question
 
 _What do the results say about the depths of the trees that were created - the BST vs. the depth of the RedBlackTree_
 
