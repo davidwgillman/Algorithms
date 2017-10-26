@@ -1,8 +1,8 @@
-###### Algorithms Workshop 8
-##### Caitlyn Ralph
-##### Oct. 26, 2017
+# Algorithms Workshop 8
+## Caitlyn Ralph
+## Oct. 26, 2017
 
-####1. 
+### 1. 
 S
 Tree lastPutCompareCount: 0
 Tree lastPutNew: 0
