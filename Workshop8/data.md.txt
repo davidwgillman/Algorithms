@@ -1,0 +1,19 @@
+Binary Search Tree:
+N Keys	| Put Operations (AVG)
+100	| 8.67
+1000	| 14.22
+10000	| 25.00
+
+Red-Black Tree:
+N Keys	| Put-Operations
+100	| 7.3
+1000	| 11.20
+10000	| 15.72
+
+Part 1 looks more linear than logarithmic, although i am really not sure.  going with linear, aN^b, b = 1.  thus, a(10000) = 15.72.  thus our equation becomes 0.00015N.  The equation grows too fast to be logarithimic, but the factor would be ~ 3.1log(N).
+
+For part 2,As the number of put operations increases linearly with a 10-fold increase in the number of keys (not distinct), the runtime is logarithmic, following the equation alog(N). alog(1000) == 15.72.  we know log(1000) == 3, thus a = 5.24.  This is slightly below the theoretical value we want of 2.78. 2.78 = 2*1.39, where 1.39 is an approximate conversion factor between lg(n) and ln(n).
+
+6. 
+a) I would suspect that the average insertion time would have been more smooth, as well as the factor 'a' being smaller, and the first tree having a more logarithmic operation count.
+b) The R-B tree has a much smaller depth than that of the BST.  this is because at most the lowest leaf will be 2*lg(n) nodes away from the root.
