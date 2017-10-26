@@ -27,7 +27,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+// package edu.princeton.cs.algs4;
 
 import java.util.NoSuchElementException;
 
@@ -81,12 +81,16 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         private Node left, right;  // links to left and right subtrees
         private boolean color;     // color of parent link
         private int size;          // subtree count
+        private int lastPutCompareCount; 
+        private int lastPutNew;
 
-        public Node(Key key, Value val, boolean color, int size) {
+        public Node(Key key, Value val, boolean color, int size, int lastPutCompareCount, int lastPutNew) {
             this.key = key;
             this.val = val;
             this.color = color;
             this.size = size;
+            this.lastPutCompareCount = lastPutCompareCount;
+            this.lastPutNew = lastPutNew;
         }
     }
 
@@ -118,6 +122,36 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      */
     public int size() {
         return size(root);
+    }
+
+    // number of node in subtree rooted at x; 0 if x is null
+    private int lastPutCompareCount(Node x) {
+        if (x == null) return 0;
+        return x.lastPutCompareCount;
+    } 
+
+
+    /**
+     * Returns the number of key-value pairs in this symbol table.
+     * @return the number of key-value pairs in this symbol table
+     */
+    public int lastPutCompareCount() {
+        return lastPutCompareCount(root);
+    }
+
+    // number of node in subtree rooted at x; 0 if x is null
+    private int lastPutNew(Node x) {
+        if (x == null) return 0;
+        return x.lastPutNew;
+    } 
+
+
+    /**
+     * Returns the number of key-value pairs in this symbol table.
+     * @return the number of key-value pairs in this symbol table
+     */
+    public int lastPutNew() {
+        return lastPutNew(root);
     }
 
    /**
@@ -195,9 +229,10 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     // insert the key-value pair in the subtree rooted at h
     private Node put(Node h, Key key, Value val) { 
-        if (h == null) return new Node(key, val, RED, 1);
+        if (h == null) return new Node(key, val, RED, 1, 0, 0);
 
         int cmp = key.compareTo(h.key);
+        h.lastPutCompareCount++;
         if      (cmp < 0) h.left  = put(h.left,  key, val); 
         else if (cmp > 0) h.right = put(h.right, key, val); 
         else              h.val   = val;
@@ -206,6 +241,9 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         if (isRed(h.right) && !isRed(h.left))      h = rotateLeft(h);
         if (isRed(h.left)  &&  isRed(h.left.left)) h = rotateRight(h);
         if (isRed(h.left)  &&  isRed(h.right))     flipColors(h);
+        if (h.size < 1 + size(h.left) + size(h.right)) {
+            h.lastPutNew++;
+        }
         h.size = size(h.left) + size(h.right) + 1;
 
         return h;
@@ -708,9 +746,11 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      */
     public static void main(String[] args) { 
         RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
-        for (int i = 0; !StdIn.isEmpty(); i++) {
+        for (int i = 0; i < 13; i++) {
             String key = StdIn.readString();
             st.put(key, i);
+            StdOut.println("Tree lastPutCompareCount: " + st.lastPutCompareCount());
+            StdOut.println("Tree lastPutNew: " + st.lastPutNew());
         }
         for (String s : st.keys())
             StdOut.println(s + " " + st.get(s));

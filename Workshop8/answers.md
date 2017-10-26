@@ -71,4 +71,62 @@
 * N = 1000, lastPutCompareCount = 1166
 * N = 10000, lastPutCompareCount = 20340
 * Graph 
-* ![alt text](workshop8_question3.jpg "Graph")
+![alt text](workshop8_question3.jpg "Graph")
+
+### 4.
+* S
+* Tree lastPutCompareCount: 0
+* Tree lastPutNew: 0
+* E
+* Tree lastPutCompareCount: 1
+* Tree lastPutNew: 1
+* A
+* Tree lastPutCompareCount: 1
+* Tree lastPutNew: 2
+* R
+* Tree lastPutCompareCount: 2
+* Tree lastPutNew: 3
+* C
+* Tree lastPutCompareCount: 3
+* Tree lastPutNew: 4
+* H
+* Tree lastPutCompareCount: 1
+* Tree lastPutNew: 3
+* E
+* Tree lastPutCompareCount: 2
+* Tree lastPutNew: 3
+* X
+* Tree lastPutCompareCount: 3
+* Tree lastPutNew: 4
+* A
+* Tree lastPutCompareCount: 4
+* Tree lastPutNew: 4
+* M
+* Tree lastPutCompareCount: 5
+* Tree lastPutNew: 5
+* P
+* Tree lastPutCompareCount: 1
+* Tree lastPutNew: 4
+* L
+* Tree lastPutCompareCount: 2
+* Tree lastPutNew: 5
+* E
+* Tree lastPutCompareCount: 3
+* Tree lastPutNew: 5
+* A 8
+* C 4
+* E 12
+* H 5
+* L 11
+* M 9
+* P 10
+* R 3
+* S 0
+* X 7
+
+* N = 100, lastPutCompareCount = 101
+* N = 1000, lastPutCompareCount = 1165
+* N = 10000, lastPutCompareCount = 20339
+* The graph is essentially the same.
+
+### 5. 
