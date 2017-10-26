@@ -70,6 +70,13 @@ public class BST<Key extends Comparable<Key>, Value> {
     
     private int lastPutCompareCount;
     private boolean lastPutNew;
+    
+    public int getCompares(){
+    	return lastPutCompareCount;
+    }
+    public boolean wasNew(){
+    	return lastPutNew;
+    }
 
     private class Node {
         private Key key;           // sorted by key
@@ -182,13 +189,6 @@ public class BST<Key extends Comparable<Key>, Value> {
         else              x.val   = val;
         x.size = 1 + size(x.left) + size(x.right);
         return x;
-    }
-    
-    public int getCompares(){
-    	return lastPutCompareCount;
-    }
-    public boolean wasNew(){
-    	return lastPutNew;
     }
 
 
@@ -547,18 +547,22 @@ public class BST<Key extends Comparable<Key>, Value> {
      */
     public static void main(String[] args) { 
         BST<String, Integer> st = new BST<String, Integer>();
-        for (int i = 0; !StdIn.isEmpty(); i++) {
-            String key = StdIn.readString();
+        String[] tinyST={"S", "E", "A", "R", "C", "H", "E", "X", "A", "M", "P", "L", "E"};
+        for (int i = 0;i<tinyST.length; i++) {
+            String key = tinyST[i];
             st.put(key, i);
         }
 
         for (String s : st.levelOrder())
-            StdOut.println(s + " " + st.get(s));
+            System.out.println(s + " " + st.get(s));
 
-        StdOut.println();
+        System.out.println();
 
         for (String s : st.keys())
-            StdOut.println(s + " " + st.get(s));
+            System.out.println(s + " " + st.get(s));
+        System.out.println();
+        System.out.println("lastPutCompareCount = "+st.getCompares());
+        System.out.println("lastPutNew = "+st.wasNew());
     }
 }
 
