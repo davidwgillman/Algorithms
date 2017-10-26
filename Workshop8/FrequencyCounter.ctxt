@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=FrequencyCounter
+comment0.text=\n\ \ The\ {@code\ FrequencyCounter}\ class\ provides\ a\ client\ for\ \n\ \ reading\ in\ a\ sequence\ of\ words\ and\ printing\ a\ word\ (exceeding\n\ \ a\ given\ length)\ that\ occurs\ most\ frequently.\ It\ is\ useful\ as\n\ \ a\ test\ client\ for\ various\ symbol\ table\ implementations.\n\ \ <p>\n\ \ For\ additional\ documentation,\ see\ <a\ href\="https\://algs4.cs.princeton.edu/31elementary">Section\ 3.1</a>\ of\n\ \ <i>Algorithms,\ 4th\ Edition</i>\ by\ Robert\ Sedgewick\ and\ Kevin\ Wayne.\n\n\ \ @author\ Robert\ Sedgewick\n\ \ @author\ Kevin\ Wayne\n
+comment1.params=
+comment1.target=FrequencyCounter()
+comment2.params=args
+comment2.target=void\ main(java.lang.String[])
+comment2.text=\n\ Reads\ in\ a\ command-line\ integer\ and\ sequence\ of\ words\ from\n\ standard\ input\ and\ prints\ out\ a\ word\ (whose\ length\ exceeds\n\ the\ threshold)\ that\ occurs\ most\ frequently\ to\ standard\ output.\n\ It\ also\ prints\ out\ the\ number\ of\ words\ whose\ length\ exceeds\n\ the\ threshold\ and\ the\ number\ of\ distinct\ such\ words.\n\n\ @param\ args\ the\ command-line\ arguments\n
+numComments=3
