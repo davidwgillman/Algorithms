@@ -24,7 +24,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+import edu.princeton.cs.algs4.*;
 
 /**
  *  The {@code FrequencyCounter} class provides a client for 
@@ -55,7 +55,9 @@ public class FrequencyCounter {
     public static void main(String[] args) {
         int distinct = 0, words = 0;
         int minlen = Integer.parseInt(args[0]);
-        ST<String, Integer> st = new ST<String, Integer>();
+        int numDistinct = Integer.parseInt(args[1]);
+        int acc = 0;
+        BST<String, Integer> st = new BST<String, Integer>();
 
         // compute frequency counts
         while (!StdIn.isEmpty()) {
@@ -68,6 +70,12 @@ public class FrequencyCounter {
             else {
                 st.put(key, 1);
                 distinct++;
+                if (distinct<=numDistinct && st.getLastPutNew()) {
+                    acc += st.getLastPutCompareCount();
+                }
+                if (distinct >= numDistinct-1){
+                    break;
+                }
             }
         }
 
@@ -79,9 +87,15 @@ public class FrequencyCounter {
                 max = word;
         }
 
+        // calculate average # comparisons to insert first N distinct words
+        float avgcomp = (float) acc / numDistinct;
+
+
         StdOut.println(max + " " + st.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
+        StdOut.println("size     = " + st.size());
+        StdOut.println("Average # Comparisons for First " + numDistinct + " Distinct Insertions: " + avgcomp);
     }
 }
 

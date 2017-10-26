@@ -23,10 +23,8 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
-
 import java.util.NoSuchElementException;
-
+import edu.princeton.cs.algs4.*;
 /**
  *  The {@code BST} class represents an ordered symbol table of generic
  *  key-value pairs.
@@ -65,12 +63,15 @@ import java.util.NoSuchElementException;
  */
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;             // root of BST
+    private int lastPutCompareCount;
+    private boolean lastPutNew;
 
     private class Node {
         private Key key;           // sorted by key
         private Value val;         // associated data
         private Node left, right;  // left and right subtrees
         private int size;          // number of nodes in subtree
+        
 
         public Node(Key key, Value val, int size) {
             this.key = key;
@@ -83,6 +84,22 @@ public class BST<Key extends Comparable<Key>, Value> {
      * Initializes an empty symbol table.
      */
     public BST() {
+    }
+
+    public void setLastPutCompareCount(int i) {
+        lastPutCompareCount = i;
+    }
+
+    public int getLastPutCompareCount() {
+        return lastPutCompareCount;
+    } 
+
+    public void setLastPutNew(boolean b) {
+        lastPutNew = b;
+    }
+
+    public boolean getLastPutNew() {
+        return lastPutNew;
     }
 
     /**
@@ -157,16 +174,26 @@ public class BST<Key extends Comparable<Key>, Value> {
             delete(key);
             return;
         }
+        lastPutCompareCount = 0;
+        lastPutNew = false;
         root = put(root, key, val);
         assert check();
     }
 
     private Node put(Node x, Key key, Value val) {
-        if (x == null) return new Node(key, val, 1);
+        if (x == null) {
+            lastPutNew = true;
+            //System.out.println("Inserted new "+ key + " with " + lastPutCompareCount + " comparisons: " + lastPutNew);
+            return new Node(key, val, 1);
+        }
         int cmp = key.compareTo(x.key);
+        lastPutCompareCount++;
         if      (cmp < 0) x.left  = put(x.left,  key, val);
         else if (cmp > 0) x.right = put(x.right, key, val);
-        else              x.val   = val;
+        else {
+            x.val   = val;
+            //System.out.println("Inserted "+ key + " with " + lastPutCompareCount + " comparisons: " + lastPutNew);
+        }
         x.size = 1 + size(x.left) + size(x.right);
         return x;
     }
