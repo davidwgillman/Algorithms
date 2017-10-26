@@ -29,34 +29,70 @@ public class FrequencyCounter {
      *
      * @param args the command-line arguments
      */
+    
+    public String[] parseFile(String filename) throws IOException {
+
+        // create token1
+        String token1 = "";
+
+        // create Scanner inFile1
+        Scanner inFile1 = new Scanner(new File(filename)); 
+
+        List<String> temps = new ArrayList<String>();
+
+        // while loop
+        while (inFile1.hasNext()) {
+            // find next line
+            token1 = inFile1.next();
+            temps.add(token1);
+        }
+        inFile1.close();
+
+        String[] tempsArray = temps.toArray(new String[0]);
+
+        /*
+        for (String s : tempsArray) {
+        System.out.println(s);
+        }
+        */
+         
+
+        return tempsArray;
+    }
+    
+    
     public static void main(String[] args) {
         
+        FrequencyCounter fc = new FrequencyCounter();
         
         BST<String, Integer> bst = new BST<String, Integer>();
+        
+        RedBlackBST<String, Integer> rbt = new RedBlackBST<String, Integer>();
                 
         int distinct = 0;
         int words = 0;
+        int inserts = 0;
+        
         int minlen = Integer.parseInt(args[0]);
         
-        //ST<String, Integer> st = new ST<String, Integer>();
-
-        // compute frequency counts
-        while (!StdIn.isEmpty()) {
-            String key = StdIn.readString();
+        String[] wordsFromText = new String[100000];
+        
+        
+        try {
+            wordsFromText = fc.parseFile("leipzig100k.txt");
+        }
+        catch(IOException ioe) {
+            System.out.println("File name is wrong");
+        }
+        
+        
+        // compute frequency counts for BST
+        for(int i = 0; i < 1000; i++) {
+            String key = wordsFromText[i];
+            
             if (key.length() < minlen) continue;
             
             words++;
-            
-            /*
-            if (st.contains(key)) {
-                st.put(key, st.get(key) + 1);
-            }
-            else {
-                st.put(key, 1);
-                distinct++;
-            }
-            */
-            
             
             if (bst.contains(key)) {
                 bst.put(key, bst.get(key) + 1);
@@ -64,22 +100,29 @@ public class FrequencyCounter {
             else {
                 bst.put(key, 1);
                 distinct++;
+                inserts += bst.getCompareCount();
             }
             
         }
-                
-
-        // find a key with the highest frequency count
+        
+        int averageComparisons = inserts/distinct;
+        
+        
+        // find a key with the highest frequency count for BST
         String max = "";
         bst.put(max, 0);
+        
         for (String word : bst.keys()) {
             if (bst.get(word) > bst.get(max))
                 max = word;
         }
 
+        
         StdOut.println(max + " " + bst.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
-        StdOut.println("comparisons    = " + bst.getCompareCount());
+        StdOut.println("average comparisons    = " + averageComparisons);
+        StdOut.println();
+        
     }
 }

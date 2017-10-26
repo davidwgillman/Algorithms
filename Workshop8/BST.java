@@ -107,7 +107,9 @@ public class BST<Key extends Comparable<Key>, Value> {
         
         lastPutCompareCount = 0;
                 
-        if (key == null) throw new IllegalArgumentException("calls put() with a null key");
+        if (key == null) {
+            throw new IllegalArgumentException("calls put() with a null key");
+        }
         
         if (val == null) {
             delete(key);
@@ -116,29 +118,37 @@ public class BST<Key extends Comparable<Key>, Value> {
         
         root = put(root, key, val);
         assert check();
+        
+        StdOut.println("Number of Comparisons: " + getCompareCount());
+        StdOut.println();
     }
+    
 
     private Node put(Node x, Key key, Value val) {
         
+        //default at false.
         lastPutNew = false;
-        
+      
         if (x == null)  {
-            //records wheter we added a new key
+            //if x is null, then put new is true
             lastPutNew = true;
-            
             return new Node(key, val, 1); 
         }
         
         int cmp = key.compareTo(x.key);
         
-        //since we just put something, incremenet the put counter.
-        lastPutCompareCount += 1;
         
         if (cmp < 0) {
             x.left  = put(x.left,  key, val);
+            
+            //since we just put something, incremenet the put counter.
+            lastPutCompareCount += 1;
         }
         else if (cmp > 0) {
             x.right = put(x.right, key, val);
+            
+            //since we just put something, incremenet the put counter.
+            lastPutCompareCount += 1;
         }
         else {
             x.val   = val;
@@ -515,11 +525,14 @@ public class BST<Key extends Comparable<Key>, Value> {
      */
     public static void main(String[] args) { 
         BST<String, Integer> st = new BST<String, Integer>();
+        
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
+            StdOut.println("Key: " + key + ", Value: " + i);
             st.put(key, i);
         }
 
+        /*
         for (String s : st.levelOrder())
             StdOut.println(s + " " + st.get(s));
 
@@ -527,5 +540,6 @@ public class BST<Key extends Comparable<Key>, Value> {
 
         for (String s : st.keys())
             StdOut.println(s + " " + st.get(s));
+        */
     }
 }

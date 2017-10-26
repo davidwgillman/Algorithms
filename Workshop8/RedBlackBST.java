@@ -13,6 +13,10 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     private static final boolean BLACK = false;
 
     private Node root;     // root of the BST
+    
+    private int lastPutCompareCount;
+    
+    private boolean lastPutNew;
 
     // BST helper node data type
     private class Node {
@@ -122,7 +126,14 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
-        if (key == null) throw new IllegalArgumentException("first argument to put() is null");
+        
+        lastPutCompareCount = 0;
+        lastPutNew = false;
+                
+        if (key == null) {
+            throw new IllegalArgumentException("first argument to put() is null");
+        }
+        
         if (val == null) {
             delete(key);
             return;
@@ -131,16 +142,37 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         root = put(root, key, val);
         root.color = BLACK;
         // assert check();
+        
+        System.out.println("Comparisons: " + getCompareCount());
     }
 
     // insert the key-value pair in the subtree rooted at h
     private Node put(Node h, Key key, Value val) { 
-        if (h == null) return new Node(key, val, RED, 1);
+        
+        if (h == null) {
+            lastPutNew = true;
+            return new Node(key, val, RED, 1);
+        }
 
         int cmp = key.compareTo(h.key);
-        if      (cmp < 0) h.left  = put(h.left,  key, val); 
-        else if (cmp > 0) h.right = put(h.right, key, val); 
-        else              h.val   = val;
+        
+        
+        
+        if (cmp < 0) {
+            h.left  = put(h.left,  key, val); 
+            
+            //since we just put something, incremenet the put counter.
+            lastPutCompareCount += 1;
+        }
+        else if (cmp > 0) {
+            h.right = put(h.right, key, val); 
+            
+            //since we just put something, incremenet the put counter.
+            lastPutCompareCount += 1;
+        }
+        else {
+            h.val = val;
+        }
 
         // fix-up any right-leaning links
         if (isRed(h.right) && !isRed(h.left))      h = rotateLeft(h);
@@ -148,9 +180,19 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         if (isRed(h.left)  &&  isRed(h.right))     flipColors(h);
         h.size = size(h.left) + size(h.right) + 1;
 
-        return h;
+         return h;
     }
+    
 
+    
+    public int getCompareCount() {
+        return lastPutCompareCount;
+    }
+    
+    public boolean lastPut() {
+        return lastPutNew;
+    }
+    
    /***************************************************************************
     *  Red-black tree deletion.
     ***************************************************************************/
@@ -652,8 +694,11 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
             String key = StdIn.readString();
             st.put(key, i);
         }
+        
+        /*
         for (String s : st.keys())
             StdOut.println(s + " " + st.get(s));
+        */
         StdOut.println();
     }
 }
