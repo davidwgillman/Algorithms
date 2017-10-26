@@ -23,8 +23,9 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+//package edu.princeton.cs.algs4;
 
+import edu.princeton.cs.algs4.*;
 import java.util.NoSuchElementException;
 
 /**
@@ -179,11 +180,11 @@ public class BST<Key extends Comparable<Key>, Value> {
         return x;
     }
 
-    private boolean getLastPutNew(){
+    public boolean getLastPutNew(){
         return lastPutNew;
     }
 
-    private int getLastPutCompareCount(){
+    public int getLastPutCompareCount(){
         return lastPutCompareCount;
     }
 
@@ -548,10 +549,10 @@ public class BST<Key extends Comparable<Key>, Value> {
             st.put(key, i);
         }
 
-        for (String s : st.levelOrder())
+        /*for (String s : st.levelOrder())
             StdOut.println(s + " " + st.get(s));
 
-        StdOut.println();
+        StdOut.println();*/
 
         for (String s : st.keys())
             StdOut.println(s + " " + st.get(s));

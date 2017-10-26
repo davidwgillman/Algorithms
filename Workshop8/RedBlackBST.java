@@ -27,8 +27,9 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+//package edu.princeton.cs.algs4;
 
+import edu.princeton.cs.algs4.*;
 import java.util.NoSuchElementException;
 
 /**
@@ -71,6 +72,8 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     private static final boolean RED   = true;
     private static final boolean BLACK = false;
+    private int lastPutCompareCount;
+    private boolean lastPutNew;
 
     private Node root;     // root of the BST
 
@@ -188,6 +191,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
             return;
         }
 
+        lastPutCompareCount = 0;
         root = put(root, key, val);
         root.color = BLACK;
         // assert check();
@@ -195,9 +199,14 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     // insert the key-value pair in the subtree rooted at h
     private Node put(Node h, Key key, Value val) { 
-        if (h == null) return new Node(key, val, RED, 1);
+        lastPutNew = false;
+        if (h == null) {
+            lastPutNew = true;
+            return new Node(key, val, RED, 1);
+        }
 
         int cmp = key.compareTo(h.key);
+        lastPutCompareCount ++;
         if      (cmp < 0) h.left  = put(h.left,  key, val); 
         else if (cmp > 0) h.right = put(h.right, key, val); 
         else              h.val   = val;
@@ -209,6 +218,14 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         h.size = size(h.left) + size(h.right) + 1;
 
         return h;
+    }
+
+    public boolean getLastPutNew(){
+        return lastPutNew;
+    }
+
+    public int getLastPutCompareCount(){
+        return lastPutCompareCount;
     }
 
    /***************************************************************************

@@ -26,7 +26,8 @@
 
 //package edu.princeton.cs.algs4;
 
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdIn;
 /**
  *  The {@code FrequencyCounter} class provides a client for 
  *  reading in a sequence of words and printing a word (exceeding
@@ -58,6 +59,7 @@ public class FrequencyCounter {
         int distinct = 0, words = 0, acc = 0;
         int minlen = Integer.parseInt(args[0]), firstNDistinct = Integer.parseInt(args[1]);
         BST<String, Integer> bst = new BST<String, Integer>();
+        //RedBlackBST<String, Integer> bst = new RedBlackBST<String, Integer>();
 
         // compute frequency counts
         while (!StdIn.isEmpty()) {
@@ -90,6 +92,7 @@ public class FrequencyCounter {
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
         StdOut.println("AVG comparisons per distinct    = " + (float)acc/firstNDistinct);
+        StdOut.println(bst.size());
     }
 }
 
