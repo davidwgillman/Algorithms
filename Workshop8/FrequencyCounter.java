@@ -24,8 +24,9 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+//package edu.princeton.cs.algs4;
 
+import edu.princeton.cs.algs4.*;
 /**
  *  The {@code FrequencyCounter} class provides a client for 
  *  reading in a sequence of words and printing a word (exceeding
@@ -53,25 +54,16 @@ public class FrequencyCounter {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        BST<String, Integer> bst = new BST<String, Integer>();
 
-        int distinct = 0, words = 0;
-        int minlen = Integer.parseInt(args[0]);
-        ST<String, Integer> st = new ST<String, Integer>();
+        int distinct = 0, words = 0, acc = 0;
+        int minlen = Integer.parseInt(args[0]), firstNDistinct = Integer.parseInt(args[1]);
+        BST<String, Integer> bst = new BST<String, Integer>();
 
         // compute frequency counts
         while (!StdIn.isEmpty()) {
             String key = StdIn.readString();
             if (key.length() < minlen) continue;
             words++;
-            if (st.contains(key)) {
-                st.put(key, st.get(key) + 1);
-            }
-            else {
-                st.put(key, 1);
-                distinct++;
-            }
-
 
             if (bst.contains(key)) {
                 bst.put(key, bst.get(key) + 1);
@@ -79,24 +71,15 @@ public class FrequencyCounter {
             else {
                 bst.put(key, 1);
                 distinct++;
+
+                if(distinct < firstNDistinct) acc += bst.getLastPutCompareCount();
+                if(distinct >= firstNDistinct-1) break;
             }
         }
 
+
         // find a key with the highest frequency count
         String max = "";
-        st.put(max, 0);
-        for (String word : st.keys()) {
-            if (st.get(word) > st.get(max))
-                max = word;
-        }
-
-        StdOut.println(max + " " + st.get(max));
-        StdOut.println("distinct = " + distinct);
-        StdOut.println("words    = " + words);
-
-
-        // find a key with the highest frequency count
-        max = "";
         bst.put(max, 0);
         for (String word : bst.keys()) {
             if (bst.get(word) > bst.get(max))
@@ -106,7 +89,7 @@ public class FrequencyCounter {
         StdOut.println(max + " " + bst.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
-        StdOut.println("cmparisons    = " + bst.getLastPutCompareCount());
+        StdOut.println("AVG comparisons per distinct    = " + (float)acc/firstNDistinct);
     }
 }
 
