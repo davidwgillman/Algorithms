@@ -1,30 +1,5 @@
-/******************************************************************************
- *  Compilation:  javac FrequencyCounter.java
- *  Execution:    java FrequencyCounter L < input.txt
- *  Dependencies: ST.java StdIn.java StdOut.java
- *  Data files:   https://algs4.cs.princeton.edu/31elementary/tnyTale.txt
- *                https://algs4.cs.princeton.edu/31elementary/tale.txt
- *                https://algs4.cs.princeton.edu/31elementary/leipzig100K.txt
- *                https://algs4.cs.princeton.edu/31elementary/leipzig300K.txt
- *                https://algs4.cs.princeton.edu/31elementary/leipzig1M.txt
- *
- *  Read in a list of words from standard input and print out
- *  the most frequently occurring word that has length greater than
- *  a given threshold.
- *
- *  % java FrequencyCounter 1 < tinyTale.txt
- *  it 10
- *
- *  % java FrequencyCounter 8 < tale.txt
- *  business 122
- *
- *  % java FrequencyCounter 10 < leipzig1M.txt
- *  government 24763
- *
- *
- ******************************************************************************/
-
-package edu.princeton.cs.algs4;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 /**
  *  The {@code FrequencyCounter} class provides a client for 
@@ -54,57 +29,67 @@ public class FrequencyCounter {
      */
     public static void main(String[] args) {
         int distinct = 0, words = 0;
+        double comparisoncount = 0, RBcomparisoncount = 0;
+        int N = 10;
         int minlen = Integer.parseInt(args[0]);
-        ST<String, Integer> st = new ST<String, Integer>();
+        BST<String, Integer> bst = new BST<String, Integer>();
+        RedBlackBST<String, Integer> RBbst = new RedBlackBST<String, Integer>();
+        
 
         // compute frequency counts
         while (!StdIn.isEmpty()) {
             String key = StdIn.readString();
             if (key.length() < minlen) continue;
             words++;
-            if (st.contains(key)) {
-                st.put(key, st.get(key) + 1);
+            if (bst.contains(key)) {
+                bst.put(key, bst.get(key) + 1);
+                RBbst.put(key, RBbst.get(key) + 1);
             }
             else {
-                st.put(key, 1);
+            	
+            	bst.setComparisoncount(0);
+                bst.put(key, 1);
+                comparisoncount += bst.getComparisoncount();
+                
+                RBbst.setComparisoncount(0);
+                RBbst.put(key, 1);
+                RBcomparisoncount += RBbst.getComparisoncount();
+                
                 distinct++;
+                if(distinct == N) {
+                	break;
+                }
             }
         }
-
+        
         // find a key with the highest frequency count
         String max = "";
-        st.put(max, 0);
-        for (String word : st.keys()) {
-            if (st.get(word) > st.get(max))
+        bst.put(max, 0);
+        RBbst.put(max, 0);
+        
+        for (String word : bst.keys()) {
+            if (bst.get(word) > bst.get(max))
                 max = word;
         }
-
-        StdOut.println(max + " " + st.get(max));
+       
+        System.out.println("Binary Search Tree");
+        StdOut.println(max + " " + bst.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
+        StdOut.println("size    = " + (bst.size() - 1));
+        StdOut.println("comparison count    = " + comparisoncount);
+        StdOut.println("comparison count average    = " + (comparisoncount/distinct));
+       ;
+        
+        
+        System.out.println("\nRed Black Tree");
+        StdOut.println(max + " " + RBbst.get(max));
+        StdOut.println("distinct = " + distinct);
+        StdOut.println("words    = " + words);
+        StdOut.println("size    = " + (RBbst.size() - 1));
+        StdOut.println("comparison count    = " + RBcomparisoncount);
+        StdOut.println("comparison count average    = " + (RBcomparisoncount/distinct));
+        
     }
 }
 
-/******************************************************************************
- *  Copyright 2002-2016, Robert Sedgewick and Kevin Wayne.
- *
- *  This file is part of algs4.jar, which accompanies the textbook
- *
- *      Algorithms, 4th edition by Robert Sedgewick and Kevin Wayne,
- *      Addison-Wesley Professional, 2011, ISBN 0-321-57351-X.
- *      http://algs4.cs.princeton.edu
- *
- *
- *  algs4.jar is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  algs4.jar is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with algs4.jar.  If not, see http://www.gnu.org/licenses.
- ******************************************************************************/

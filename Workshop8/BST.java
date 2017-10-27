@@ -1,82 +1,33 @@
-/******************************************************************************
- *  Compilation:  javac BST.java
- *  Execution:    java BST
- *  Dependencies: StdIn.java StdOut.java Queue.java
- *  Data files:   https://algs4.cs.princeton.edu/32bst/tinyST.txt  
- *
- *  A symbol table implemented with a binary search tree.
- * 
- *  % more tinyST.txt
- *  S E A R C H E X A M P L E
- *  
- *  % java BST < tinyST.txt
- *  A 8
- *  C 4
- *  E 12
- *  H 5
- *  L 11
- *  M 9
- *  P 10
- *  R 3
- *  S 0
- *  X 7
- *
- ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+//package edu.princeton.cs.algs4;
 
 import java.util.NoSuchElementException;
 
-/**
- *  The {@code BST} class represents an ordered symbol table of generic
- *  key-value pairs.
- *  It supports the usual <em>put</em>, <em>get</em>, <em>contains</em>,
- *  <em>delete</em>, <em>size</em>, and <em>is-empty</em> methods.
- *  It also provides ordered methods for finding the <em>minimum</em>,
- *  <em>maximum</em>, <em>floor</em>, <em>select</em>, <em>ceiling</em>.
- *  It also provides a <em>keys</em> method for iterating over all of the keys.
- *  A symbol table implements the <em>associative array</em> abstraction:
- *  when associating a value with a key that is already in the symbol table,
- *  the convention is to replace the old value with the new value.
- *  Unlike {@link java.util.Map}, this class uses the convention that
- *  values cannot be {@code null}—setting the
- *  value associated with a key to {@code null} is equivalent to deleting the key
- *  from the symbol table.
- *  <p>
- *  This implementation uses an (unbalanced) binary search tree. It requires that
- *  the key type implements the {@code Comparable} interface and calls the
- *  {@code compareTo()} and method to compare two keys. It does not call either
- *  {@code equals()} or {@code hashCode()}.
- *  The <em>put</em>, <em>contains</em>, <em>remove</em>, <em>minimum</em>,
- *  <em>maximum</em>, <em>ceiling</em>, <em>floor</em>, <em>select</em>, and
- *  <em>rank</em>  operations each take
- *  linear time in the worst case, if the tree becomes unbalanced.
- *  The <em>size</em>, and <em>is-empty</em> operations take constant time.
- *  Construction takes constant time.
- *  <p>
- *  For additional documentation, see <a href="https://algs4.cs.princeton.edu/32bst">Section 3.2</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
- *  For other implementations, see {@link ST}, {@link BinarySearchST},
- *  {@link SequentialSearchST}, {@link RedBlackBST},
- *  {@link SeparateChainingHashST}, and {@link LinearProbingHashST},
- *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
- */
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+
+
 public class BST<Key extends Comparable<Key>, Value> {
-    private Node root;             // root of BST
+    private Node root;  
+    private int comparisoncount;
+    // root of BST
 
     private class Node {
         private Key key;           // sorted by key
         private Value val;         // associated data
         private Node left, right;  // left and right subtrees
         private int size;          // number of nodes in subtree
+        
 
         public Node(Key key, Value val, int size) {
             this.key = key;
             this.val = val;
             this.size = size;
+          
         }
+
+		
     }
 
     /**
@@ -162,8 +113,11 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     private Node put(Node x, Key key, Value val) {
-        if (x == null) return new Node(key, val, 1);
+        if (x == null) {
+        	return new Node(key, val, 1);
+        }
         int cmp = key.compareTo(x.key);
+        this.setComparisoncount(this.getComparisoncount() + 1);//compare 
         if      (cmp < 0) x.left  = put(x.left,  key, val);
         else if (cmp > 0) x.right = put(x.right, key, val);
         else              x.val   = val;
@@ -540,28 +494,12 @@ public class BST<Key extends Comparable<Key>, Value> {
         for (String s : st.keys())
             StdOut.println(s + " " + st.get(s));
     }
-}
 
-/******************************************************************************
- *  Copyright 2002-2016, Robert Sedgewick and Kevin Wayne.
- *
- *  This file is part of algs4.jar, which accompanies the textbook
- *
- *      Algorithms, 4th edition by Robert Sedgewick and Kevin Wayne,
- *      Addison-Wesley Professional, 2011, ISBN 0-321-57351-X.
- *      http://algs4.cs.princeton.edu
- *
- *
- *  algs4.jar is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  algs4.jar is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with algs4.jar.  If not, see http://www.gnu.org/licenses.
- ******************************************************************************/
+	public int getComparisoncount() {
+		return comparisoncount;
+	}
+
+	public void setComparisoncount(int comparisoncount) {
+		this.comparisoncount = comparisoncount;
+	}
+}
