@@ -27,11 +27,7 @@
  *
  ******************************************************************************/
 
-<<<<<<< HEAD
 import edu.princeton.cs.algs4.*; 
-=======
-package edu.princeton.cs.algs4;
->>>>>>> origin/master
 
 import java.util.NoSuchElementException;
 
