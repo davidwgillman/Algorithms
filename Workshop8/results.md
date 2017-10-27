@@ -1,2 +1,8 @@
-5. I would estimate the rate of growth of the functions showing comparisons made in both BST and RedBlackBST as aLogN. I say this because their rate of growith much more closely resembles that of a logarithmic function than that of an exponential function (save those exponential functions with exponents of 1 or less). 
-6. 
+5. </br> 
+I would estimate the rate of growth of the functions showing comparisons made in both BST and RedBlackBST as aLogN. I say this because their rate of growith much more closely resembles that of a logarithmic function than that of an exponential function (save those exponential functions with exponents of 1 or less). Here is the graph:
+![alt text](https://github.com/davidwgillman/Algorithms/blob/eric_brigham(wkshp6)/Workshop8/RBBSTvBST.png)
+</br>
+6. </br>
+    1) The results, well as the frequency of words, would be different on truly random input in that the frequncy of words would likely be more higher for more commonly used words and lower for less commonly used words. The reasoning for this being type of frequncy is that if you took all of the words in the book and randomly chose 10000, you would choose words that have a higher density more often. For example, words like "the", "it" and "is" are quite common in written english language, and if you were to randomly sample a block of written text then these would have higher densities than a word like "qualm" which would likely be used infrequently (I know it was only recording words of length more than eight, but the logic hold for words of any size). The way it is taking in words and keeping frequency already favors more commonly used words, because they are used more commonly, however, under the new scheme it would favor these more heavily. I do not believe that the number of comparisons if it were random or not would be different, though I am not certain. 
+
+    2) From the results, we can see that the depth of the RedBlackBST is smaller than the depth of the BST. Because depth is equal to the number of comparisons, this imples that the RedBlackBST are more efficient in putting new nodes(key+value).  
