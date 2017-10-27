@@ -1,0 +1,2 @@
+5. I would estimate the rate of growth of the functions showing comparisons made in both BST and RedBlackBST as aLogN. I say this because their rate of growith much more closely resembles that of a logarithmic function than that of an exponential function (save those exponential functions with exponents of 1 or less). 
+6. 
