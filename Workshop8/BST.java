@@ -23,7 +23,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+ 
 
 import java.util.NoSuchElementException;
 
@@ -65,6 +65,8 @@ import java.util.NoSuchElementException;
  */
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;             // root of BST
+    private int lastPutCompareCount;
+    private boolean lastPutNew;
 
     private class Node {
         private Key key;           // sorted by key
@@ -83,6 +85,16 @@ public class BST<Key extends Comparable<Key>, Value> {
      * Initializes an empty symbol table.
      */
     public BST() {
+        this.lastPutCompareCount = 0;
+        this.lastPutNew = false;
+    }
+    
+    public int getLastCompareCount(){
+        return this.lastPutCompareCount;
+    }
+    
+    public boolean getLastPutNew(){
+        return this.lastPutNew;
     }
 
     /**
@@ -152,6 +164,8 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
+        this.lastPutCompareCount = 0;
+        this.lastPutNew = false;
         if (key == null) throw new IllegalArgumentException("calls put() with a null key");
         if (val == null) {
             delete(key);
@@ -164,8 +178,15 @@ public class BST<Key extends Comparable<Key>, Value> {
     private Node put(Node x, Key key, Value val) {
         if (x == null) return new Node(key, val, 1);
         int cmp = key.compareTo(x.key);
-        if      (cmp < 0) x.left  = put(x.left,  key, val);
-        else if (cmp > 0) x.right = put(x.right, key, val);
+        this.lastPutCompareCount++;
+        if      (cmp < 0){
+            this.lastPutNew = true;
+            x.left  = put(x.left,  key, val);
+        }
+        else if (cmp > 0){ 
+            this.lastPutNew = true;
+            x.right = put(x.right, key, val);
+        }
         else              x.val   = val;
         x.size = 1 + size(x.left) + size(x.right);
         return x;
@@ -340,7 +361,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     /**
      * Return the kth smallest key in the symbol table.
-     *
+     * 
      * @param  k the order statistic
      * @return the {@code k}th smallest key in the symbol table
      * @throws IllegalArgumentException unless {@code k} is between 0 and
