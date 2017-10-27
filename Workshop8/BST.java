@@ -66,8 +66,8 @@ import edu.princeton.cs.algs4.*;
  */
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;             // root of BST
-    public int cmpCount;
-    public int numOfNodes;
+    private int cmpCount;
+    private int numOfNodes;
 
     private class Node {
         private Key key;           // sorted by key
@@ -124,6 +124,8 @@ public class BST<Key extends Comparable<Key>, Value> {
         return get(key) != null;
     }
 
+    
+
     /**
      * Returns the value associated with the given key.
      *
@@ -166,14 +168,11 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     private Node put(Node x, Key key, Value val) {
-        cmpCount = 0;
-        numOfNodes = 0;
         if (x == null) {
-            numOfNodes++;
             return new Node(key, val, 1);
         }
         int cmp = key.compareTo(x.key);
-        cmpCount++;
+        this.setCmpCount(this.getCmpCount() + 1);
         if      (cmp < 0) x.left  = put(x.left,  key, val);
         else if (cmp > 0) x.right = put(x.right, key, val);
         else              x.val   = val;
@@ -529,6 +528,13 @@ public class BST<Key extends Comparable<Key>, Value> {
         return true;
     }
 
+    public void setCmpCount(int cmpCount) {
+        this.cmpCount = cmpCount;
+    }
+
+    public int getCmpCount() {
+        return cmpCount;
+    }
 
     /**
      * Unit tests the {@code BST} data type.
