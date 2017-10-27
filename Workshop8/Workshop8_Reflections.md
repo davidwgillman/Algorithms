@@ -13,7 +13,7 @@ Because the trend is linear for both BST and the RedBlackBST in log scale, it me
 
 **The words in the file are not completely random. (They're random English sentences.)** **_How would the results have been different on random input?_**
 
-Answer to that question
+Although the words are not completely random, they are still random English sentences. Words in random English sentences are not already sorted alphabetically or reversely sorted alphabetically. Thus, although not completely random, the inputs still have a degree of randomness. Therefore, the results would have been about the same on "random input."
 
 **_What do the results say about the depths of the trees that were created - the BST vs. the depth of the RedBlackTree_**
 
