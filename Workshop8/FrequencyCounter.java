@@ -60,7 +60,7 @@ public class FrequencyCounter {
         int sumOfComp = 0;
 
         // compute frequency counts
-        while (distinct <= N) {
+        while (distinct != N) {
             String key = StdIn.readString();
             if (key.length() < minlen) continue;
             words++;
@@ -88,6 +88,7 @@ public class FrequencyCounter {
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
         StdOut.println("avg comparisons = " + avgOfComp);
+        StdOut.println("total comparisons = " + sumOfComp);
     }
 }
 

@@ -737,6 +737,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
+            StdOut.println("Key: " + key + ", Value: " + i);
             st.put(key, i);
         }
         /*for (String s : st.keys())
