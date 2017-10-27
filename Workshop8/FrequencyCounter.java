@@ -60,7 +60,7 @@ public class FrequencyCounter {
         int maxWords = Integer.parseInt(args[1]);
         System.out.println("max words = " + maxWords);
         //ST<String, Integer> st = new ST<String, Integer>();
-        BST<String, Integer> bst = new BST<String, Integer>();
+        RedBlackBST<String, Integer> bst = new RedBlackBST<String, Integer>();
 
         // compute frequency counts
         while (!StdIn.isEmpty() && words <= maxWords) {

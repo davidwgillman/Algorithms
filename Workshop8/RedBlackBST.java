@@ -27,7 +27,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+//package edu.princeton.cs.algs4;
 
 import java.util.NoSuchElementException;
 
@@ -68,6 +68,8 @@ import java.util.NoSuchElementException;
  */
 
 public class RedBlackBST<Key extends Comparable<Key>, Value> {
+
+    public int comparisons = 0;
 
     private static final boolean RED   = true;
     private static final boolean BLACK = false;
@@ -149,6 +151,9 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     private Value get(Node x, Key key) {
         while (x != null) {
             int cmp = key.compareTo(x.key);
+
+            comparisons ++;
+            
             if      (cmp < 0) x = x.left;
             else if (cmp > 0) x = x.right;
             else              return x.val;
@@ -191,6 +196,8 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         root = put(root, key, val);
         root.color = BLACK;
         // assert check();
+
+        System.out.println(comparisons);
     }
 
     // insert the key-value pair in the subtree rooted at h
@@ -198,6 +205,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         if (h == null) return new Node(key, val, RED, 1);
 
         int cmp = key.compareTo(h.key);
+        comparisons++;
         if      (cmp < 0) h.left  = put(h.left,  key, val); 
         else if (cmp > 0) h.right = put(h.right, key, val); 
         else              h.val   = val;
@@ -300,6 +308,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     private Node delete(Node h, Key key) { 
         // assert get(h, key) != null;
 
+        comparisons++;
         if (key.compareTo(h.key) < 0)  {
             if (!isRed(h.left) && !isRed(h.left.left))
                 h = moveRedLeft(h);
