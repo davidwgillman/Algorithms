@@ -56,10 +56,12 @@ public class FrequencyCounter {
     public static void main(String[] args) {
         int distinct = 0, words = 0;
         int n = 100;
-        int comparisonCount = 0;
+        double comparisonCount = 0;
+        double rbstComparisonCount = 0;
 
         int minlen = Integer.parseInt(args[0]);
         BST<String, Integer> bst = new BST<String, Integer>();
+        RedBlackBST<String, Integer> rbst = new RedBlackBST<String, Integer>();
 
         // compute frequency counts
         while (!StdIn.isEmpty()) {
@@ -68,11 +70,15 @@ public class FrequencyCounter {
             words++;
             if (bst.contains(key)) {
                 bst.put(key, bst.get(key) + 1);
+                rbst.put(key, bst.get(key) + 1);
             }
             else {
                 bst.setCmpCount(0);
+                rbst.setCmpCount(0);
                 bst.put(key, 1);
+                rbst.put(key, 1);
                 comparisonCount += bst.getCmpCount();
+                rbstComparisonCount += rbst.getCmpCount();
                 distinct++;
                 if (distinct == n) {
                     break;
@@ -89,13 +95,23 @@ public class FrequencyCounter {
             if (bst.get(word) > bst.get(max))
                 max = word;
         }
-        int comparisonAvg = comparisonCount/n;
 
+
+        double comparisonAvg = comparisonCount/n;
+        StdOut.println("BST: ");
         StdOut.println(max + " " + bst.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
         StdOut.println("Comparison Count = " + comparisonCount);
         StdOut.println("Comparison average = " + comparisonAvg);
+
+        double rbstComparisonAvg = rbstComparisonCount/n;
+        StdOut.println("RedBlackTree: ");
+        StdOut.println(max + " " + rbst.get(max));
+        StdOut.println("distinct = " + distinct);
+        StdOut.println("words    = " + words);
+        StdOut.println("Comparison Count = " + rbstComparisonCount);
+        StdOut.println("Comparison average = " + rbstComparisonAvg);
     }
 }
 
