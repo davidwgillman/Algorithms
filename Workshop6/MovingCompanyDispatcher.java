@@ -9,11 +9,16 @@
    Prints the assignment and hours worked by the last crew to get off work.
    */
 
+<<<<<<< HEAD
 import java.util.*;
+=======
+// imports
+>>>>>>> origin/master
 
  public class MovingCompanyDispatcher {
  	private int nCrews = 0;
  	private int nHouseholds = 0;
+<<<<<<< HEAD
  	private Double[] jobs = null;
  	private MovingCompanyCrew[] crews = null;
 	Random Rand = new Random();
@@ -90,12 +95,48 @@ import java.util.*;
 				System.out.println("Crew number " + crewNum + " worked an excess of " + excessHours + " hours");
 			}
 		 }
+=======
+ 	private double[] jobs = null;
+
+ 	private MovingCompanyCrew[] crews = null;
+
+ 	public MovingCompanyDispatcher()
+
+ 	public newDay(int C, int H) {
+ 	}
+
+ 	public double getLowerBound() {
+ 		// lower bound on numnber of hours worked by last crew to get off work
+ 		return ; 
+ 	}
+
+ 	public void makeJobs() {
+ 		// generate random jobs
+ 	}
+
+ 	public void assignJobs() {
+ 		// order jobs longest to shortest 
+
+ 		// assign each job in order to first available crew 
+ 	}
+
+ 	// this method lets the client figure out how good a job the Dispatcher did
+ 	// Alternatively, you can let the Dispatcher do its own self-evaluation 
+ 	// and expose the stats in different method
+ 	public MovingCompanyCrew[] getCrews() {
+>>>>>>> origin/master
 
  	}
 
  	public static void main(String[] args) {
+<<<<<<< HEAD
 		MovingCompanyDispatcher test = new MovingCompanyDispatcher();
 		test.newDay(4, 10);
 		test.printEvaluation();
  	}
+=======
+
+ 	}
+
+>>>>>>> origin/master
  }

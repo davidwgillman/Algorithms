@@ -23,8 +23,12 @@
  *
  ******************************************************************************/
 
+<<<<<<< HEAD
 import edu.princeton.cs.algs4.*;
 import java.util.ArrayList;
+=======
+package edu.princeton.cs.algs4;
+>>>>>>> origin/master
 
 import java.util.NoSuchElementException;
 
@@ -66,8 +70,11 @@ import java.util.NoSuchElementException;
  */
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;             // root of BST
+<<<<<<< HEAD
     private int lastPutCompareCount  = 0;
     private boolean lastPutNew = false;
+=======
+>>>>>>> origin/master
 
     private class Node {
         private Key key;           // sorted by key
@@ -160,6 +167,7 @@ public class BST<Key extends Comparable<Key>, Value> {
             delete(key);
             return;
         }
+<<<<<<< HEAD
         lastPutCompareCount = 0;
         root = put(root, key, val);
         assert check();
@@ -189,10 +197,23 @@ public class BST<Key extends Comparable<Key>, Value> {
             x.val = val;
             System.out.println("The value of " + key + " was changed!");
         }
+=======
+        root = put(root, key, val);
+        assert check();
+    }
+
+    private Node put(Node x, Key key, Value val) {
+        if (x == null) return new Node(key, val, 1);
+        int cmp = key.compareTo(x.key);
+        if      (cmp < 0) x.left  = put(x.left,  key, val);
+        else if (cmp > 0) x.right = put(x.right, key, val);
+        else              x.val   = val;
+>>>>>>> origin/master
         x.size = 1 + size(x.left) + size(x.right);
         return x;
     }
 
+<<<<<<< HEAD
     public boolean lastPutNew(){
         return lastPutNew;
     }
@@ -200,6 +221,8 @@ public class BST<Key extends Comparable<Key>, Value> {
     public int lastPutCompareCount(){
         return lastPutCompareCount;
     }
+=======
+>>>>>>> origin/master
 
     /**
      * Removes the smallest key and associated value from the symbol table.
@@ -558,9 +581,48 @@ public class BST<Key extends Comparable<Key>, Value> {
         BST<String, Integer> st = new BST<String, Integer>();
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
+<<<<<<< HEAD
             StdOut.println("Key: " + key + ", Value: " + i);
             st.put(key, i);
         }
     }
 }
 
+=======
+            st.put(key, i);
+        }
+
+        for (String s : st.levelOrder())
+            StdOut.println(s + " " + st.get(s));
+
+        StdOut.println();
+
+        for (String s : st.keys())
+            StdOut.println(s + " " + st.get(s));
+    }
+}
+
+/******************************************************************************
+ *  Copyright 2002-2016, Robert Sedgewick and Kevin Wayne.
+ *
+ *  This file is part of algs4.jar, which accompanies the textbook
+ *
+ *      Algorithms, 4th edition by Robert Sedgewick and Kevin Wayne,
+ *      Addison-Wesley Professional, 2011, ISBN 0-321-57351-X.
+ *      http://algs4.cs.princeton.edu
+ *
+ *
+ *  algs4.jar is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  algs4.jar is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with algs4.jar.  If not, see http://www.gnu.org/licenses.
+ ******************************************************************************/
+>>>>>>> origin/master

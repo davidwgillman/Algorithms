@@ -24,7 +24,11 @@
  *
  ******************************************************************************/
 
+<<<<<<< HEAD
 import edu.princeton.cs.algs4.*;
+=======
+package edu.princeton.cs.algs4;
+>>>>>>> origin/master
 
 /**
  *  The {@code FrequencyCounter} class provides a client for 
@@ -55,12 +59,19 @@ public class FrequencyCounter {
     public static void main(String[] args) {
         int distinct = 0, words = 0;
         int minlen = Integer.parseInt(args[0]);
+<<<<<<< HEAD
         int N = Integer.parseInt(args[1]);
         BST<String, Integer> st = new BST<String, Integer>();
         int sumOfComp = 0;
 
         // compute frequency counts
         while (distinct != N) {
+=======
+        ST<String, Integer> st = new ST<String, Integer>();
+
+        // compute frequency counts
+        while (!StdIn.isEmpty()) {
+>>>>>>> origin/master
             String key = StdIn.readString();
             if (key.length() < minlen) continue;
             words++;
@@ -70,12 +81,18 @@ public class FrequencyCounter {
             else {
                 st.put(key, 1);
                 distinct++;
+<<<<<<< HEAD
                 sumOfComp += st.lastPutCompareCount();
             }
         }
 
         int avgOfComp = sumOfComp/distinct;
 
+=======
+            }
+        }
+
+>>>>>>> origin/master
         // find a key with the highest frequency count
         String max = "";
         st.put(max, 0);
@@ -87,8 +104,11 @@ public class FrequencyCounter {
         StdOut.println(max + " " + st.get(max));
         StdOut.println("distinct = " + distinct);
         StdOut.println("words    = " + words);
+<<<<<<< HEAD
         StdOut.println("avg comparisons = " + avgOfComp);
         StdOut.println("total comparisons = " + sumOfComp);
+=======
+>>>>>>> origin/master
     }
 }
 
