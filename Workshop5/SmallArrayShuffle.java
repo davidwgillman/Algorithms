@@ -25,7 +25,7 @@ public final class SmallArrayShuffle {
     public static void main(String[] args) {
         
         // Create new array
-        Integer cards[] = [1,2,3,4];
+        Integer cards[] = {1,2,3,4};
         
         SmallArrayShuffle smallArrayShuffle = new SmallArrayShuffle();
         
@@ -42,8 +42,8 @@ public final class SmallArrayShuffle {
             smallArrayShuffle.shuffle(cards);
             
             System.out.print("Shuffled cards [cards[i]]: ");
-            for (int i = 0; i < cards.length; i++) {
-                System.out.print(cards[i] + " ");
+            for (int j = 0; j < cards.length; j++) {
+                System.out.print(cards[j] + " ");
             }
         }
         
