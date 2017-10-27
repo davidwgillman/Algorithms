@@ -27,8 +27,7 @@
  *
  ******************************************************************************/
 
-//package edu.princeton.cs.algs4;
-import edu.princeton.cs.algs4.*;
+package edu.princeton.cs.algs4;
 
 import java.util.NoSuchElementException;
 
@@ -74,8 +73,6 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     private static final boolean BLACK = false;
 
     private Node root;     // root of the BST
-    private int cmpCount;
-    private int numOfNodes;
 
     // BST helper node data type
     private class Node {
@@ -198,11 +195,9 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     // insert the key-value pair in the subtree rooted at h
     private Node put(Node h, Key key, Value val) { 
-        if (h == null) {
-            return new Node(key, val, RED, 1);
-        }
+        if (h == null) return new Node(key, val, RED, 1);
+
         int cmp = key.compareTo(h.key);
-        this.setCmpCount(this.getCmpCount() + 1);
         if      (cmp < 0) h.left  = put(h.left,  key, val); 
         else if (cmp > 0) h.right = put(h.right, key, val); 
         else              h.val   = val;
@@ -705,13 +700,6 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         return isBalanced(x.left, black) && isBalanced(x.right, black);
     } 
 
-    public void setCmpCount(int cmpCount) {
-        this.cmpCount = cmpCount;
-    }
-
-    public int getCmpCount() {
-        return cmpCount;
-    }
 
     /**
      * Unit tests the {@code RedBlackBST} data type.
