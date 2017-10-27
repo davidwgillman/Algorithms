@@ -119,8 +119,6 @@ public class BST<Key extends Comparable<Key>, Value> {
         root = put(root, key, val);
         assert check();
         
-        StdOut.println("Number of Comparisons: " + getCompareCount());
-        StdOut.println();
     }
     
 

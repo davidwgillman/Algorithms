@@ -65,9 +65,9 @@ public class FrequencyCounter {
         
         FrequencyCounter fc = new FrequencyCounter();
         
-        BST<String, Integer> bst = new BST<String, Integer>();
+        //BST<String, Integer> bst = new BST<String, Integer>();
         
-        RedBlackBST<String, Integer> rbt = new RedBlackBST<String, Integer>();
+        RedBlackBST<String, Integer> bst = new RedBlackBST<String, Integer>();
                 
         int distinct = 0;
         int words = 0;
@@ -87,7 +87,7 @@ public class FrequencyCounter {
         
         
         // compute frequency counts for BST
-        for(int i = 0; i < 1000; i++) {
+        for(int i = 0; i < 100; i++) {
             String key = wordsFromText[i];
             
             if (key.length() < minlen) continue;

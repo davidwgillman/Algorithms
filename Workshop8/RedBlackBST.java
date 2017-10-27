@@ -143,7 +143,6 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         root.color = BLACK;
         // assert check();
         
-        System.out.println("Comparisons: " + getCompareCount());
     }
 
     // insert the key-value pair in the subtree rooted at h
