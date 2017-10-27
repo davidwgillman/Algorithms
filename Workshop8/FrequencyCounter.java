@@ -24,7 +24,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+//package edu.princeton.cs.algs4;
 
 /**
  *  The {@code FrequencyCounter} class provides a client for 
@@ -57,11 +57,13 @@ public class FrequencyCounter {
     public static void main(String[] args) {
         int distinct = 0, words = 0;
         int minlen = Integer.parseInt(args[0]);
+        int maxWords = Integer.parseInt(args[1]);
+        System.out.println("max words = " + maxWords);
         //ST<String, Integer> st = new ST<String, Integer>();
         BST<String, Integer> bst = new BST<String, Integer>();
 
         // compute frequency counts
-        while (!StdIn.isEmpty()) {
+        while (!StdIn.isEmpty() && words <= maxWords) {
             String key = StdIn.readString();
             if (key.length() < minlen) continue;
             words++;
@@ -76,7 +78,7 @@ public class FrequencyCounter {
 
         // find a key with the highest frequency count
         String max = "";
-        st.put(max, 0);
+        bst.put(max, 0);
         for (String word : bst.keys()) {
             if (bst.get(word) > bst.get(max))
                 max = word;

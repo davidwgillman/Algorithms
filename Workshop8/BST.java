@@ -23,9 +23,10 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+//package edu.princeton.cs.algs4;
 
-import java.util.NoSuchElementException;
+//import java.util.NoSuchElementException;
+
 
 /**
  *  The {@code BST} class represents an ordered symbol table of generic
@@ -68,12 +69,9 @@ public class BST<Key extends Comparable<Key>, Value> {
 
 
 
-    // for algs workshop
-    private int putCount = 0;
-    private boolean madeNewNode = false;
 
-    public int getPutCount() {return putCount;}
-    public boolean getNodeBool() {return madeNewNode;}
+
+    //private Queue<Key> q = new Queue()<Key>;
 
 
     private class Node {
@@ -95,6 +93,13 @@ public class BST<Key extends Comparable<Key>, Value> {
      */
     public BST() {
     }
+
+        // for algs workshop
+    public int putCount = 0;
+    public boolean madeNewNode = false;
+
+    public int getPutCount() {return putCount;}
+    public boolean getNodeBool() {return madeNewNode;}
 
     /**
      * Returns true if this symbol table is empty.
@@ -163,7 +168,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
-    	putCount = 0;
+    	//putCount = 0;
     	madeNewNode = false;
 
         if (key == null) throw new IllegalArgumentException("calls put() with a null key");
@@ -175,13 +180,14 @@ public class BST<Key extends Comparable<Key>, Value> {
         assert check();
 
         System.out.printf("putCount == %d\n", putCount);
-        System.out.printf("madeNewNode? == %b\n", madeNewNode);
+        //System.out.printf("madeNewNode? == %b\n", madeNewNode);
     }
 
     private Node put(Node x, Key key, Value val) {
         if (x == null) {
-        	return new Node(key, val, 1);
         	madeNewNode = true;
+        	return new Node(key, val, 1);
+        	
         }
         int cmp = key.compareTo(x.key);
         putCount++;
@@ -199,7 +205,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @throws NoSuchElementException if the symbol table is empty
      */
     public void deleteMin() {
-        if (isEmpty()) throw new NoSuchElementException("Symbol table underflow");
+        //if (isEmpty()) throw new NoSuchElementException("Symbol table underflow");
         root = deleteMin(root);
         assert check();
     }
@@ -217,7 +223,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @throws NoSuchElementException if the symbol table is empty
      */
     public void deleteMax() {
-        if (isEmpty()) throw new NoSuchElementException("Symbol table underflow");
+        //if (isEmpty()) throw new NoSuchElementException("Symbol table underflow");
         root = deleteMax(root);
         assert check();
     }
@@ -268,7 +274,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @throws NoSuchElementException if the symbol table is empty
      */
     public Key min() {
-        if (isEmpty()) throw new NoSuchElementException("calls min() with empty symbol table");
+        //if (isEmpty()) throw new NoSuchElementException("calls min() with empty symbol table");
         return min(root).key;
     } 
 
@@ -284,7 +290,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @throws NoSuchElementException if the symbol table is empty
      */
     public Key max() {
-        if (isEmpty()) throw new NoSuchElementException("calls max() with empty symbol table");
+        //if (isEmpty()) throw new NoSuchElementException("calls max() with empty symbol table");
         return max(root).key;
     } 
 
@@ -303,7 +309,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      */
     public Key floor(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to floor() is null");
-        if (isEmpty()) throw new NoSuchElementException("calls floor() with empty symbol table");
+        //if (isEmpty()) throw new NoSuchElementException("calls floor() with empty symbol table");
         Node x = floor(root, key);
         if (x == null) return null;
         else return x.key;
@@ -341,7 +347,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      */
     public Key ceiling(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to ceiling() is null");
-        if (isEmpty()) throw new NoSuchElementException("calls ceiling() with empty symbol table");
+        //if (isEmpty()) throw new NoSuchElementException("calls ceiling() with empty symbol table");
         Node x = ceiling(root, key);
         if (x == null) return null;
         else return x.key;
@@ -501,9 +507,9 @@ public class BST<Key extends Comparable<Key>, Value> {
     *  Check integrity of BST data structure.
     ***************************************************************************/
     private boolean check() {
-        if (!isBST())            StdOut.println("Not in symmetric order");
-        if (!isSizeConsistent()) StdOut.println("Subtree counts not consistent");
-        if (!isRankConsistent()) StdOut.println("Ranks not consistent");
+        if (!isBST())            System.out.println("Not in symmetric order");
+        if (!isSizeConsistent()) System.out.println("Subtree counts not consistent");
+        if (!isRankConsistent()) System.out.println("Ranks not consistent");
         return isBST() && isSizeConsistent() && isRankConsistent();
     }
 
@@ -547,6 +553,8 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @param args the command-line arguments
      */
     public static void main(String[] args) { 
+
+
         BST<String, Integer> st = new BST<String, Integer>();
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
@@ -554,12 +562,12 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
 
         for (String s : st.levelOrder())
-            StdOut.println(s + " " + st.get(s));
+            System.out.println(s + " " + st.get(s));
 
-        StdOut.println();
+        System.out.println();
 
         for (String s : st.keys())
-            StdOut.println(s + " " + st.get(s));
+            System.out.println(s + " " + st.get(s));
     }
 }
 
