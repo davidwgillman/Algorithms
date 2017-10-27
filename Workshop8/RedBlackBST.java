@@ -1,79 +1,18 @@
-/******************************************************************************
- *  Compilation:  javac RedBlackBST.java
- *  Execution:    java RedBlackBST < input.txt
- *  Dependencies: StdIn.java StdOut.java  
- *  Data files:   https://algs4.cs.princeton.edu/33balanced/tinyST.txt  
- *    
- *  A symbol table implemented using a left-leaning red-black BST.
- *  This is the 2-3 version.
- *
- *  Note: commented out assertions because DrJava now enables assertions
- *        by default.
- *
- *  % more tinyST.txt
- *  S E A R C H E X A M P L E
- *  
- *  % java RedBlackBST < tinyST.txt
- *  A 8
- *  C 4
- *  E 12
- *  H 5
- *  L 11
- *  M 9
- *  P 10
- *  R 3
- *  S 0
- *  X 7
- *
- ******************************************************************************/
-
-package edu.princeton.cs.algs4;
 
 import java.util.NoSuchElementException;
 
-/**
- *  The {@code BST} class represents an ordered symbol table of generic
- *  key-value pairs.
- *  It supports the usual <em>put</em>, <em>get</em>, <em>contains</em>,
- *  <em>delete</em>, <em>size</em>, and <em>is-empty</em> methods.
- *  It also provides ordered methods for finding the <em>minimum</em>,
- *  <em>maximum</em>, <em>floor</em>, and <em>ceiling</em>.
- *  It also provides a <em>keys</em> method for iterating over all of the keys.
- *  A symbol table implements the <em>associative array</em> abstraction:
- *  when associating a value with a key that is already in the symbol table,
- *  the convention is to replace the old value with the new value.
- *  Unlike {@link java.util.Map}, this class uses the convention that
- *  values cannot be {@code null}—setting the
- *  value associated with a key to {@code null} is equivalent to deleting the key
- *  from the symbol table.
- *  <p>
- *  This implementation uses a left-leaning red-black BST. It requires that
- *  the key type implements the {@code Comparable} interface and calls the
- *  {@code compareTo()} and method to compare two keys. It does not call either
- *  {@code equals()} or {@code hashCode()}.
- *  The <em>put</em>, <em>contains</em>, <em>remove</em>, <em>minimum</em>,
- *  <em>maximum</em>, <em>ceiling</em>, and <em>floor</em> operations each take
- *  logarithmic time in the worst case, if the tree becomes unbalanced.
- *  The <em>size</em>, and <em>is-empty</em> operations take constant time.
- *  Construction takes constant time.
- *  <p>
- *  For additional documentation, see <a href="https://algs4.cs.princeton.edu/33balanced">Section 3.3</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
- *  For other implementations of the same API, see {@link ST}, {@link BinarySearchST},
- *  {@link SequentialSearchST}, {@link BST},
- *  {@link SeparateChainingHashST}, {@link LinearProbingHashST}, and {@link AVLTreeST}.
- *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
- */
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+
 
 public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     private static final boolean RED   = true;
     private static final boolean BLACK = false;
-
+    private int compCount;
     private Node root;     // root of the BST
-
+    
     // BST helper node data type
     private class Node {
         private Key key;           // key
@@ -81,6 +20,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         private Node left, right;  // links to left and right subtrees
         private boolean color;     // color of parent link
         private int size;          // subtree count
+       
 
         public Node(Key key, Value val, boolean color, int size) {
             this.key = key;
@@ -89,7 +29,13 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
             this.size = size;
         }
     }
+    public int getCompCount() {
+		return compCount;
+	}
 
+	public void setCompCount(int compCount) {
+		this.compCount = compCount;
+	}
     /**
      * Initializes an empty symbol table.
      */
@@ -195,9 +141,13 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     // insert the key-value pair in the subtree rooted at h
     private Node put(Node h, Key key, Value val) { 
-        if (h == null) return new Node(key, val, RED, 1);
-
-        int cmp = key.compareTo(h.key);
+        if (h == null) {
+        	
+        	return new Node(key, val, RED, 1); //make a new node if there isn't one.
+        }
+        
+        int cmp = key.compareTo(h.key); //only this counts
+        this.setCompCount(this.getCompCount() + 1);
         if      (cmp < 0) h.left  = put(h.left,  key, val); 
         else if (cmp > 0) h.right = put(h.right, key, val); 
         else              h.val   = val;
@@ -717,27 +667,3 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         StdOut.println();
     }
 }
-
-/******************************************************************************
- *  Copyright 2002-2016, Robert Sedgewick and Kevin Wayne.
- *
- *  This file is part of algs4.jar, which accompanies the textbook
- *
- *      Algorithms, 4th edition by Robert Sedgewick and Kevin Wayne,
- *      Addison-Wesley Professional, 2011, ISBN 0-321-57351-X.
- *      http://algs4.cs.princeton.edu
- *
- *
- *  algs4.jar is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  algs4.jar is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with algs4.jar.  If not, see http://www.gnu.org/licenses.
- ******************************************************************************/

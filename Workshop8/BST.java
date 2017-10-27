@@ -1,31 +1,8 @@
-/******************************************************************************
- *  Compilation:  javac BST.java
- *  Execution:    java BST
- *  Dependencies: StdIn.java StdOut.java Queue.java
- *  Data files:   https://algs4.cs.princeton.edu/32bst/tinyST.txt  
- *
- *  A symbol table implemented with a binary search tree.
- * 
- *  % more tinyST.txt
- *  S E A R C H E X A M P L E
- *  
- *  % java BST < tinyST.txt
- *  A 8
- *  C 4
- *  E 12
- *  H 5
- *  L 11
- *  M 9
- *  P 10
- *  R 3
- *  S 0
- *  X 7
- *
- ******************************************************************************/
-
-package edu.princeton.cs.algs4;
-
 import java.util.NoSuchElementException;
+
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 /**
  *  The {@code BST} class represents an ordered symbol table of generic
@@ -65,24 +42,36 @@ import java.util.NoSuchElementException;
  */
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;             // root of BST
+    private int compCount;
+
 
     private class Node {
         private Key key;           // sorted by key
         private Value val;         // associated data
         private Node left, right;  // left and right subtrees
         private int size;          // number of nodes in subtree
-
+        
         public Node(Key key, Value val, int size) {
             this.key = key;
             this.val = val;
             this.size = size;
+            
         }
     }
+
+	public int getCompCount() {
+		return compCount;
+	}
+
+	public void setCompCount(int compCount) {
+		this.compCount = compCount;
+	}
 
     /**
      * Initializes an empty symbol table.
      */
     public BST() {
+    	this.setCompCount(0);
     }
 
     /**
@@ -162,12 +151,16 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     private Node put(Node x, Key key, Value val) {
-        if (x == null) return new Node(key, val, 1);
+        if (x == null) {
+        	return new Node(key, val, 1);
+        }
         int cmp = key.compareTo(x.key);
+        this.setCompCount(this.getCompCount() + 1);
         if      (cmp < 0) x.left  = put(x.left,  key, val);
         else if (cmp > 0) x.right = put(x.right, key, val);
         else              x.val   = val;
         x.size = 1 + size(x.left) + size(x.right);
+        
         return x;
     }
 
@@ -541,27 +534,3 @@ public class BST<Key extends Comparable<Key>, Value> {
             StdOut.println(s + " " + st.get(s));
     }
 }
-
-/******************************************************************************
- *  Copyright 2002-2016, Robert Sedgewick and Kevin Wayne.
- *
- *  This file is part of algs4.jar, which accompanies the textbook
- *
- *      Algorithms, 4th edition by Robert Sedgewick and Kevin Wayne,
- *      Addison-Wesley Professional, 2011, ISBN 0-321-57351-X.
- *      http://algs4.cs.princeton.edu
- *
- *
- *  algs4.jar is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  algs4.jar is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with algs4.jar.  If not, see http://www.gnu.org/licenses.
- ******************************************************************************/
