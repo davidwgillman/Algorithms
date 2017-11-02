@@ -184,7 +184,7 @@ public class DoubleHashST<Key, Value> {
 
         /* Fill in.
         *  Write insertion code that follows the description at the top of this file.
-        *  Rehash using rehash()
+        *  Rehash using rehash()   
         *  Trick for switching tables: j = 1-j.
         */
 
