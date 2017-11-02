@@ -10,6 +10,7 @@
 
 import java.util.Random;
 
+import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
@@ -92,6 +93,14 @@ public class DoubleHashST<Key, Value> {
      */
     public int size() {
         // Fill in 
+    	return size(0)+size(1);
+    }
+    private int size(int table){
+    	int count=0;
+    	for(int i=0;i<keys[table].length;i++)
+    		if(keys[table][i]!=null)
+    			count++;
+    	return count;
     }
 
     /**
@@ -179,7 +188,8 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if (/*Fill in*/) resize(2*m);
+        if(size(0)>=keys[0].length || size(1)>=keys[1].length)
+        	resize(2*m);
 
         int j; // the table
         int i; // the index
@@ -244,7 +254,7 @@ public class DoubleHashST<Key, Value> {
         Queue<Key> queue = new Queue<Key>();
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < m; i++) {
-                if (keys[i] != null) queue.enqueue(keys[i]);
+                if (keys[i] != null) queue.enqueue(keys[i][j]);
             }
         }
         return queue;
