@@ -28,7 +28,7 @@
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.*; 
-
+import edu.princeton.cs.algs4.Stopwatch;
 import java.util.NoSuchElementException;
 
 /**
@@ -735,14 +735,21 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      */
     public static void main(String[] args) { 
         RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
+       
+        Stopwatch stopwatch = new Stopwatch();
+
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
-            StdOut.println("Key: " + key + ", Value: " + i);
+            //StdOut.println("Key: " + key + ", Value: " + i);
             st.put(key, i);
         }
+        double time = stopwatch.elapsedTime();
+        System.out.println("book has a sort time of: " + time);
+
         /*for (String s : st.keys())
             StdOut.println(s + " " + st.get(s));
         StdOut.println();*/
+
     }
 }
 
