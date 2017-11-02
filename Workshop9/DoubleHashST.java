@@ -8,6 +8,7 @@
  *
  ******************************************************************************/
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import edu.princeton.cs.algs4.Queue;
@@ -82,6 +83,7 @@ public class DoubleHashST<Key, Value> {
         }
 
         Random rnd = new Random();
+        a=new int[2];
         a[0] = rnd.nextInt();
         a[1] = rnd.nextInt();        
    }
@@ -96,11 +98,7 @@ public class DoubleHashST<Key, Value> {
     	return size(0)+size(1);
     }
     private int size(int table){
-    	int count=0;
-    	for(int i=0;i<keys[table].length;i++)
-    		if(keys[table][i]!=null)
-    			count++;
-    	return count;
+    	return n[table];
     }
 
     /**
@@ -179,7 +177,10 @@ public class DoubleHashST<Key, Value> {
      * @param  val the value
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
-    public void put(Key key, Value val) {
+    public void put(Key key, Value val){
+    	put(key,val,null);
+    }
+    private void put(Key key, Value val, ArrayList<Key> evicted) {
         if (key == null) throw new IllegalArgumentException("first argument to put() is null");
 
         if (val == null) {
@@ -188,22 +189,39 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if(size(0)>=keys[0].length || size(1)>=keys[1].length)
+        if(size(0)>=keys[0].length/2.0 || size(1)>=keys[1].length/2.0)
         	resize(2*m);
 
-        int j; // the table
+        int j=0; // the table
+        if(size(0)<size(1))
+        	j=1;
         int i; // the index
+        i=hash(key,j);
 
         /* Fill in.
         *  Write insertion code that follows the description at the top of this file.
         *  Rehash using rehash()   
         *  Trick for switching tables: j = 1-j.
         */
+        Key oldKey=null;
+        Value oldVal=null;
+        if(keys[j][i]!=null){ //Must evict key
+        	oldKey=keys[j][i];
+        	oldVal=vals[j][i];
+        	if(evicted.contains(oldKey)){
+        		rehash();
+        		put(key,val,null);
+        	}
+        	evicted.add(oldKey);
+        }
 
         // After finding a place for the key:
         keys[j][i] = key;
         vals[j][i] = val;
-        n[j]++;
+        if(oldKey!=null)
+        	put(oldKey,oldVal,evicted);
+        else
+        	n[j]++;
     }
 
     /**
@@ -218,6 +236,12 @@ public class DoubleHashST<Key, Value> {
 
         // Fill in. 
         // Try to find the key in each table.
+        int h=hash(key,0);
+        if(keys[0][h]==key)
+        	return vals[0][h];
+        h=hash(key,1);
+        if(keys[1][h]==key)
+        	return vals[1][h];
         // If it's not there:
         return null;
     }
@@ -234,13 +258,23 @@ public class DoubleHashST<Key, Value> {
         if (!contains(key)) return;
 
         // Fill in: find position i of key in table j
+        int i=hash(key,0);
+        int j=0;
+        if(!(keys[0][i]==key)){
+        	j=1;
+        	i=hash(key,1);
+        }
         // After finding the key, delete it and associated value 
+        keys[j][i]=null;
         // Decrement the size of table j
+        n[j]--;
  
         // Then halve the size of both arrays if the fuller one is 1/8 full or less
-        if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
+        /*Fill in: arrays are not empty but they are too small*/
+        if(size(0)>0 && size(1)>0 && size(0)<=keys[0].length/8.0 && size(1)<=keys[1].length/8.0)
+        	resize(m/2);
 
-        assert check();
+        //assert check();
     }
 
     /**
