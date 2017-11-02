@@ -8,8 +8,9 @@
  *
  ******************************************************************************/
 
-import edu.princeton.cs.algs4.StdIn
-import edu.princeton.cs.algs4.StdOUt
+//import edu.princeton.cs.algs4.StdIn;
+//import edu.princeton.cs.algs4.StdOUt;
+import java.util.Random;
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
 
 /**
@@ -65,9 +66,10 @@ public class DoubleHashST<Key, Value> {
      * @param capacity the initial capacity
      */
     public DoubleHashST(int capacity) {
-        n = new int[2];
-        keys = new Key[2][];
-        vals = new Value[2][];
+        n = new int[2];  // store the size of each table
+
+        keys = (Key[][]) new Object[2][];
+        vals = (Value[][] )new Object[2][];
         
         m = capacity;
         n[0] = 0;
@@ -90,6 +92,7 @@ public class DoubleHashST<Key, Value> {
      */
     public int size() {
         // Fill in 
+        return n[0] + n[1];
     }
 
     /**
@@ -119,8 +122,8 @@ public class DoubleHashST<Key, Value> {
     // if M = 2^(32-h) the formula is (a * abs(hashcode) mod 2^32) / 2^h
     private int hash(Key key, int k) {
         long l = key.hashCode() & 0x7fffffff; // 0 to 2^31 - 1, like abs(hashcode) but bug-free
-        l = (a[k] * l) % 0xffffffffL; // 0 to 2^32 - 1
-        return (int) (l * m / 0xffffffffL); // 0 to M - 1
+        l = (a[k] * l) % 4294967296L; // 0 to 2^32 - 1
+        return (int) (l * m / 4294967296L); // 0 to M - 1
     }
 
     // resizes the hash table to the given capacity by re-hashing all of the keys
@@ -157,7 +160,7 @@ public class DoubleHashST<Key, Value> {
     }
 
     /**
-     * Inserts the specified key-value pair into the symbol table, overwriting the old 
+     * Inserts the specifieupdate remote branch gitd key-value pair into the symbol table, overwriting the old 
      * value with the new value if the symbol table already contains the specified key.
      * Deletes the specified key (and its associated value) from this symbol table
      * if the specified value is {@code null}.
@@ -177,10 +180,11 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if (/*Fill in*/) resize(2*m);
+        //if (/*Fill in*/) resize(2*m);
+        if (n[0] > (m/2) || n[1] > (m/2)) resize(2*m);
 
-        int j; // the table
-        int i; // the index
+        int j = -1;; // the table, either 0 or 1
+        int i = -1; // the index
 
         /* Fill in.
         *  Write insertion code that follows the description at the top of this file.
@@ -188,7 +192,37 @@ public class DoubleHashST<Key, Value> {
         *  Trick for switching tables: j = 1-j.
         */
 
+        // First determine which to try to put it in
+        Boolean left = (n[0] <= n[1]);
+        Boolean leftTaken = false;
+        Boolean rightTaken = false;
+        if (left) {
+            int hash0 = hash(key,0);
+            leftTaken = (keys[0][hash0] != null);
+            if (!leftTaken) {
+                j = 0;
+                i = hash0;
+            }
+        } else {
+            int hash1 = hash(key,1);
+            rightTaken = (keys[1][hash1] != null);
+            if (!rightTaken) {
+                j = 1;
+                i = hash1;
+            }    
+        }
+        while (leftTaken && rightTaken) {
+            // rehash and try to put
+            rehash();
+            leftTaken = (keys[0][hash0] != null);
+            rightTaken = (keys[1][hash1] != null);
+        }
+
         // After finding a place for the key:
+        if (i == -1 || j == -1) {
+            System.out.println("Key put error not resolved");
+        }
+
         keys[j][i] = key;
         vals[j][i] = val;
         n[j]++;
@@ -206,6 +240,8 @@ public class DoubleHashST<Key, Value> {
 
         // Fill in. 
         // Try to find the key in each table.
+        int hash0 = hash(key,0);
+        // if Key[0][hash0] != 
         // If it's not there:
         return null;
     }
@@ -218,6 +254,7 @@ public class DoubleHashST<Key, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void delete(Key key) {
+        //for (int j = 0; j < 2; j++) {delete(Key[j][key]) ;}  // Fill
         if (key == null) throw new IllegalArgumentException("argument to delete() is null");
         if (!contains(key)) return;
 
@@ -226,7 +263,9 @@ public class DoubleHashST<Key, Value> {
         // Decrement the size of table j
  
         // Then halve the size of both arrays if the fuller one is 1/8 full or less
-        if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
+        Boolean tooSmall = (n[0] < (m/8) || n[1] < (m/8));
+        //if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
+        if (tooSmall) resize(m/2);
 
         assert check();
     }
@@ -242,7 +281,7 @@ public class DoubleHashST<Key, Value> {
         Queue<Key> queue = new Queue<Key>();
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < m; i++) {
-                if (keys[i] != null) queue.enqueue(keys[i]);
+                if (keys[j][i] != null) queue.enqueue(keys[j][i]);
             }
         }
         return queue;
@@ -253,7 +292,7 @@ public class DoubleHashST<Key, Value> {
     private boolean check() {
 
         // check that hash tables are at most 50% full
-        if (n[0] > m[0]/2 || n[1] > m[1]/2)  {
+        if (n[0] > m/2 || n[1] > m/2)  {
             System.err.println("Hash table size m = " + m + "; array size n = " + n);
             return false;
         }
@@ -263,7 +302,7 @@ public class DoubleHashST<Key, Value> {
             for (int i = 0; i < m; i++) {
                 if (keys[j][i] == null) continue;
                 else if (get(keys[j][i]) != vals[j][i]) {
-                    System.err.println("get[" + keys[i] + "] = " + get(keys[i]) + "; vals[i] = " + vals[i]);
+                    System.err.println("get[" + keys[j][i] + "] = " + get(keys[j][i]) + "; vals[i] = " + vals[j][i]);
                     return false;
                 }
             }
