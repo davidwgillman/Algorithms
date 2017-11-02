@@ -8,9 +8,10 @@
  *
  ******************************************************************************/
 
-import edu.princeton.cs.algs4.StdIn
-import edu.princeton.cs.algs4.StdOUt
+// import edu.princeton.cs.algs4.StdIn
+// import edu.princeton.cs.algs4.StdOUt
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
+import java.util.*;
 
 /**
  *  The {@code DoubleHashST} class represents a symbol table of generic
@@ -66,8 +67,9 @@ public class DoubleHashST<Key, Value> {
      */
     public DoubleHashST(int capacity) {
         n = new int[2];
-        keys = new Key[2][];
-        vals = new Value[2][];
+        
+        keys = (Key[][]) new Object[2][];
+        vals = (Value[][]) new Object[2][];
         
         m = capacity;
         n[0] = 0;
@@ -89,7 +91,9 @@ public class DoubleHashST<Key, Value> {
      * @return the number of key-value pairs in this symbol table
      */
     public int size() {
-        // Fill in 
+        // Fill in
+        int pairs = n[0] + n[1];
+        return pairs;
     }
 
     /**
@@ -119,8 +123,8 @@ public class DoubleHashST<Key, Value> {
     // if M = 2^(32-h) the formula is (a * abs(hashcode) mod 2^32) / 2^h
     private int hash(Key key, int k) {
         long l = key.hashCode() & 0x7fffffff; // 0 to 2^31 - 1, like abs(hashcode) but bug-free
-        l = (a[k] * l) % 0xffffffffL; // 0 to 2^32 - 1
-        return (int) (l * m / 0xffffffffL); // 0 to M - 1
+        l = (a[k] * l) % 4294967296L; // 0 to 2^32 - 1
+        return (int) (l * m / 4294967296L); // 0 to M - 1
     }
 
     // resizes the hash table to the given capacity by re-hashing all of the keys
@@ -136,9 +140,8 @@ public class DoubleHashST<Key, Value> {
         }
         keys = temp.keys;
         vals = temp.vals;
-        m    = temp.m;
+        m = temp.m;
     }
-
 
     // rehashes the hash table with new hash a
     // keep same size n and capacity m
@@ -177,9 +180,11 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if (/*Fill in*/) resize(2*m);
+        if (n[0] >= m/2 || n[1] >= m/2) {
+            resize(2*m);
+        }
 
-        int j; // the table
+        int j = 0; // the table
         int i; // the index
 
         /* Fill in.
@@ -187,7 +192,43 @@ public class DoubleHashST<Key, Value> {
         *  Rehash using rehash()   
         *  Trick for switching tables: j = 1-j.
         */
-
+       int cycle = 0;
+       // hash new key to the table with fewer elements
+       if(n[0] > n[1]) {
+           j = 1;
+           i = hash(key, j);
+           // if table position is occupied, evict + replace key and hash old 
+           // and hash old key to other table (may evict another)
+           while (keys[j][i] != null) {
+               cycle ++;
+               j = 1 - j;
+               i = hash(key, j);
+               rehash();
+               if(cycle == 2){
+                   //rehash both tables
+                   rehash();
+                   cycle = 0;
+               }
+           }
+       }
+       else {
+           j = 1 - j;
+           i = hash(key, j);
+           // if table position is occupied, evict + replace key 
+           // and hash old key to other table (may evict another)
+           while (keys[j][i] != null) {
+               cycle ++;
+               j = 1 + j;
+               i = hash(key, j);
+               rehash();
+               if(cycle == 2){
+                   //rehash both tables
+                   rehash();
+                   cycle = 0;
+               }
+           }
+       }
+       
         // After finding a place for the key:
         keys[j][i] = key;
         vals[j][i] = val;
@@ -203,12 +244,24 @@ public class DoubleHashST<Key, Value> {
      */
     public Value get(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to get() is null");
-
-        // Fill in. 
+        // Fill in.
+        Value getV = null;
         // Try to find the key in each table.
-        // If it's not there:
-        return null;
-    }
+         if(contains(key)) {
+         for (int j = 0; j < 2; j++) { 
+               int hk = hash(key, j);
+           for(int i = 0; i < m; i++) {
+               if (keys[j][hk] == key) {
+                   getV = vals[j][hk];
+               }
+               else {
+                   return null;
+               }
+           }
+         }
+        }
+        return getV;
+   }
 
     /**
      * Removes the specified key and its associated value from this symbol table     
@@ -224,10 +277,32 @@ public class DoubleHashST<Key, Value> {
         // Fill in: find position i of key in table j
         // After finding the key, delete it and associated value 
         // Decrement the size of table j
+        for(int i = 0; i < m; i ++){
+            if(keys[0][i].equals(key)){
+                keys[0][i] = null;
+                vals[0][i] = null;
+                n[0]--;
+            }
+            if(keys[1][i].equals(key)){
+                keys[1][i] = null;
+                vals[1][i] = null;
+                n[1]--;
+            }
+            
+        }
  
         // Then halve the size of both arrays if the fuller one is 1/8 full or less
-        if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
-
+        if (n[0] > n[1]) {
+            if(n[0] <= m/8 || n[1] <= m/8) {
+                resize(m/2);
+            }
+        }
+        else {
+            if (n[1] <= m/8 || n[1] <= m/8) {
+                resize(m/2);
+            }
+        }
+        
         assert check();
     }
 
@@ -242,7 +317,7 @@ public class DoubleHashST<Key, Value> {
         Queue<Key> queue = new Queue<Key>();
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < m; i++) {
-                if (keys[i] != null) queue.enqueue(keys[i]);
+                if (keys[j][i] != null) queue.enqueue(keys[j][i]);
             }
         }
         return queue;
@@ -253,7 +328,7 @@ public class DoubleHashST<Key, Value> {
     private boolean check() {
 
         // check that hash tables are at most 50% full
-        if (n[0] > m[0]/2 || n[1] > m[1]/2)  {
+        if (n[0] > m/2 || n[1] > m/2)  {
             System.err.println("Hash table size m = " + m + "; array size n = " + n);
             return false;
         }
@@ -263,7 +338,7 @@ public class DoubleHashST<Key, Value> {
             for (int i = 0; i < m; i++) {
                 if (keys[j][i] == null) continue;
                 else if (get(keys[j][i]) != vals[j][i]) {
-                    System.err.println("get[" + keys[i] + "] = " + get(keys[i]) + "; vals[i] = " + vals[i]);
+                    System.err.println("get[" + keys[i] + "] = " + get(keys[j][i]) + "; vals[i] = " + vals[i]);
                     return false;
                 }
             }
