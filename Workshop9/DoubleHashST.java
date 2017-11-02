@@ -226,6 +226,14 @@ public class DoubleHashST<Key, Value> {
 
         // Fill in. 
         // Try to find the key in each table.
+
+        for (int i = 0; i < n; i++) {
+            if (keys[0][i] == key) {
+                return vals[0][i];
+            } else if (keys[1][i] == key) {
+                return vals[1][i];
+            }
+        }
         // If it's not there:
         return null;
     }
@@ -238,12 +246,24 @@ public class DoubleHashST<Key, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void delete(Key key) {
+
         if (key == null) throw new IllegalArgumentException("argument to delete() is null");
         if (!contains(key)) return;
 
         // Fill in: find position i of key in table j
         // After finding the key, delete it and associated value 
         // Decrement the size of table j
+        for (int i = 0; i < n; i++) {
+            if (keys[0][i] == key) {
+                keys[0][i] = null;
+                vals[0][i] = null;
+                n[0]--;
+            } else if (keys[1][i] == key) {
+                keys[1][i] = null;
+                vals[1][i] = null;
+                n[1]--;
+            }
+        }
  
         // Then halve the size of both arrays if the fuller one is 1/8 full or less
         if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
