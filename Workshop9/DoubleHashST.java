@@ -8,8 +8,10 @@
  *
  ******************************************************************************/
 
-import edu.princeton.cs.algs4.StdIn
-import edu.princeton.cs.algs4.StdOUt
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Queue;
+
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
 
 /**
@@ -183,9 +185,10 @@ public class DoubleHashST<Key, Value> {
 
         int j; // the table
         int i; // the index
+        int collisionIndex;
         Key collisionKey;
         Value collisionValue;
-        Key[] cycle;
+        int cycle = 0;
 
         /* Fill in.
         *  Write insertion code that follows the description at the top of this file.
@@ -201,17 +204,35 @@ public class DoubleHashST<Key, Value> {
 
         i = hash(key, j);
 
-        if ((keys[j][i] != null) && (vals[j][i] != null)) {
-            collisionKey = keys[j][i];
-            collisionValue = keys[j][i];
+        while ((keys[j][i] != null) && (vals[j][i] != null)) {
 
-            this.rehash();
+        	cycle++;
+            collisionKey = keys[j][i];
+            collisionValue = vals[j][i];
+            j = 1-j;
+            collisionIndex = hash(collisionKey, j);
+
+            // If there's a cycle
+            if (cycle == 2) {
+            	rehash();
+            	cycle = 0;
+            }
+
+            keys[j][i] = collisionKey;
+            vals[j][i] = collisionValue;
+
         }
 
-        // After finding a place for the key:
-        keys[j][i] = key;
-        vals[j][i] = val;
-        n[j]++;
+        if ((keys[j][i] != null) && (vals[j][i] != null)) {
+        	return;
+        } 
+
+        else {
+        	// After finding a place for the key:
+        	keys[j][i] = key;
+        	vals[j][i] = val;
+        	n[j]++;
+        }
     }
 
     /**
@@ -227,7 +248,7 @@ public class DoubleHashST<Key, Value> {
         // Fill in. 
         // Try to find the key in each table.
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < m; i++) {
             if (keys[0][i] == key) {
                 return vals[0][i];
             } else if (keys[1][i] == key) {
@@ -253,20 +274,28 @@ public class DoubleHashST<Key, Value> {
         // Fill in: find position i of key in table j
         // After finding the key, delete it and associated value 
         // Decrement the size of table j
-        for (int i = 0; i < n; i++) {
-            if (keys[0][i] == key) {
+        for (int i = 0; i < m; i++) {
+            if ((keys[0][i]).equals(key)) {
                 keys[0][i] = null;
                 vals[0][i] = null;
                 n[0]--;
-            } else if (keys[1][i] == key) {
+            } else if ((keys[1][i]).equals(key)) {
                 keys[1][i] = null;
                 vals[1][i] = null;
                 n[1]--;
             }
         }
+
+        int amountOfArrayFilled;
  
         // Then halve the size of both arrays if the fuller one is 1/8 full or less
-        if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
+        if (n[0] < n[1]) {
+        	amountOfArrayFilled = n[1];
+        } else {
+        	amountOfArrayFilled = n[0];
+        }
+
+        if (amountOfArrayFilled >= m/8) resize(m/2);
 
         assert check();
     }
@@ -293,7 +322,7 @@ public class DoubleHashST<Key, Value> {
     private boolean check() {
 
         // check that hash tables are at most 50% full
-        if (n[0] > m[0]/2 || n[1] > m[1]/2)  {
+        if (n[0] > m/2 || n[1] > m/2)  {
             System.err.println("Hash table size m = " + m + "; array size n = " + n);
             return false;
         }
@@ -327,10 +356,11 @@ public class DoubleHashST<Key, Value> {
         // print keys
         for (String s : st.keys()) 
             StdOut.println(s + " " + st.get(s)); 
-    }
+	}
 }
 
-/******************************************************************************
+/******    }
+************************************************************************
  *  Copyright 2002-2016, Robert Sedgewick and Kevin Wayne.
  *
  *  This file is part of algs4.jar, which accompanies the textbook
