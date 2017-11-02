@@ -79,8 +79,8 @@ public class DoubleHashST<Key, Value> {
         }
 
         Random rnd = new Random();
-        a[0] = rnd.nextInt();
-        a[1] = rnd.nextInt();        
+        a[0] = rnd.nextInt()&0x7fffffff;
+        a[1] = rnd.nextInt()&0x7fffffff;        
    }
 
     /**
@@ -89,13 +89,7 @@ public class DoubleHashST<Key, Value> {
      * @return the number of key-value pairs in this symbol table
      */
     public int size() {
-
-        int count = 0;
-        for (int i = 0; i < n; i++) {
-            count++;
-        }
-
-        return count; 
+        return n[0] + n[1];
     }
 
     /**
@@ -183,12 +177,15 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if ((n[0] > m/2) || (n[1] > m/2)) {
+        if ((n[0] >= m/2) || (n[1] >= m/2)) {
             resize(2*m);
         }
 
         int j; // the table
         int i; // the index
+        Key collisionKey;
+        Value collisionValue;
+        Key[] cycle;
 
         /* Fill in.
         *  Write insertion code that follows the description at the top of this file.
@@ -205,7 +202,10 @@ public class DoubleHashST<Key, Value> {
         i = hash(key, j);
 
         if ((keys[j][i] != null) && (vals[j][i] != null)) {
-            j = 1-j;
+            collisionKey = keys[j][i];
+            collisionValue = keys[j][i];
+
+            this.rehash();
         }
 
         // After finding a place for the key:
