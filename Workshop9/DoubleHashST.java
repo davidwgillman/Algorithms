@@ -125,8 +125,8 @@ public class DoubleHashST<Key, Value> {
     // if M = 2^(32-h) the formula is (a * abs(hashcode) mod 2^32) / 2^h
     private int hash(Key key, int k) {
         long l = key.hashCode() & 0x7fffffff; // 0 to 2^31 - 1, like abs(hashcode) but bug-free
-        l = (a[k] * l) % 0xffffffffL; // 0 to 2^32 - 1
-        return (int) (l * m / 0xffffffffL); // 0 to M - 1
+        l = (a[k] * l) % 4294967296L; // 0 to 2^32 - 1
+        return (int) (l * m / 4294967296L); // 0 to M - 1
     }
 
     // resizes the hash table to the given capacity by re-hashing all of the keys
@@ -200,6 +200,12 @@ public class DoubleHashST<Key, Value> {
             j = 1;
         } else {
             j = 0;
+        }
+
+        i = hash(key, j);
+
+        if ((keys[j][i] != null) && (vals[j][i] != null)) {
+            j = 1-j;
         }
 
         // After finding a place for the key:
