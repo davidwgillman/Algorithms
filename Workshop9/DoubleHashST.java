@@ -8,8 +8,12 @@
  *
  ******************************************************************************/
 
-import edu.princeton.cs.algs4.StdIn
-import edu.princeton.cs.algs4.StdOUt
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Queue;
+import java.util.ArrayList;
+import java.util.Random;
+
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
 
 /**
@@ -65,22 +69,22 @@ public class DoubleHashST<Key, Value> {
      * @param capacity the initial capacity
      */
     public DoubleHashST(int capacity) {
-        n = new int[2];
-        keys = new Key[2][];
-        vals = new Value[2][];
+        this.n = new int[2];
+        this.keys = (Key[][])   new Object[2][capacity];
+        this.vals = (Value[][]) new Object[2][capacity];
         
-        m = capacity;
-        n[0] = 0;
-        n[1] = 0;
+        this.m = capacity;
+        this.n[0] = 0;
+        this.n[1] = 0;
 
         for (int j = 0; j < 2; j++) {
-            keys[j] = (Key[])   new Object[m];
-            vals[j] = (Value[]) new Object[m];            
+            this.keys[j] = (Key[])   new Object[m];
+            this.vals[j] = (Value[]) new Object[m];            
         }
 
         Random rnd = new Random();
-        a[0] = rnd.nextInt();
-        a[1] = rnd.nextInt();        
+        this.a[0] = rnd.nextInt() & 0x7fffffff;
+        this.a[1] = rnd.nextInt() & 0x7fffffff;        
    }
 
     /**
@@ -89,7 +93,7 @@ public class DoubleHashST<Key, Value> {
      * @return the number of key-value pairs in this symbol table
      */
     public int size() {
-        // Fill in 
+        return n[0] + n[1];
     }
 
     /**
@@ -177,20 +181,41 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if (/*Fill in*/) resize(2*m);
+        int indexOfMax = -1;
+        if(n[0]>n[1]){
+            indexOfMax = 0;
+        }
+        else{
+            indexOfMax = 1;
+        }
 
-        int j; // the table
-        int i; // the index
+        if (n[indexOfMax] >= m/2){
+            resize(2*m);
+        }
 
-        /* Fill in.
-        *  Write insertion code that follows the description at the top of this file.
-        *  Rehash using rehash()   
-        *  Trick for switching tables: j = 1-j.
-        */
+        int j = indexOfMax; // the table
+        int i = hash(key, j); // the index
+        ArrayList<Key> tempKeyList = new ArrayList<Key>();
+
+        Key tempKey = key;
+        Value tempVal = val;
+
+        while(keys[j][i] != null){
+            if(tempKeyList.contains(key)){
+                rehash();
+                break;
+            }
+            else{
+                tempKey = keys[j][i];
+                tempVal = vals[j][i];
+                j= j-1;
+                tempKeyList.add(tempKey);
+            }
+        }
 
         // After finding a place for the key:
-        keys[j][i] = key;
-        vals[j][i] = val;
+        keys[j][i] = tempKey;
+        vals[j][i] = tempVal;
         n[j]++;
     }
 
@@ -204,10 +229,17 @@ public class DoubleHashST<Key, Value> {
     public Value get(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to get() is null");
 
-        // Fill in. 
-        // Try to find the key in each table.
-        // If it's not there:
-        return null;
+        int j = 0;
+        int i = hash(key, j);
+        if (keys[j][i].equals(key)){
+            return vals[j][i];
+        }
+        else if(keys[j-1][i].equals(key)){
+            return vals[j-1][i];
+        }
+        else{
+            return null;
+        }
     }
 
     /**
@@ -220,13 +252,30 @@ public class DoubleHashST<Key, Value> {
     public void delete(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to delete() is null");
         if (!contains(key)) return;
+        int j = 0;
+        int i = hash(key, j);
+        if (keys[j][i].equals(key)){
+            keys[j][i] = null;
+            vals[j][i] = null;
+            n[j]--;
+        }
+        else if(keys[j-1][i].equals(key)){
+            keys[j-1][i] = null;
+            vals[j-1][i] = null;
+            n[j]--;
+        }
 
-        // Fill in: find position i of key in table j
-        // After finding the key, delete it and associated value 
-        // Decrement the size of table j
- 
-        // Then halve the size of both arrays if the fuller one is 1/8 full or less
-        if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
+        int indexOfMax = -1;
+        if(n[0]>n[1]){
+            indexOfMax = 0;
+        }
+        else{
+            indexOfMax = 1;
+        }
+
+        if (n[indexOfMax] > 0 && n[indexOfMax] <= m/8){
+            resize(m/2);
+        }
 
         assert check();
     }
@@ -242,7 +291,7 @@ public class DoubleHashST<Key, Value> {
         Queue<Key> queue = new Queue<Key>();
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < m; i++) {
-                if (keys[i] != null) queue.enqueue(keys[i]);
+                if (keys[j][i] != null) queue.enqueue(keys[j][i]);
             }
         }
         return queue;
@@ -253,7 +302,7 @@ public class DoubleHashST<Key, Value> {
     private boolean check() {
 
         // check that hash tables are at most 50% full
-        if (n[0] > m[0]/2 || n[1] > m[1]/2)  {
+        if (n[0] > n[0]/2 || n[1] > n[1]/2)  {
             System.err.println("Hash table size m = " + m + "; array size n = " + n);
             return false;
         }
@@ -263,7 +312,7 @@ public class DoubleHashST<Key, Value> {
             for (int i = 0; i < m; i++) {
                 if (keys[j][i] == null) continue;
                 else if (get(keys[j][i]) != vals[j][i]) {
-                    System.err.println("get[" + keys[i] + "] = " + get(keys[i]) + "; vals[i] = " + vals[i]);
+                    System.err.println("get[" + keys[j][i] + "] = " + get(keys[j][i]) + "; vals[i] = " + vals[j][i]);
                     return false;
                 }
             }
