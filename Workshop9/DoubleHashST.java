@@ -8,8 +8,9 @@
  *
  ******************************************************************************/
 
-import edu.princeton.cs.algs4.StdIn
-import edu.princeton.cs.algs4.StdOUt
+import edu.princeton.cs.algs4.*;
+import java.util.Random;
+import java.util.ArrayList;
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
 
 /**
@@ -49,8 +50,8 @@ public class DoubleHashST<Key, Value> {
     private int m;             // size of each hash table
     private Key[][] keys;      // the keys
     private Value[][] vals;    // the values
-
     private int[] a;           // random hash parameter
+    private ArrayList<Key> whos_kicked_out;
 
     /**
      * Initializes an empty symbol table.
@@ -66,8 +67,9 @@ public class DoubleHashST<Key, Value> {
      */
     public DoubleHashST(int capacity) {
         n = new int[2];
-        keys = new Key[2][];
-        vals = new Value[2][];
+        whos_kicked_out = new ArrayList<Key>();
+        keys = (Key[][]) new Object[2][];
+        vals = (Value[][]) new Object[2][];
         
         m = capacity;
         n[0] = 0;
@@ -83,13 +85,28 @@ public class DoubleHashST<Key, Value> {
         a[1] = rnd.nextInt();        
    }
 
+    public int[] tableSizes(){
+        int first = 0;
+        int second = 0;
+        for(int i = 0; i < keys[0].length; i++){
+            if(keys[0][i] != null){
+                first++;
+            }
+            if(keys[1][i] != null){
+                second++;
+            }
+        }
+        int[] x = {first, second};
+        n = x;
+        return x;
+    }
     /**
      * Returns the number of key-value pairs in this symbol table.
      *
      * @return the number of key-value pairs in this symbol table
      */
     public int size() {
-        // Fill in 
+        return this.tableSizes()[0] + this.tableSizes()[1];
     }
 
     /**
@@ -168,6 +185,32 @@ public class DoubleHashST<Key, Value> {
      * @param  val the value
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
+    public void putTable(Key key, Value val, int j) {
+        if (key == null) throw new IllegalArgumentException("first argument to put() is null");
+
+        if (val == null) {
+            delete(key);
+            return;
+        }
+        int i = this.hash(key, j);
+        if(keys[j][i] == null){
+            keys[j][i] = key;
+            vals[j][i] = val;
+        }
+        //if there is a key in our position
+        else{
+            Key temp_key = keys[j][i];
+            Value temp_value = vals[j][i];
+            if(whos_kicked_out.contains(temp_key)){
+                this.rehash();
+            }
+            else{
+            whos_kicked_out.add(temp_key);
+            this.putTable(temp_key, temp_value, 1-j);
+        }
+        }
+    }
+    
     public void put(Key key, Value val) {
         if (key == null) throw new IllegalArgumentException("first argument to put() is null");
 
@@ -177,11 +220,26 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if (/*Fill in*/) resize(2*m);
+        if (this.n[0] >= this.m || this.n[1] >= this.m) resize(2*m);
 
         int j; // the table
         int i; // the index
-
+        int smaller_table = Math.min(keys[0].length, keys[1].length);
+        int key_hash = this.hash(key, smaller_table);
+        j = smaller_table;
+        i = key_hash;
+        //if no key in our position
+        if(keys[smaller_table][key_hash] == null){
+            keys[smaller_table][key_hash] = key;
+            vals[smaller_table][key_hash] = val;
+        }
+        //if there is a key in our position
+        else{
+            Key temp_key = keys[smaller_table][key_hash];
+            Value temp_value = vals[smaller_table][key_hash];
+            whos_kicked_out.add(temp_key);
+            this.putTable(temp_key, temp_value, 1-j);
+        }
         /* Fill in.
         *  Write insertion code that follows the description at the top of this file.
         *  Rehash using rehash()   
@@ -189,9 +247,7 @@ public class DoubleHashST<Key, Value> {
         */
 
         // After finding a place for the key:
-        keys[j][i] = key;
-        vals[j][i] = val;
-        n[j]++;
+        whos_kicked_out.clear();
     }
 
     /**
@@ -203,7 +259,14 @@ public class DoubleHashST<Key, Value> {
      */
     public Value get(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to get() is null");
-
+        
+        for(int i = 0; i < keys.length; i++){
+            for(int j = 0; j < keys[i].length; i++){
+                if(keys[i][j].equals(key)){
+                    return vals[i][j];
+                }
+            }
+        }
         // Fill in. 
         // Try to find the key in each table.
         // If it's not there:
@@ -220,13 +283,22 @@ public class DoubleHashST<Key, Value> {
     public void delete(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to delete() is null");
         if (!contains(key)) return;
-
+        
+        for(int j = 0; j < keys.length; j++){
+            for(int i = 0; i < keys[j].length; i++){
+                if(keys[j][i].equals(key)){
+                    keys[j][i] = null;
+                    vals[j][i] = null;
+                }
+            }
+        }
+        
         // Fill in: find position i of key in table j
         // After finding the key, delete it and associated value 
         // Decrement the size of table j
  
         // Then halve the size of both arrays if the fuller one is 1/8 full or less
-        if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
+        if (this.n[0] <= (int) this.m / 8 || this.n[1] <= (int) this.m / 8) resize(m/2);
 
         assert check();
     }
@@ -242,7 +314,7 @@ public class DoubleHashST<Key, Value> {
         Queue<Key> queue = new Queue<Key>();
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < m; i++) {
-                if (keys[i] != null) queue.enqueue(keys[i]);
+                if (keys[j][i] != null) queue.enqueue(keys[j][i]);
             }
         }
         return queue;
@@ -253,7 +325,7 @@ public class DoubleHashST<Key, Value> {
     private boolean check() {
 
         // check that hash tables are at most 50% full
-        if (n[0] > m[0]/2 || n[1] > m[1]/2)  {
+        if (n[0] > m/2 || n[1] > m/2)  {
             System.err.println("Hash table size m = " + m + "; array size n = " + n);
             return false;
         }
@@ -263,7 +335,7 @@ public class DoubleHashST<Key, Value> {
             for (int i = 0; i < m; i++) {
                 if (keys[j][i] == null) continue;
                 else if (get(keys[j][i]) != vals[j][i]) {
-                    System.err.println("get[" + keys[i] + "] = " + get(keys[i]) + "; vals[i] = " + vals[i]);
+                    System.err.println("get[" + keys[i] + "] = " + get(keys[j][i]) + "; vals[i] = " + vals[i]);
                     return false;
                 }
             }
