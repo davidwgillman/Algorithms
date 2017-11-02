@@ -53,7 +53,7 @@ public class DoubleHashST<Key, Value> {
     private int[] a;           // random hash parameter
 
     /**
-     * Initializes an empty symbol table.
+     * Initializes an empty symbol table with initial capacity of 4
      */
     public DoubleHashST() {
         this(INIT_CAPACITY);
@@ -89,7 +89,13 @@ public class DoubleHashST<Key, Value> {
      * @return the number of key-value pairs in this symbol table
      */
     public int size() {
-        // Fill in 
+
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            count++;
+        }
+        
+        return count; 
     }
 
     /**
