@@ -8,8 +8,10 @@
  *
  ******************************************************************************/
 
-import edu.princeton.cs.algs4.StdIn
-import edu.princeton.cs.algs4.StdOUt
+import java.util.Random;
+
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
 
 /**
@@ -66,8 +68,8 @@ public class DoubleHashST<Key, Value> {
      */
     public DoubleHashST(int capacity) {
         n = new int[2];
-        keys = new Key[2][];
-        vals = new Value[2][];
+        keys = (Key[][])new Object[2][];
+        vals = (Value[][])new Object[2][];
         
         m = capacity;
         n[0] = 0;
