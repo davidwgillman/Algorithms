@@ -66,7 +66,7 @@ public class DoubleHashST<Key, Value> {
      */
     public DoubleHashST(int capacity) {
         n = new int[2];
-        keys = new Key[2][];
+        keys = new Key[2][]; // size of 2
         vals = new Value[2][];
         
         m = capacity;
@@ -94,7 +94,7 @@ public class DoubleHashST<Key, Value> {
         for (int i = 0; i < n; i++) {
             count++;
         }
-        
+
         return count; 
     }
 
@@ -183,7 +183,9 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if (/*Fill in*/) resize(2*m);
+        if ((n[0] > m/2) || (n[1] > m/2)) {
+            resize(2*m);
+        }
 
         int j; // the table
         int i; // the index
@@ -193,6 +195,12 @@ public class DoubleHashST<Key, Value> {
         *  Rehash using rehash()   
         *  Trick for switching tables: j = 1-j.
         */
+
+        if (n[0] > n[1]) {
+            j = 1;
+        } else {
+            j = 0;
+        }
 
         // After finding a place for the key:
         keys[j][i] = key;
