@@ -262,7 +262,7 @@ public class DoubleHashST<Key, Value> {
 
     // integrity check 
     // integrity not maintained during a delete()
-    private boolean check() {
+    /*private boolean check() {
 
         // check that hash tables are at most 50% full
         if (n[0] > m[0]/2 || n[1] > m[1]/2)  {
@@ -281,7 +281,7 @@ public class DoubleHashST<Key, Value> {
             }
         }
         return true;
-    }
+    }*/
 
 
     /**
