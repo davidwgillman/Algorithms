@@ -8,8 +8,14 @@
  *
  ******************************************************************************/
 
-import edu.princeton.cs.algs4.StdIn
-import edu.princeton.cs.algs4.StdOUt
+
+
+import java.util.LinkedList;
+import java.util.Random;
+
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
 
 /**
@@ -49,6 +55,9 @@ public class DoubleHashST<Key, Value> {
     private int m;             // size of each hash table
     private Key[][] keys;      // the keys
     private Value[][] vals;    // the values
+    private boolean rehash;
+    private boolean resize;
+    private int comparisons;
 
     private int[] a;           // random hash parameter
 
@@ -66,9 +75,9 @@ public class DoubleHashST<Key, Value> {
      */
     public DoubleHashST(int capacity) {
         n = new int[2];
-        keys = new Key[2][];
-        vals = new Value[2][];
-        
+        a = new int[2];
+        keys = (Key[][])   new Object[2][capacity];
+        vals = (Value[][]) new Object[2][capacity];
         m = capacity;
         n[0] = 0;
         n[1] = 0;
@@ -79,8 +88,8 @@ public class DoubleHashST<Key, Value> {
         }
 
         Random rnd = new Random();
-        a[0] = rnd.nextInt();
-        a[1] = rnd.nextInt();        
+        a[0] = rnd.nextInt() & 0x7fffffff;
+        a[1] = rnd.nextInt() & 0x7fffffff;        
    }
 
     /**
@@ -89,7 +98,7 @@ public class DoubleHashST<Key, Value> {
      * @return the number of key-value pairs in this symbol table
      */
     public int size() {
-        // Fill in 
+        return n[0] + n[1];
     }
 
     /**
@@ -118,9 +127,9 @@ public class DoubleHashST<Key, Value> {
     // hash function for keys - returns value between 0 and M-1
     // if M = 2^(32-h) the formula is (a * abs(hashcode) mod 2^32) / 2^h
     private int hash(Key key, int k) {
-        long l = key.hashCode() & 0x7fffffff; // 0 to 2^31 - 1, like abs(hashcode) but bug-free
-        l = (a[k] * l) % 0xffffffffL; // 0 to 2^32 - 1
-        return (int) (l * m / 0xffffffffL); // 0 to M - 1
+        long l = key.hashCode() & 4294967296L; // 0 to 2^31 - 1, like abs(hashcode) but bug-free
+        l = (a[k] * l) % 4294967296L; // 0 to 2^32 - 1
+        return (int) (l * m / 4294967296L); // 0 to M - 1
     }
 
     // resizes the hash table to the given capacity by re-hashing all of the keys
@@ -169,16 +178,28 @@ public class DoubleHashST<Key, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
+    	//System.out.println("m: " + m);
+    	//System.out.println("hiiii");
+    	LinkedList<Key> evictedkeys = new LinkedList<Key>();
         if (key == null) throw new IllegalArgumentException("first argument to put() is null");
 
+        
+        
+     
         if (val == null) {
             delete(key);
             return;
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if (/*Fill in*/) resize(2*m);
-
+        //System.out.print("n[0] " + n[0]);
+        //System.out.print("n[1] " + n[1]);
+        
+        if ((double)n[0]/m > (double)0.5 || (double)n[1]/m > (double)0.5) {
+        	resize(2*m);
+        	setResize(true);
+        	System.out.println("true");
+        }
         int j; // the table
         int i; // the index
 
@@ -187,11 +208,63 @@ public class DoubleHashST<Key, Value> {
         *  Rehash using rehash()   
         *  Trick for switching tables: j = 1-j.
         */
-
-        // After finding a place for the key:
-        keys[j][i] = key;
-        vals[j][i] = val;
-        n[j]++;
+        int hash;
+        j = 0;
+        i = 0;
+        if(n[0] < n[1]) {
+        	i = this.hash(key,0);
+        	j = 0;
+        }
+        else if(n[0] > n[1]) {
+        	i = this.hash(key,1);
+        	j = 1;
+        }
+        Key evictedkey = null;
+    	Value evictedvalue = null;
+        while(true) {
+        	//System.out.println("hi");
+	        if(keys[j][i] == null) {
+	        	this.setComparisons(this.getComparisons() + 1);
+	        	n[j]++;
+	        	System.out.println("null " + this.getComparisons());
+	        	break;
+	        }
+	        else if(keys[j][i] != null) {
+	        	this.setComparisons(this.getComparisons() + 1);
+	        	System.out.println("not null " + this.getComparisons());
+	        	if(evictedkeys.contains(key)) {
+	        		this.rehash();
+	        		setRehash(true);
+	        		System.out.println("true");
+	        		this.put(key, val);
+	        		break;
+	        	}
+	        	else{
+	        		evictedkeys.add(keys[j][i]);
+	        		evictedkey = keys[j][i];
+	        		evictedvalue = vals[j][i];
+	        		
+	        		keys[j][i] = key;
+	        		vals[j][i] = val;
+	        		n[j]++;
+	        		
+	        		j = 1 - j;
+	        		i = this.hash(evictedkey, j);
+	        		
+	        		key = evictedkey;
+	        		val = evictedvalue;
+	        		
+	        		
+	        		
+	        	}
+	        	
+	        	
+	        }
+	        
+	        
+	        
+        }
+        
     }
 
     /**
@@ -204,9 +277,16 @@ public class DoubleHashST<Key, Value> {
     public Value get(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to get() is null");
 
-        // Fill in. 
-        // Try to find the key in each table.
-        // If it's not there:
+        for(int i = 0; i < m; i++) {
+        	if(keys[0][i] == key) {
+        		return vals[0][i];
+        		
+        	}
+        	else if(keys[1][i] == key) {
+        		return vals[1][i];
+        	}	
+        	 
+        }
         return null;
     }
 
@@ -221,13 +301,27 @@ public class DoubleHashST<Key, Value> {
         if (key == null) throw new IllegalArgumentException("argument to delete() is null");
         if (!contains(key)) return;
 
-        // Fill in: find position i of key in table j
-        // After finding the key, delete it and associated value 
-        // Decrement the size of table j
- 
+        for(int i = 0; i < m; i++) {
+        	if(keys[0][i] == key) {
+        		keys[0][i] = null;
+        		vals[0][i] = null;
+        		
+        	}
+        	else if(keys[1][i] == key) {
+        		keys[1][i] = null;
+        		vals[1][i] = null;
+        	}	
+        	 
+        }
         // Then halve the size of both arrays if the fuller one is 1/8 full or less
-        if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
-
+        int biggertable;
+        if(n[0] < n[1]) {
+        	biggertable = 1;
+        }
+        else {
+        	biggertable = 0;
+        }
+        if(n[biggertable] != 0 && n[biggertable]/m <= 1/(double)8 ) resize(m/2);
         assert check();
     }
 
@@ -242,7 +336,7 @@ public class DoubleHashST<Key, Value> {
         Queue<Key> queue = new Queue<Key>();
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < m; i++) {
-                if (keys[i] != null) queue.enqueue(keys[i]);
+                if (keys[j][i] != null) queue.enqueue(keys[j][i]);
             }
         }
         return queue;
@@ -253,7 +347,7 @@ public class DoubleHashST<Key, Value> {
     private boolean check() {
 
         // check that hash tables are at most 50% full
-        if (n[0] > m[0]/2 || n[1] > m[1]/2)  {
+        if (n[0] > m/2 || n[1] > m/2)  {
             System.err.println("Hash table size m = " + m + "; array size n = " + n);
             return false;
         }
@@ -263,7 +357,7 @@ public class DoubleHashST<Key, Value> {
             for (int i = 0; i < m; i++) {
                 if (keys[j][i] == null) continue;
                 else if (get(keys[j][i]) != vals[j][i]) {
-                    System.err.println("get[" + keys[i] + "] = " + get(keys[i]) + "; vals[i] = " + vals[i]);
+                    System.err.println("get[" + keys[j][i] + "] = " + get(keys[j][i]) + "; vals[i] = " + vals[i]);
                     return false;
                 }
             }
@@ -288,6 +382,30 @@ public class DoubleHashST<Key, Value> {
         for (String s : st.keys()) 
             StdOut.println(s + " " + st.get(s)); 
     }
+
+	public boolean isResize() {
+		return resize;
+	}
+
+	public void setResize(boolean resize) {
+		this.resize = resize;
+	}
+
+	public boolean isRehash() {
+		return rehash;
+	}
+
+	public void setRehash(boolean rehash) {
+		this.rehash = rehash;
+	}
+
+	public int getComparisons() {
+		return comparisons;
+	}
+
+	public void setComparisons(int comparisons) {
+		this.comparisons = comparisons;
+	}
 }
 
 /******************************************************************************
