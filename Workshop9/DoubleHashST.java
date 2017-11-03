@@ -10,6 +10,7 @@
 
 import edu.princeton.cs.algs4.StdIn
 import edu.princeton.cs.algs4.StdOUt
+import java.util.HashSet
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
 
 /**
@@ -90,6 +91,7 @@ public class DoubleHashST<Key, Value> {
      */
     public int size() {
         // Fill in 
+        return n[0] + n[1];
     }
 
     /**
@@ -119,8 +121,8 @@ public class DoubleHashST<Key, Value> {
     // if M = 2^(32-h) the formula is (a * abs(hashcode) mod 2^32) / 2^h
     private int hash(Key key, int k) {
         long l = key.hashCode() & 0x7fffffff; // 0 to 2^31 - 1, like abs(hashcode) but bug-free
-        l = (a[k] * l) % 0xffffffffL; // 0 to 2^32 - 1
-        return (int) (l * m / 0xffffffffL); // 0 to M - 1
+        l = (a[k] * l) % 4294967296L; // 0 to 2^32 - 1
+        return (int) (l * m / 4294967296L); // 0 to M - 1
     }
 
     // resizes the hash table to the given capacity by re-hashing all of the keys
@@ -177,7 +179,7 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if (/*Fill in*/) resize(2*m);
+        if (n[0] >= m/2 || n[1] >= m/2) resize(2*m);
 
         int j; // the table
         int i; // the index
@@ -187,6 +189,48 @@ public class DoubleHashST<Key, Value> {
         *  Rehash using rehash()   
         *  Trick for switching tables: j = 1-j.
         */
+        Key[] evicted = new HashSet<Key>();
+
+        if (n[0] < n[1]) {
+            j = 0;
+        }
+        else {
+            j = 1;
+        }
+
+        i = hash(key, j);
+        if(keys[j][i] != null) {
+            int t = j;
+            int ind = i;
+            boolean keepgoing= true;
+            Key ekey = key;
+            Value eval = val;
+            while(keepgoing) {
+                Key oldkey = keys[t][ind];
+                Key oldval = val[t][ind];
+                keys[t][ind] = ekey;
+                vals[t][ind] = eval;
+                ekey = oldkey;
+                eval = oldval;
+                if (evicted.contains(ekey)){
+                    rehash();
+                    put(ekey,eval);
+                    return;
+                } else {
+                    evicted.add(ekey);
+                }
+
+                t = 1-t;
+                ind = hash(ekey, t)
+
+                if(keys[t][ind] == null){
+                    keys[t][ind] = ekey;
+                    vals[t][ind] = eval;
+                    n[t]++;
+                    return;
+                }
+            }
+        }
 
         // After finding a place for the key:
         keys[j][i] = key;
@@ -207,6 +251,13 @@ public class DoubleHashST<Key, Value> {
         // Fill in. 
         // Try to find the key in each table.
         // If it's not there:
+
+        int i = hash(key, 0);
+        if (keys[0][i].equals(key)) return vals[0][i];
+        i = hash(key, 1);
+        if (keys[1][i].equals(key)) return vals[1][i];
+        }
+
         return null;
     }
 
@@ -224,9 +275,25 @@ public class DoubleHashST<Key, Value> {
         // Fill in: find position i of key in table j
         // After finding the key, delete it and associated value 
         // Decrement the size of table j
+
+        int i = hash(key, 0);
+        if (keys[0][i].equals(key)) {
+            keys[0][i] = null;
+            vals[0][i] = null;
+            n[0]--;
+        }
+        i = hash(key, 1);
+        if (keys[1][i].equals(key)) {
+            keys[1][i] = null;
+            vals[1][i] = null;
+            n[1]--;
+        }
  
         // Then halve the size of both arrays if the fuller one is 1/8 full or less
-        if (/*Fill in: arrays are not empty but they are too small*/) resize(m/2);
+        /*Fill in: arrays are not empty but they are too small*/
+        int fuller = 0;
+        if (n[1] > n[0]) fuller = 1;
+        if (!isEmpty() && n[fuller] <= m/8) resize(m/2);
 
         assert check();
     }
