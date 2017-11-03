@@ -8,8 +8,9 @@
  *
  ******************************************************************************/
 
-import edu.princeton.cs.algs4.StdIn
-import edu.princeton.cs.algs4.StdOUt
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOUt;
+import edu.princeton.cs.algs4.*;
 // Insert any other import statements for classes needed from edu.princeton.cs.algs4
 
 /**
@@ -79,8 +80,8 @@ public class DoubleHashST<Key, Value> {
         }
 
         Random rnd = new Random();
-        a[0] = rnd.nextInt();
-        a[1] = rnd.nextInt();        
+        a[0] = rnd.nextInt() & 0x7fffffff;
+        a[1] = rnd.nextInt() & 0x7fffffff;        
    }
 
     /**
@@ -90,6 +91,7 @@ public class DoubleHashST<Key, Value> {
      */
     public int size() {
         // Fill in 
+        return n[0] + n[1];   
     }
 
     /**
@@ -118,9 +120,9 @@ public class DoubleHashST<Key, Value> {
     // hash function for keys - returns value between 0 and M-1
     // if M = 2^(32-h) the formula is (a * abs(hashcode) mod 2^32) / 2^h
     private int hash(Key key, int k) {
-        long l = key.hashCode() & 0x7fffffff; // 0 to 2^31 - 1, like abs(hashcode) but bug-free
-        l = (a[k] * l) % 0xffffffffL; // 0 to 2^32 - 1
-        return (int) (l * m / 0xffffffffL); // 0 to M - 1
+        long l = key.hashCode() & 429497296L; // 0 to 2^31 - 1, like abs(hashcode) but bug-free
+        l = (a[k] * l) % 429497296L; // 0 to 2^32 - 1
+        return (int) (l * m / 429497296L); // 0 to M - 1
     }
 
     // resizes the hash table to the given capacity by re-hashing all of the keys
@@ -177,7 +179,7 @@ public class DoubleHashST<Key, Value> {
         }
 
         // double size of both tables if the fuller one is 50% full 
-        if (/*Fill in*/) resize(2*m);
+        if ((n[0] >= m/2) || n[1] >= m/2) resize(2*m);
 
         int j; // the table
         int i; // the index
@@ -187,6 +189,7 @@ public class DoubleHashST<Key, Value> {
         *  Rehash using rehash()   
         *  Trick for switching tables: j = 1-j.
         */
+        
 
         // After finding a place for the key:
         keys[j][i] = key;
@@ -222,6 +225,8 @@ public class DoubleHashST<Key, Value> {
         if (!contains(key)) return;
 
         // Fill in: find position i of key in table j
+
+
         // After finding the key, delete it and associated value 
         // Decrement the size of table j
  
