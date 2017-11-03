@@ -70,8 +70,8 @@ public class DoubleHashST<Key, Value> {
      */
     public DoubleHashST(int capacity) {
         this.n = new int[2];
-        this.keys = (Key[][])   new Object[2][capacity];
-        this.vals = (Value[][]) new Object[2][capacity];
+        this.keys = (Key[][]) new Object[2][];
+        this.vals = (Value[][]) new Object[2][];
         
         this.m = capacity;
         this.n[0] = 0;
@@ -83,6 +83,7 @@ public class DoubleHashST<Key, Value> {
         }
 
         Random rnd = new Random();
+        this.a = new int[2];
         this.a[0] = rnd.nextInt() & 0x7fffffff;
         this.a[1] = rnd.nextInt() & 0x7fffffff;        
    }
@@ -123,8 +124,8 @@ public class DoubleHashST<Key, Value> {
     // if M = 2^(32-h) the formula is (a * abs(hashcode) mod 2^32) / 2^h
     private int hash(Key key, int k) {
         long l = key.hashCode() & 0x7fffffff; // 0 to 2^31 - 1, like abs(hashcode) but bug-free
-        l = (a[k] * l) % 0xffffffffL; // 0 to 2^32 - 1
-        return (int) (l * m / 0xffffffffL); // 0 to M - 1
+        l = (a[k] * l) % 4294967296L; // 0 to 2^32 - 1
+        return (int) (l * m / 4294967296L); // 0 to M - 1
     }
 
     // resizes the hash table to the given capacity by re-hashing all of the keys
@@ -180,42 +181,59 @@ public class DoubleHashST<Key, Value> {
             return;
         }
 
-        // double size of both tables if the fuller one is 50% full 
-        int indexOfMax = -1;
+        int indexOfMax = 0;
+        
         if(n[0]>n[1]){
             indexOfMax = 0;
         }
-        else{
+
+        else if(n[1]>n[0]){
             indexOfMax = 1;
+        }
+
+        else{
+            Random r = new Random();
+            indexOfMax = r.nextInt(2);
         }
 
         if (n[indexOfMax] >= m/2){
             resize(2*m);
         }
 
-        int j = indexOfMax; // the table
+        int j = 1 - indexOfMax; // the table
         int i = hash(key, j); // the index
-        ArrayList<Key> tempKeyList = new ArrayList<Key>();
+        ArrayList<Key> collisionKeyList = new ArrayList<Key>();
 
-        Key tempKey = key;
-        Value tempVal = val;
+        Key collisionKey = key;
+        Value collisionVal = val;
 
+        System.out.println("We are looking at " + key);
         while(keys[j][i] != null){
-            if(tempKeyList.contains(key)){
+            if(collisionKeyList.contains(collisionKey)){
+                System.out.println("rehashing!");
                 rehash();
                 break;
             }
+            else if(keys[j][i].equals(key)){
+                vals[j][i] = val;
+                System.out.println(key + " already exists!");
+                return;
+            }
             else{
-                tempKey = keys[j][i];
-                tempVal = vals[j][i];
-                j= j-1;
-                tempKeyList.add(tempKey);
+                System.out.println("a collision has occurred already exists!");
+                collisionKey = keys[j][i];
+                collisionVal = vals[j][i];
+                j = 1-j;
+                i = hash(collisionKey, j);
+                keys[j][i] = collisionKey;
+                vals[j][i] = collisionVal;
+                collisionKeyList.add(collisionKey);
             }
         }
 
         // After finding a place for the key:
-        keys[j][i] = tempKey;
-        vals[j][i] = tempVal;
+        keys[j][i] = key;
+        vals[j][i] = val;
         n[j]++;
     }
 
@@ -228,16 +246,20 @@ public class DoubleHashST<Key, Value> {
      */
     public Value get(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to get() is null");
-
         int j = 0;
         int i = hash(key, j);
-        if (keys[j][i].equals(key)){
+
+        if (keys[j][i] != null && keys[j][i].equals(key)){
+            System.out.println("The value of " + key + " is " + vals[j][i]);
             return vals[j][i];
         }
-        else if(keys[j-1][i].equals(key)){
-            return vals[j-1][i];
+
+        else if(keys[1-j][i] != null && keys[1-j][i].equals(key)){
+            return vals[1-j][i];
         }
+
         else{
+            System.out.println("Couldn't find the value of " + key);
             return null;
         }
     }
@@ -254,14 +276,14 @@ public class DoubleHashST<Key, Value> {
         if (!contains(key)) return;
         int j = 0;
         int i = hash(key, j);
-        if (keys[j][i].equals(key)){
+        if (keys[j][i] != null && keys[j][i].equals(key)){
             keys[j][i] = null;
             vals[j][i] = null;
             n[j]--;
         }
-        else if(keys[j-1][i].equals(key)){
-            keys[j-1][i] = null;
-            vals[j-1][i] = null;
+        else if(keys[1-j][i] != null && keys[1-j][i].equals(key)){
+            keys[1-j][i] = null;
+            vals[1-j][i] = null;
             n[j]--;
         }
 
@@ -331,34 +353,12 @@ public class DoubleHashST<Key, Value> {
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
             st.put(key, i);
+            System.out.println("done with this loop and added " + key);
         }
 
         // print keys
         for (String s : st.keys()) 
             StdOut.println(s + " " + st.get(s)); 
+        StdOut.println("size is " + st.size()); 
     }
 }
-
-/******************************************************************************
- *  Copyright 2002-2016, Robert Sedgewick and Kevin Wayne.
- *
- *  This file is part of algs4.jar, which accompanies the textbook
- *
- *      Algorithms, 4th edition by Robert Sedgewick and Kevin Wayne,
- *      Addison-Wesley Professional, 2011, ISBN 0-321-57351-X.
- *      http://algs4.cs.princeton.edu
- *
- *
- *  algs4.jar is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  algs4.jar is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with algs4.jar.  If not, see http://www.gnu.org/licenses.
- ******************************************************************************/
