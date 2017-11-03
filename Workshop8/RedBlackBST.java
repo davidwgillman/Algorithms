@@ -27,8 +27,13 @@
  *
  ******************************************************************************/
 
+<<<<<<< HEAD
 import edu.princeton.cs.algs4.*; 
 import edu.princeton.cs.algs4.Stopwatch;
+=======
+package edu.princeton.cs.algs4;
+
+>>>>>>> origin/master
 import java.util.NoSuchElementException;
 
 /**
@@ -71,8 +76,11 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
     private static final boolean RED   = true;
     private static final boolean BLACK = false;
+<<<<<<< HEAD
     private int lastPutCompareCount = 0;
     private boolean lastPutNew = false;
+=======
+>>>>>>> origin/master
 
     private Node root;     // root of the BST
 
@@ -189,6 +197,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
             delete(key);
             return;
         }
+<<<<<<< HEAD
         lastPutCompareCount = 0;
         lastPutNew = false;
         root = put(root, key, val);
@@ -197,10 +206,17 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         System.out.println("The number of comparisons for this key is " + lastPutCompareCount());
         System.out.println("Was a new key added in?: " + lastPutNew());
         System.out.println();
+=======
+
+        root = put(root, key, val);
+        root.color = BLACK;
+        // assert check();
+>>>>>>> origin/master
     }
 
     // insert the key-value pair in the subtree rooted at h
     private Node put(Node h, Key key, Value val) { 
+<<<<<<< HEAD
         if (h == null){
             lastPutNew = true;
             System.out.println("New key was added!");
@@ -220,6 +236,14 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
             h.val = val;
             System.out.println("The value of " + key + " was changed!");
         }
+=======
+        if (h == null) return new Node(key, val, RED, 1);
+
+        int cmp = key.compareTo(h.key);
+        if      (cmp < 0) h.left  = put(h.left,  key, val); 
+        else if (cmp > 0) h.right = put(h.right, key, val); 
+        else              h.val   = val;
+>>>>>>> origin/master
 
         // fix-up any right-leaning links
         if (isRed(h.right) && !isRed(h.left))      h = rotateLeft(h);
@@ -230,6 +254,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         return h;
     }
 
+<<<<<<< HEAD
     public boolean lastPutNew(){
         return lastPutNew;
     }
@@ -238,6 +263,8 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         return lastPutCompareCount;
     }
 
+=======
+>>>>>>> origin/master
    /***************************************************************************
     *  Red-black tree deletion.
     ***************************************************************************/
@@ -735,6 +762,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      */
     public static void main(String[] args) { 
         RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
+<<<<<<< HEAD
        
         Stopwatch stopwatch = new Stopwatch();
 
@@ -750,6 +778,15 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
             StdOut.println(s + " " + st.get(s));
         StdOut.println();*/
 
+=======
+        for (int i = 0; !StdIn.isEmpty(); i++) {
+            String key = StdIn.readString();
+            st.put(key, i);
+        }
+        for (String s : st.keys())
+            StdOut.println(s + " " + st.get(s));
+        StdOut.println();
+>>>>>>> origin/master
     }
 }
 
