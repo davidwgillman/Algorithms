@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=KnuthShuffle
+comment1.params=a
+comment1.target=void\ shuffle(java.lang.Object[])
+comment1.text=\n\ Rearranges\ the\ elements\ of\ the\ specified\ array\ in\ uniformly\ random\ order.\n\n\ @param\ \ a\ the\ array\ to\ shuffle\n
+comment2.params=size
+comment2.target=java.lang.String[]\ createArray(int)
+comment3.params=a
+comment3.target=java.lang.String\ convertToString(java.lang.Object[])
+comment4.params=args
+comment4.target=void\ main(java.lang.String[])
+numComments=5
