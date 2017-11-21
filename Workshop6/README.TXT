@@ -1,0 +1,1 @@
+I made my own implementation having not realized that there was code already to work off of. I used a priority queue and simply let the crews pick the jobs one at a time from the top priority until they were finished. 
